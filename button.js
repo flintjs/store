@@ -3,30 +3,30 @@ import { rgba, palette } from './prelude'
 let styles
 
 Flint.preload(() => {
-  let { color, unit } = palette()
+  let { colors, units } = palette()
 
   styles = {
-    neutralColor: color.white,
-    neutralColorContrast: color.grey900,
-    neutralColorHover: rgba(color.grey900, 0.20),
-    primaryColorContrast: color.primaryContrast,
-    primaryColorHover: rgba(color.primary, 0.20),
-    primaryColor: color.primary,
-    accentColorContrast: color.primaryContrast,
-    accentColorHover: rgba(color.accent, 0.20),
-    accentColor: color.accent,
-    disabledTextColor: rgba(color.black, 0.26),
-    disabledBackgroundColor: rgba(color.black, 0.12),
-    borderRadius: 0.2 * unit,
-    floatingFontSize: unit * 2.4,
-    floatingHeight: unit * 5.6,
-    floatingMiniHeight: unit * 4,
+    neutralColor: colors.white,
+    neutralColorContrast: colors.grey900,
+    neutralColorHover: rgba(colors.grey900, 0.20),
+    primaryColorContrast: colors.primaryContrast,
+    primaryColorHover: rgba(colors.primary, 0.20),
+    primaryColor: colors.primary,
+    accentColorContrast: colors.primaryContrast,
+    accentColorHover: rgba(colors.accent, 0.20),
+    accentColor: colors.accent,
+    disabledTextColor: rgba(colors.black, 0.26),
+    disabledBackgroundColor: rgba(colors.black, 0.12),
+    borderRadius: 0.2 * units.unit,
+    floatingFontSize: units.unit * 2.4,
+    floatingHeight: units.unit * 5.6,
+    floatingMiniHeight: units.unit * 4,
     floatingMiniFontSize: this.floatingMiniHeight / 2.25,
-    height: unit * 3.6,
-    squaredIconMargin: unit * .6,
-    squaredMinWidth: 9 * unit,
-    squaredPadding: [0, unit * 1.2],
-    toggleFontSize: unit * 2,
+    height: units.unit * 3.6,
+    squaredIconMargin: units.unit * .6,
+    squaredMinWidth: 9 * units.unit,
+    squaredPadding: [0, units.unit * 1.2],
+    toggleFontSize: units.unit * 2,
   }
 })
 
