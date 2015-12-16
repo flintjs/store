@@ -1,10 +1,12 @@
 import units from './units'
 import colors from './colors'
+import effects from './effects'
 
 export function pallete() {
   return {
     units,
-    colors
+    colors,
+    effects
   }
 }
 
