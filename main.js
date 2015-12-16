@@ -1,10 +1,22 @@
 view Main {
   <Card>
-    <Card.Title>Hello World</Card.Title>
+    <Card.Title
+      title="Hello World"
+      subtitle="Subtitle here"
+      avatar="https://placeimg.com/80/80/animals"
+    />
+    <Card.Media
+      aspectRatio="wide"
+      image="https://placeimg.com/800/450/nature"
+    />
     <Card.Text>
       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </Card.Text>
   </Card>
+}
+
+const shadow2dp = {
+  boxShadow: `0 2px 2px 0 rgba(0, 0, 0, 0.1), 0 3px 1px -2px rgba(0, 0, 0, 0.1), 0 1px 5px 0 rgba(0, 0, 0, 0.2)`
 }
 
 const UNIT = 1
@@ -34,7 +46,7 @@ view Card {
 
   <card class={{ raised }} yield />
 
-  $ = {
+  $ = [shadow2dp, {
     display: 'flex',
     width: '100%',
     flexDirection: 'column',
@@ -44,7 +56,7 @@ view Card {
     borderRadius: .2 * UNIT,
 
     raised: '@include shadow8dp()'
-  }
+  }]
 }
 
 view Card.Actions {
@@ -176,7 +188,7 @@ view Card.Title {
   }
 
   $small = {
-    padding: '$cardPadding',
+    padding: cardPadding,
 
     title: [bodyFont, {
       lineHeight: '1.4',
