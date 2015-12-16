@@ -13,6 +13,10 @@ view Main {
       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </Card.Text>
   </Card>
+
+  $Card = {
+    width: 350
+  }
 }
 
 const shadow2dp = {
@@ -26,7 +30,7 @@ const cardBackgroundColor = cardColorWhite
 const cardPaddingSm = .8 * UNIT
 const cardPadding = 1.6 * UNIT
 const cardPaddingLg = 2 * UNIT
-const cardFontSize = '1.5rem'
+const cardFontSize = '1.2em'
 
 const cardFont = {
   padding: '($cardPadding  .2 * UNIT) $cardPadding',
@@ -155,18 +159,21 @@ view Card.Title {
   prop children:? string | object | array
   prop title:? string
   prop subtitle:? string
-  prop large:? bool
-  prop small:? bool
 
-  <cardtitle class={{ small, large }}>
-    <Avatar if={typeof avatar == 'string'} image={avatar} />
-    <avatar if={typeof avatar == 'object'}>{avatar}</avatar>
-    <h5 class="title" if={children && typeof children == 'string'}>{children}</h5>
-    <h5 class="subtitle" if={subtitle}>{children}</h5>
-    <p class="children" if={children && typeof children != 'string'}>{children}</p>
-  </cardtitle>
+  let small
+
+  on.props(() => {
+    small = avatar
+  })
+
+  <Avatar if={typeof avatar == 'string'} image={avatar} />
+  <avatar if={typeof avatar == 'object'}>{avatar}</avatar>
+  <h5 class="title" if={children && typeof children == 'string'}>{children}</h5>
+  <h5 class="subtitle" if={subtitle}>{children}</h5>
+  <p class="children" if={children && typeof children != 'string'}>{children}</p>
 
   $ = [cardFont, {
+    padding: small ? 'xyz' : `${cardPaddingLg} ${cardPadding} (${cardPadding + .2 * UNIT} )`,
     display: 'flex',
     alignItems: 'center'
   }]
@@ -176,27 +183,20 @@ view Card.Title {
   }
 
   $subtitle = {
-    color: '$colorTextSecondary',
+    color: '$colorTextSecondary'
   }
 
-  $large = {
-    padding: `${cardPaddingLg} ${cardPadding} (${cardPadding + .2 * UNIT} )`,
-
-    title: [headLineFont, {
-      lineHeight: '1.25',
-    }]
+  $title = {
+    padding: '',
+    lineHeight: small ? 1.5 : 1.25
   }
 
-  $small = {
-    padding: cardPadding,
-
-    title: [bodyFont, {
-      lineHeight: '1.4',
-    }],
-
-    subtitle: {
-      fontWeight: '500',
-      lineHeight: '1.4',
+  $subtitle = [{
+      color: 'color-secondary'
+    },
+    small && {
+      fontWeight: 500,
+      lineHeight: 1.4
     }
-  }
+  ]
 }
