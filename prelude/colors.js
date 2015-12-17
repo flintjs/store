@@ -1,4 +1,4 @@
-import { rgb } from '../prelude'
+import { rgb } from './index'
 
 // Color definitions taken from Material Design Lit
 
@@ -302,16 +302,16 @@ let colors = {
 colors.darkContrast = colors.white
 colors.lightContrast = colors.black
 
-colors.colorsDivider = grey200
-colors.background = white
-colors.text = grey900
-colors.textSecondary = grey600
+colors.colorsDivider = colors.grey200
+colors.background = colors.white
+colors.text = colors.grey900
+colors.textSecondary = colors.grey600
 
-colors.primary = indigo500
-colors.primaryDark = indigo700
-colors.accent = pinkA200
-colors.accentDark = pink700
-colors.primaryContrast = darkContrast
-colors.accentContrast = darkContrast
+colors.primary = colors.indigo500
+colors.primaryDark = colors.indigo700
+colors.accent = colors.pinkA200
+colors.accentDark = colors.pink700
+colors.primaryContrast = colors.darkContrast
+colors.accentContrast = colors.darkContrast
 
 export default colors

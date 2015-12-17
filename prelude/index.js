@@ -2,7 +2,7 @@ import units from './units'
 import colors from './colors'
 import effects from './effects'
 
-export function pallete() {
+export function palette() {
   return {
     units,
     colors,

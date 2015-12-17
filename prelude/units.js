@@ -1,11 +1,14 @@
-import { rgba, cubicBezier } from '../prelude'
+import { rgba, cubicBezier } from './index'
+
+let unit = 1
+let fontSize = 1.6 * unit
 
 let units = {
-  unit: '1rem',
+  unit: `${unit}rem`,
 
   //  Fonts
   preferredFont: `"Roboto", "Helvetica", "Arial", sansSerif`,
-  fontSize: 1.6 * unit,
+  fontSize,
   fontSizeTiny: 1.2 * unit,
   fontSizeSmall: 1.4 * unit,
   fontSizeNormal: fontSize,
