@@ -18,7 +18,9 @@ export function rgb(r: number, g: number, b: number) {
   return `rgb(${r}, ${g}, ${b})`
 }
 
+// type N = number | float;
+
 // TODO
-export function cubicBezier() {
-  return ``
+export function cubicBezier(a: N, b: N, c: N, d: N) {
+  return `cubic-bezier(${a}, ${b}, ${c}, ${d})`
 }

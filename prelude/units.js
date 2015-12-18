@@ -1,18 +1,18 @@
 import { rgba, cubicBezier } from './index'
 
-let unit = 1
+let unit = n => `${n}rem`
 let fontSize = 1.6 * unit
 
 let units = {
-  unit: `${unit}rem`,
+  unit,
 
   //  Fonts
   preferredFont: `"Roboto", "Helvetica", "Arial", sansSerif`,
   fontSize,
-  fontSizeTiny: 1.2 * unit,
-  fontSizeSmall: 1.4 * unit,
+  fontSizeTiny: unit(1.2),
+  fontSizeSmall: unit(1.4),
   fontSizeNormal: fontSize,
-  fontSizeBig: 1.8 * unit,
+  fontSizeBig: unit(1.8),
   fontWeightThin: 300,
   fontWeightNormal: 400,
   fontWeightSemiBold: 500,

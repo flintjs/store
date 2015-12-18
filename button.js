@@ -5,6 +5,7 @@ let colors, units, styles, effects
 // Flint.preload(() => {
   // load palette
   ({ colors, units, effects } = palette())
+  let { unit } = units
 
   // set style
   styles = {
@@ -19,18 +20,53 @@ let colors, units, styles, effects
     accentColor: colors.accent,
     disabledTextColor: rgba(colors.black, 0.26),
     disabledBackgroundColor: rgba(colors.black, 0.12),
-    borderRadius: 0.2 * units.unit,
-    floatingFontSize: units.unit * 2.4,
-    floatingHeight: units.unit * 5.6,
-    floatingMiniHeight: units.unit * 4,
+    borderRadius: unit(0.2),
+    floatingFontSize: unit(2.4),
+    floatingHeight: unit(5.6),
+    floatingMiniHeight: unit(4),
     floatingMiniFontSize: this.floatingMiniHeight / 2.25,
-    height: units.unit * 3.6,
-    squaredIconMargin: units.unit * .6,
-    squaredMinWidth: 9 * units.unit,
-    squaredPadding: [0, units.unit * 1.2],
-    toggleFontSize: units.unit * 2,
+    height: unit(3.6),
+    squaredIconMargin: unit(.6),
+    squaredMinWidth: unit(9),
+    squaredPadding: [0, unit(1.2)],
+    toggleFontSize: unit(2),
   }
 // })
+
+
+let buttonProps = ({ disabled, toggle, level, shape, disabled, children, doMouseUp, doMouseLeave }) => ({
+  ref: 'button',
+  class: {
+    button: true,
+    disabled,
+    toggle,
+    [level]: true,
+    [shape]: true
+  },
+  disabled,
+  children,
+  onMouseUp: doMouseUp,
+  onMouseLeave: doMouseLeave
+})
+
+view IconButton {
+  prop accent:? bool = false
+  prop children:? node
+  prop disabled:? bool
+  prop href:? string
+  prop icon:? string
+  prop inverse:? bool
+  prop primary:? bool = false
+  prop type:? string
+
+  let doMouseUp = () => view.refs.button.blur()
+  let getProps = () => buttonProps({ disabled, disabled, children, doMouseUp })
+
+  <a if={href} {...getProps()} />
+  <button if={!href} {...getProps()} />
+
+  // TODO: Styles
+}
 
 view Button {
   prop accent:? bool = false
@@ -48,32 +84,23 @@ view Button {
   prop primary:? bool = false
   prop raised:? bool = false
   prop squared:? bool
+  prop toggle:? bool = false
   prop type:? string
 
-  const level = primary ? 'primary' : accent ? 'accent' : 'neutral'
-  const shape = flat ? 'flat' : raised ? 'raised' : floating ? 'floating' : 'flat'
+  let level = primary ? 'primary' : accent ? 'accent' : 'neutral'
+  let shape = flat ? 'flat' : raised ? 'raised' : floating ? 'floating' : 'flat'
 
-  let handleMouseUp = () => {
+  let doMouseUp = () => {
     view.refs.button.blur()
     onMouseUp && onMouseUp()
   }
 
-  let handleMouseLeave = () => {
+  let doMouseLeave = () => {
     view.refs.button.blur()
     onMouseLeave && onMouseLeave()
   }
 
-  let getProps = () => ({
-    ref: 'button',
-    class: {
-      button: true,
-      squared, disabled, raised
-    },
-    disabled,
-    children,
-    onMouseUp: handleMouseUp,
-    onMouseLeave: handleMouseLeave
-  })
+  let getProps = () => buttonProps({ disabled, toggle, level, shape, disabled, children, doMouseUp, doMouseLeave })
 
   <a if={href} {...getProps()} />
   <button if={!href} {...getProps()} />
@@ -93,19 +120,19 @@ view Button {
     border: 0,
     outline: 'none',
     transition: `
-      box-shadow .2s $animation-curve-fast-out-linear-in,
-      background-color .2s $animation-curve-default,
-      color .2s $animation-curve-default
+      box-shadow .2s ${units.animationCurveFastOutLinearIn},
+      background-color .2s ${units.animationCurveDefault},
+      color .2s ${units.animationCurveDefault}
     `,
   }
 
   $disabled = {
     color: styles.disabledTextColor,
-    pointerEvents: none,
-    cursor: auto,
+    pointerEvents: 'none',
+    cursor: 'auto',
   }
 
-  $squared = {
+  const squared$ = {
     minWidth: styles.squaredMinWidth,
     padding: styles.squaredPadding,
     borderRadius: styles.borderRadius,
@@ -119,7 +146,7 @@ view Button {
     // }
   }
 
-  $solid = {
+  const solid = {
     // &[disabled] {
     //   @include shadow2dp(),
     //   backgroundColor: styles.disabledBackgroundColor,
@@ -132,11 +159,16 @@ view Button {
     // }
   }
 
-  $raised = [effects.shadow2p()]
+  $raised = [
+    squared$,
+    solid,
+    effects.shadow2p()
+  ]
 
-  $flat = {
+  $flat = [
+    squared$, {
     background: 'transparent',
-  }
+  }]
 
   $floating = {
     width: styles.floatingHeight,
@@ -174,36 +206,52 @@ view Button {
     //   borderRadius: 50%,
     // }
   }
-  //
-  // .neutral:not([disabled]) {
-  //   &.raised, &.floating {
-  //     color: styles.neutralColorContrast,
-  //     backgroundColor: styles.neutralColor,
-  //   }
-  //   &.flat, &.toggle {
-  //     color: styles.neutralColorContrast,
-  //     &:focus:not(:active) {
-  //       background: styles.neutralColorHover,
-  //     }
-  //   }
-  //   &.flat:hover {
-  //     background: styles.neutralColorHover,
-  //   }
-  //
-  //   &.inverse {
-  //     &.raised, &.floating {
-  //       color: styles.neutralColor,
-  //       backgroundColor: styles.neutralColorContrast,
-  //     }
-  //     &.flat, &.toggle {
-  //       color: styles.neutralColor,
-  //       &:focus:not(:active) {
-  //         background: styles.neutralColorHover,
-  //       }
-  //     }
-  //     &.flat:hover {
-  //       background: styles.neutralColorHover,
-  //     }
-  //   }
-  // }
+
+  let buttonColors = (color, background, hover) => [
+    (raised || floating) && { color, background },
+    (flat || toggle) && { color: background, focus: { background: hover } },
+    flat && { hover: { background: 'hover' } }
+  ]
+
+  $primary = buttonColors(
+    styles.primaryContrast,
+    styles.primaryColor,
+    styles.primaryColorHover
+  )
+
+  $accent = buttonColors(
+    styles.accentColorContrast,
+    styles.accentColor,
+    styles.accentColorHover
+  )
+
+  $neutral = [
+    (raised || floating) && {
+      color: styles.neutralColorContrast,
+      backgroundColor: styles.neutralColor,
+    },
+
+    (flat || toggle) && {
+      color: styles.neutralColorContrast,
+      focus: { background: styles.neutralColorHover }
+    },
+
+    flat && {
+      hover: { background: styles.neutralColorHover }
+    },
+
+    inverse && (raised || floating) && {
+      color: styles.neutralColor,
+      backgroundColor: styles.neutralColorContrast,
+    },
+
+    inverse && (flat || toggle) && {
+      color: styles.neutralColor,
+      focus: { background: styles.neutralColorHover }
+    },
+
+    inverse && flat && {
+      hover: { background: styles.neutralColorHover }
+    }
+  ]
 }
