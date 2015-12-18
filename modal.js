@@ -1,3 +1,14 @@
+import { palette: { units: { unit, vw }, colors, effects }, translateY } from './prelude'
+
+const modal = {
+  borderRadius: unit(.2),
+  colorTitle: colors.black,
+  colorWhite: colors.white,
+  contentPadding: unit(2.4),
+  navigationPadding: unit(.8),
+  translateY: unit(4),
+}
+
 view Modal {
   prop actions:? array = []
   prop active:? bool = false
@@ -23,60 +34,60 @@ view Modal {
 
   $modal = {
     display: `flex`,
-    maxWidth: `96vw`,
-    maxHeight: `96vh`,
+    maxWidth: vw(96),
+    maxHeight: vw(96),
     flexDirection: `column`,
-    backgroundColor: palette.dialogColorWhite,
-    borderRadius: palette.dialogBorderRadius,
+    backgroundColor: colors.white,
+    borderRadius: modal.borderRadius,
     boxShadow: palette.zdepthShadow5,
     opacity: 0,
     transitionDelay: palette.animationDelay,
     transitionTimingFunction: palette.animationCurveDefault,
     transitionDuration: palette.animationDuration,
     transitionProperty: opacity, transform,
-    transform: translateY(palette.dialogTranslateY),
-    &.active {
-      opacity: 1,
-      transform: translateY(0%),
-    }
+    transform: translateY(modal.translateY),
   }
 
-  .small {
-    width: 30vw,
+  $active = {
+    opacity: 1,
+    transform: translateY(0%),
   }
 
-  .normal {
-    width: 50vw,
+  $small = {
+    width: vw(30),
   }
 
-  .large {
-    width: 96vw,
+  $normal = {
+    width: vw(50),
   }
 
-  .title {
-    @include typoTitle(),
+  $large = {
+    width: vw(96),
+  }
+
+  $title = {
     flexGrow: 0,
-    marginBottom: 1.6 * palette.unit,
-    color: palette.dialogColorTitle,
+    marginBottom: unit(1.6),
+    color: colors.title,
   }
 
-  .body {
+  $body = {
     flexGrow: 2,
-    padding: palette.dialogContentPadding,
-    overflowY: auto,
-    color: palette.colorTextSecondary,
+    padding: modal.contentPadding,
+    overflowY: `auto`,
+    color: colors.textSecondary,
   }
 
-  .navigation {
+  $navigation = {
     flexGrow: 0,
-    padding: palette.dialogNavigationPadding,
-    textAlign: right,
+    padding: modal.navigationPadding,
+    textAlign: `right`,
   }
 
-  .button {
+  $button = {
     minWidth: 0,
-    paddingRight: palette.dialogNavigationPadding,
-    paddingLeft: palette.dialogNavigationPadding,
-    marginLeft: palette.dialogNavigationPadding,
+    paddingRight: modal.navigationPadding,
+    paddingLeft: modal.navigationPadding,
+    marginLeft: modal.navigationPadding,
   }
 }
