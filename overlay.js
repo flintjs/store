@@ -1,3 +1,11 @@
+import { palette } from './prelude'
+let { units, units: { unit, vw, vh }, colors, effects } = palette()
+
+const styles = {
+  color: colors.black,
+  opacity: 0.6,
+}
+
 view Overlay {
   prop active:? bool
   prop children:? node
@@ -7,29 +15,38 @@ view Overlay {
 
   let app, node
 
-  on.mount(() => {
-    app = document.querySelector('[data-react-toolbox="app"]') || document.body
-    node = document.createElement('div')
-    node.setAttribute('data-react-toolbox', 'overlay')
-    app.appendChild(node)
-    handleRender()
-  })
+  view.renderToRoot()
 
-  on.render(handleRender)
+  <overlay>
+    <background onClick={onClick} />
+    {children}
+  </overlay>
 
-  on.unmount(() => {
-    ReactDOM.unmountComponentAtNode(node)
-    app.removeChild(node)
-  })
-
-  function handleRender () {
-    ReactDOM.render(
-      <div>
-        <div onClick={onClick} />
-        {children}
-      </div>
-    , node)
+  $overlay = {
+    position: `fixed`,
+    top: 0,
+    left: 0,
+    zIndex: units.zIndexHighest,
+    display: `flex`,
+    width: vw(100),
+    height: vh(100),
+    flexDirection: `column`,
+    alignContent: `center`,
+    alignItems: `center`,
+    justifyContent: `center`,
+    pointerEvents: (active || invisible) ? `all` : `none`,
   }
 
-  <noscript />
+  $background = {
+    position: `absolute`,
+    top: 0,
+    left: 0,
+    width: `100%`,
+    height: `100%`,
+    backgroundColor: styles.color,
+    opacity: active ? 1 : 0,
+    transitionTimingFunction: units.animationCurveDefault,
+    transitionDuration: units.animationDuration,
+    transitionProperty: styles.opacity,
+  }
 }

@@ -37,34 +37,33 @@ view Card {
     fontSize: cardFontSize,
     background: cardBackgroundColor,
     borderRadius: .2 * UNIT,
-
-    raised: '@include shadow8dp()'
   }]
+
+  $raised = [shadow2dp]
 }
 
 view Card.Actions {
   prop children:? any
 
-  $ = {
+  $ = [{
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flexStart',
-    padding: cardPaddingSm,
+    padding: cardPaddingSm
+  },
+  false && { // data-react-toolbox-button?
+    minWidth: 0,
+    padding: [0, cardPaddingSm],
+    margin: [0, cardPaddingSm / 2],
 
-    // [dataReactToolboxbutton]: {
-    //   minWidth: '0',
-    //   padding: `0 ${cardPaddingSm}`,
-    //   margin: `0 ${cardPaddingSm} / 2`,
-    //
-    //   firstChild: {
-    //     marginLeft: '0',
-    //   },
-    //
-    //   lastChild: {
-    //     marginRight: '0',
-    //   }
-    // }
-  }
+    firstChild: {
+      marginLeft: '0',
+    },
+
+    lastChild: {
+      marginRight: '0',
+    }
+  }]
 }
 
 view Card.Media {
