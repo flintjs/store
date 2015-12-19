@@ -254,15 +254,15 @@ view Button {
     flat && { hover: { background: 'hover' } }
   ]
 
-  $primary = buttonColors(
-    styles.primaryContrast,
-    styles.primaryColor,
-    styles.primaryColorHover
-  )
-
   $accent = buttonColors(
     styles.accentColorContrast,
     styles.accentColor,
     styles.accentColorHover
+  )
+
+  $primary = buttonColors(
+    styles.primaryColorContrast,
+    styles.primaryColor,
+    styles.primaryColorHover
   )
 }
