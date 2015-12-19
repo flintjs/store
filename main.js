@@ -19,7 +19,7 @@ view ModalExample {
   let actions = [
     { label: "Cancel", onClick: handleToggle },
     { label: "Save", onClick: handleToggle }
-  ];
+  ]
 
   <Button label='Show my dialog' onClick={handleToggle}>
     Show Modal
@@ -28,8 +28,7 @@ view ModalExample {
     actions={actions}
     active={active}
     title='My awesome dialog'
-    onOverlayClick={handleToggle}
-  >
+    onOverlayClick={handleToggle}>
     <p>Here you can add arbitrary content. Components like Pickers are using dialogs now.</p>
   </Modal>
 }

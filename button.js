@@ -33,9 +33,19 @@ let colors, units, styles, effects
   }
 // })
 
+let buttonStyles = () => ({
+  fontSize: unit(1.4),
+  fontWeight: 500,
+  lineHeight: 1,
+  textTransform: `uppercase`,
+  letterSpacing: 0,
+})
 
-let buttonProps = ({ disabled, toggle, level, shape, disabled, children, doMouseUp, doMouseLeave }) => ({
+let buttonProps = ({ disabled, toggle, children, label, ...props }, { level, shape, doMouseUp, doMouseLeave }) => ({
   ref: 'button',
+  ...props,
+  children: [label, children],
+  disabled,
   class: {
     button: true,
     disabled,
@@ -43,8 +53,6 @@ let buttonProps = ({ disabled, toggle, level, shape, disabled, children, doMouse
     [level]: true,
     [shape]: true
   },
-  disabled,
-  children,
   onMouseUp: doMouseUp,
   onMouseLeave: doMouseLeave
 })
@@ -56,11 +64,14 @@ view IconButton {
   prop href:? string
   prop icon:? string
   prop inverse:? bool
+  prop label:? string
   prop primary:? bool = false
   prop type:? string
 
+  let level = primary ? 'primary' : accent ? 'accent' : 'neutral'
+
   let doMouseUp = () => view.refs.button.blur()
-  let getProps = () => buttonProps({ disabled, disabled, children, doMouseUp })
+  let getProps = () => buttonProps(view.props, { level, doMouseUp })
 
   <a if={href} {...getProps()} />
   <button if={!href} {...getProps()} />
@@ -100,15 +111,15 @@ view Button {
     onMouseLeave && onMouseLeave()
   }
 
-  let getProps = () => buttonProps({ disabled, toggle, level, shape, disabled, children, doMouseUp, doMouseLeave })
+  let getProps = () => buttonProps(view.props, { level, shape, doMouseUp, doMouseLeave })
 
   <a if={href} {...getProps()} />
   <button if={!href} {...getProps()} />
 
-  $button = {
+  $button = [buttonStyles(), {
     position: 'relative',
     display: 'inline-block',
-    height: styles.buttonHeight,
+    height: styles.height,
     flexDirection: 'row',
     alignContent: 'center',
     alignItems: 'center',
@@ -124,7 +135,7 @@ view Button {
       background-color .2s ${units.animationCurveDefault},
       color .2s ${units.animationCurveDefault}
     `,
-  }
+  }]
 
   $disabled = {
     color: styles.disabledTextColor,
@@ -207,24 +218,6 @@ view Button {
     // }
   }
 
-  let buttonColors = (color, background, hover) => [
-    (raised || floating) && { color, background },
-    (flat || toggle) && { color: background, focus: { background: hover } },
-    flat && { hover: { background: 'hover' } }
-  ]
-
-  $primary = buttonColors(
-    styles.primaryContrast,
-    styles.primaryColor,
-    styles.primaryColorHover
-  )
-
-  $accent = buttonColors(
-    styles.accentColorContrast,
-    styles.accentColor,
-    styles.accentColorHover
-  )
-
   $neutral = [
     (raised || floating) && {
       color: styles.neutralColorContrast,
@@ -254,4 +247,22 @@ view Button {
       hover: { background: styles.neutralColorHover }
     }
   ]
+
+  let buttonColors = (color, background, hover) => [
+    (raised || floating) && { color, background },
+    (flat || toggle) && { color: background, focus: { background: hover } },
+    flat && { hover: { background: 'hover' } }
+  ]
+
+  $primary = buttonColors(
+    styles.primaryContrast,
+    styles.primaryColor,
+    styles.primaryColorHover
+  )
+
+  $accent = buttonColors(
+    styles.accentColorContrast,
+    styles.accentColor,
+    styles.accentColorHover
+  )
 }
