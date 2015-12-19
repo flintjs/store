@@ -1,4 +1,6 @@
-import { palette: { units: { unit, vw }, colors, effects }, translateY } from './prelude'
+import { palette, translateY } from './prelude'
+
+let { units: { unit, vw }, colors, effects } = palette()
 
 const modal = {
   borderRadius: unit(.2),
@@ -44,13 +46,12 @@ view Modal {
     transitionDelay: palette.animationDelay,
     transitionTimingFunction: palette.animationCurveDefault,
     transitionDuration: palette.animationDuration,
-    transitionProperty: opacity, transform,
     transform: translateY(modal.translateY),
   }
 
   $active = {
     opacity: 1,
-    transform: translateY(0%),
+    transform: translateY(0),
   }
 
   $small = {

@@ -24,3 +24,7 @@ export function rgb(r: number, g: number, b: number) {
 export function cubicBezier(a: N, b: N, c: N, d: N) {
   return `cubic-bezier(${a}, ${b}, ${c}, ${d})`
 }
+
+export function translateY(percent: N) {
+  return { translateY: percent }
+}

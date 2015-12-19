@@ -2,7 +2,7 @@ import { rgba, cubicBezier } from './index'
 
 let unit = n => `${n}rem`
 let vw = x => `${x}vw`
-let vw = x => `${x}vw`
+let vh = x => `${x}vh`
 
 let fontSize = 1.6 * unit
 
