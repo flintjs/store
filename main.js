@@ -17,11 +17,13 @@ view ModalExample {
   }
 
   let actions = [
-    { label: "Cancel", onClick: this.handleToggle },
-    { label: "Save", onClick: this.handleToggle }
+    { label: "Cancel", onClick: handleToggle },
+    { label: "Save", onClick: handleToggle }
   ];
 
-  <Button label='Show my dialog' onClick={handleToggle} />
+  <Button label='Show my dialog' onClick={handleToggle}>
+    Show Modal
+  </Button>
   <Modal
     actions={actions}
     active={active}
