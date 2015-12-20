@@ -1,6 +1,6 @@
 import { palette, translateY } from './prelude'
 
-let { units: { unit, vw }, colors, effects } = palette()
+let { units, units: { unit, vw }, colors, effects } = palette()
 
 const modal = {
   borderRadius: unit(.2),
@@ -19,10 +19,12 @@ view Modal {
   prop title:? string
   prop type:? string = 'normal'
 
+  view.inlineStyles()
+
   <Overlay active={active} onClick={onOverlayClick}>
-    <modal>
+    <window class={{ active }}>
       <section role="body">
-        <h6 if={title}>{title}</h6>
+        <Title tag="h6" if={title}>{title}</Title>
         {children}
       </section>
       <nav role="navigation">
@@ -31,21 +33,22 @@ view Modal {
           action={_}
         />
       </nav>
-    </modal>
+    </window>
   </Overlay>
 
-  $modal = {
+  $window = {
     display: `flex`,
     maxWidth: vw(96),
     maxHeight: vw(96),
     flexDirection: `column`,
     backgroundColor: colors.white,
     borderRadius: modal.borderRadius,
-    boxShadow: palette.zdepthShadow5,
+    boxShadow: units.zdepthShadow5,
     opacity: 0,
-    transitionDelay: palette.animationDelay,
-    transitionTimingFunction: palette.animationCurveDefault,
-    transitionDuration: palette.animationDuration,
+    transitionDelay: units.animationDelay,
+    transitionTimingFunction: units.animationCurveDefault,
+    transitionDuration: units.animationDuration,
+    transitionProperty: `opacity, transform`,
     transform: translateY(modal.translateY),
   }
 
@@ -66,17 +69,17 @@ view Modal {
     width: vw(96),
   }
 
-  $title = {
-    flexGrow: 0,
-    marginBottom: unit(1.6),
-    color: colors.title,
-  }
-
-  $body = {
+  $section = {
     flexGrow: 2,
     padding: modal.contentPadding,
     overflowY: `auto`,
     color: colors.textSecondary,
+  }
+
+  $Title = {
+    flexGrow: 0,
+    marginBottom: unit(1.6),
+    color: colors.black,
   }
 
   $navigation = {

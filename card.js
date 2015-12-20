@@ -1,3 +1,7 @@
+import { rgba, palette } from './prelude'
+let { colors, units, styles, effects } = palette()
+
+
 const shadow2dp = {
   boxShadow: `0 2px 2px 0 rgba(0, 0, 0, 0.1), 0 3px 1px -2px rgba(0, 0, 0, 0.1), 0 1px 5px 0 rgba(0, 0, 0, 0.2)`
 }
@@ -138,16 +142,17 @@ view Card.Title {
   prop title:? string
   prop subtitle:? string
 
-  let small
+  let small, titleContent
 
   on.props(() => {
-    small = avatar
+    small = !!avatar
+    titleContent = title || children
   })
 
   <Avatar if={typeof avatar == 'string'} image={avatar} />
   <avatar if={typeof avatar == 'object'}>{avatar}</avatar>
-  <h5 class="title" if={children && typeof children == 'string'}>{children}</h5>
-  <h5 class="subtitle" if={subtitle}>{children}</h5>
+  <Title class="title" if={titleContent && typeof titleContent == 'string'}>{titleContent}</Title>
+  <Title class="subtitle" subtitle if={subtitle}>{subtitle}</Title>
   <p class="children" if={children && typeof children != 'string'}>{children}</p>
 
   $ = [cardFont, {
@@ -160,19 +165,17 @@ view Card.Title {
     marginRight: 1.3 * UNIT,
   }
 
-  $subtitle = {
-    color: '$colorTextSecondary'
-  }
-
   $title = {
     padding: '',
     lineHeight: small ? 1.5 : 1.25
   }
 
   $subtitle = [{
-      color: 'color-secondary'
+      color: colors.secondary
     },
+
     small && {
+      fontSize: 10,
       fontWeight: 500,
       lineHeight: 1.4
     }

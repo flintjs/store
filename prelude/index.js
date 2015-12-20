@@ -30,5 +30,5 @@ export function cubicBezier(a: Num, b: Num, c: Num, d: Num) {
 }
 
 export function translateY(percent: Num) {
-  return { translateY: percent }
+  return { y: percent }
 }
