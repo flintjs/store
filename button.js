@@ -34,10 +34,9 @@ let colors, units, styles, effects
 // })
 
 let buttonStyles = () => ({
-  fontSize: unit(1.4),
+  fontSize: unit(1.2),
   fontWeight: 500,
   lineHeight: 1,
-  textTransform: `uppercase`,
   letterSpacing: 0,
 })
 
@@ -68,13 +67,20 @@ view IconButton {
   prop primary:? bool = false
   prop type:? string
 
-  let level = primary ? 'primary' : accent ? 'accent' : 'neutral'
+  let level, tagName
+
+  on.props(() => {
+    level = primary ? 'primary' : accent ? 'accent' : 'neutral'
+    tagName = href ? 'a' : 'button'
+  })
 
   let doMouseUp = () => view.refs.button.blur()
-  let getProps = () => buttonProps(view.props, { level, doMouseUp })
 
-  <a if={href} {...getProps()} />
-  <button if={!href} {...getProps()} />
+  <iconbutton tagName={tagName} {...buttonProps(view.props, { level, doMouseUp })}>
+    <FontIcon if={icon} value={icon} />
+    {label}
+    {children}
+  </iconbutton>
 
   // TODO: Styles
 }
@@ -98,8 +104,13 @@ view Button {
   prop toggle:? bool = false
   prop type:? string
 
-  let level = primary ? 'primary' : accent ? 'accent' : 'neutral'
-  let shape = flat ? 'flat' : raised ? 'raised' : floating ? 'floating' : 'flat'
+  let level, shape, tagName
+
+  on.props(() => {
+    level = primary ? 'primary' : accent ? 'accent' : 'neutral'
+    shape = flat ? 'flat' : raised ? 'raised' : floating ? 'floating' : 'flat'
+    tagName = href ? 'a' : 'button'
+  })
 
   let doMouseUp = () => {
     view.refs.button.blur()
@@ -111,15 +122,16 @@ view Button {
     onMouseLeave && onMouseLeave()
   }
 
-  let getProps = () => buttonProps(view.props, { level, shape, doMouseUp, doMouseLeave })
-
-  <a if={href} {...getProps()} />
-  <button if={!href} {...getProps()} />
+  <button-div tagName={tagName} {...buttonProps(view.props, { level, shape, doMouseUp, doMouseLeave })}>
+    <FontIcon if={icon} value={icon} />
+    {label}
+    {children}
+  </button-div>
 
   $button = [buttonStyles(), {
     position: 'relative',
     display: 'inline-block',
-    height: styles.height,
+    minHeight: styles.height,
     flexDirection: 'row',
     alignContent: 'center',
     alignItems: 'center',
