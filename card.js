@@ -1,4 +1,5 @@
-import { rgba, palette } from './prelude'
+import { fns, palette } from './prelude'
+let { rgba } = fns
 let { colors, units, styles, effects } = palette()
 
 

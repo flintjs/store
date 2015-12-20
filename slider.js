@@ -1,13 +1,36 @@
+import { fns, palette } from './prelude'
+
+let { calc, rgba, translateX, translateY, translateZ } = fns
+let { colors, units, effects } = palette()
+let { unit, percent, seconds } = units
+
+let styles = {
+  mainColor: colors.primary,
+  mainColorContrast: colors.primaryContrast,
+  snapColor: colors.black,
+  knobSize: unit(3.2),
+  innerKnobSize: unit(1.2),
+  snapSize: unit(.2),
+  inputWidth: unit(5),
+  barHeight: unit(.2),
+  pinSize: unit(2.6),
+  pinElevation: unit(1.7),
+  sideSeparation: unit(1),
+  emptyKnobBorder: unit(.2),
+}
+
 view Slider {
   prop editable:? bool = false
   prop max:? number = 100
   prop min:? number = 0
   prop onChange:? func = function(){}
   prop pinned:? bool = false
+  prop progress:? bool = false
   prop snaps:? bool = false
   prop step:? number = 0.01
   prop value:? number = 0
 
+  let pressed = false
   let inputFocused = false
   let inputValue = null
   let sliderLength = 0
@@ -15,6 +38,37 @@ view Slider {
 
   on.mount(handleResize)
   on.unmount(handleResize)
+
+  let removeMouseDown, removeMouseMove
+  let removeMouseUp = on.mouseup(() => {
+    // removeMouseMove()
+    removeMouseUp()
+  })
+
+  let removeTouchDown, removeTouchMove
+  let removeTouchUp = on.touchup(() => {
+    removeTouchMove()
+    removeTouchEnd()
+  })
+
+  let handleMouseMove = (event) => {
+    move(fns.getMousePosition(event))
+  }
+
+  let handleTouchMove = (event) => {
+    move(fns.getTouchPosition(event))
+  }
+
+  let handleTouchStart = (event) => {
+    if (inputFocused) view.refs.input.blur()
+    start(getTouchPosition(event))
+  }
+
+  let handleMouseDown = (event) => {
+    if (inputFocused) view.refs.input.blur()
+    start(getMousePosition(event))
+    // pause event?
+  }
 
   let handleInputFocus = () => {
     inputFocused = true
@@ -41,49 +95,16 @@ view Slider {
     if (event.keyCode === 40) addToValue(-step)
   }
 
-  let handleMouseDown = (event) => {
-    if (inputFocused) view.refs.input.blur()
-    events.addEventsToDocument(getMouseEventMap())
-    start(events.getMousePosition(event))
-    events.pauseEvent(event)
-  }
-
-  let handleMouseMove = (event) => {
-    events.pauseEvent(event)
-    move(events.getMousePosition(event))
-  }
-
-  let handleMouseUp = () => {
-    end(getMouseEventMap())
-  }
-
-  let handleResize = (event, callback) => {
-    const {left, right} = ReactDOM.findDOMNode(view.refs.progressbar).getBoundingClientRect()
-    const cb = callback || () => {}
-    setState({sliderStart: left, sliderLength: right - left}, cb)
-  }
-
-  let handleSliderBlur = () => {
-    events.removeEventsFromDocument(getKeyboardEvents())
-  }
-
+  let handleSliderBlur
   let handleSliderFocus = () => {
-    events.addEventsToDocument(getKeyboardEvents())
+    handleSliderBlur = handleKeyDown()
   }
 
-  let handleTouchEnd = () => {
-    end(getTouchEventMap())
-  }
-
-  let handleTouchMove = (event) => {
-    move(events.getTouchPosition(event))
-  }
-
-  let handleTouchStart = (event) => {
-    if (inputFocused) view.refs.input.blur()
-    start(events.getTouchPosition(event))
-    events.addEventsToDocument(getTouchEventMap())
-    events.pauseEvent(event)
+  let handleResize = (event, cb) => {
+    const { left, right } = ReactDOM.findDOMNode(view.refs.progressbar).getBoundingClientRect()
+    sliderStart = left
+    sliderLength = right - left
+    cb && cb()
   }
 
   let addToValue = (increment) => {
@@ -92,22 +113,7 @@ view Slider {
     if (value !== value) onChange(value)
   }
 
-  let getKeyboardEvents = () => ({
-    keydown: handleKeyDown
-  })
-
-  let getMouseEventMap = () => ({
-    mousemove: handleMouseMove,
-    mouseup: handleMouseUp
-  })
-
-  let getTouchEventMap = () => ({
-    touchmove: handleTouchMove,
-    touchend: handleTouchEnd
-  })
-
-  let end = (revents) => {
-    events.removeEventsFromDocument(revents)
+  let end = () => {
     pressed = false
   }
 
@@ -138,7 +144,7 @@ view Slider {
   let trimValue = (value) => {
     if (value < min) return min
     if (value > max) return max
-    return utils.round(value, stepDecimals())
+    return fns.round(value, stepDecimals())
   }
 
   let valueForInput = (value) => {
@@ -147,11 +153,11 @@ view Slider {
   }
 
   <slider
+    class={{ editable, pinned, pressed, ring: value === min }}
     onBlur={handleSliderBlur}
     onFocus={handleSliderFocus}
     tabIndex='0'>
     <bar
-      ref='slider'
       onMouseDown={handleMouseDown}
       onTouchStart={handleTouchStart}>
       <knob
@@ -162,35 +168,27 @@ view Slider {
       </knob>
       <progress>
         <ProgressBar
-          ref='progressbar'
-          className={style.innerprogress}
+          // ref='progressbar'
           max={max}
           min={min}
           mode='determinate'
           value={value}
         />
-        <snaps if={snaps} ref='snaps'>
-          <snap repeat={utils.range(0, (max - min) / step)}></snap>
+        //ref='snaps'
+        <snaps if={snaps}>
+          <snap repeat={fns.range(0, (max - min) / step)}></snap>
         </snaps>
       </progress>
     </bar>
     <Input
       if={editable}
-      ref='input'
+      // ref='input'
       onFocus={handleInputFocus}
       onChange={handleInputChange}
       onBlur={handleInputBlur}
       value={inputFocused ? inputValue : valueForInput(value)}
     />
   </slider>
-
-  const knobStyles = prefixer({transform: `translateX(${knobOffset()}px)`})
-  const className = ClassNames(style.root, {
-    [style.editable]: editable,
-    [style.pinned]: pinned,
-    [style.pressed]: pressed,
-    [style.ring]: value === min
-  }, className)
 
   $innerKnob = [
     {
@@ -293,7 +291,7 @@ view Slider {
   }
 
   $knob = {
-    position: relative,
+    position: `relative`,
     top: 0,
     left: 0,
     zIndex: units.zIndexHigher,
@@ -304,6 +302,7 @@ view Slider {
     alignItems: `center`,
     justifyContent: `center`,
     backgroundColor: `transparent`,
+    transform: translateX(knobOffset()),
 
     before: {
       focus: {
@@ -344,7 +343,7 @@ view Slider {
     top: styles.knobSize / 2 - styles.snapSize / 2,
     left: 0,
     display: `flex`,
-    width: calcPercent(100 + styles.snapSize),
+    width: calc(100 + styles.snapSize),
     height: styles.snapSize,
     flexDirection: `row`,
     pointerEvents: `none`,
@@ -393,9 +392,5 @@ view Slider {
     position: `absolute`,
     top: styles.knobSize / 2 - styles.barHeight / 2,
     height: styles.barHeight,
-
-    // [dataRef="value"] {
-    //   transitionDuration: 0s,
-    // }
   }
 }

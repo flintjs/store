@@ -1,4 +1,6 @@
-import { rgba, palette } from './prelude'
+import { fns, palette } from './prelude'
+
+let { rgba } = fns
 let { colors, units, units: { unit }, styles, effects } = palette()
 
 const avatar = {

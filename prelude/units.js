@@ -1,8 +1,10 @@
-import { rgba, cubicBezier } from './index'
+import { rgba, cubicBezier } from './fns'
 
 let unit = n => `${n}rem`
 let vw = x => `${x}vw`
 let vh = x => `${x}vh`
+let percent = x => `${x}%`
+let seconds = x => `${x}sec`
 
 let fontSize = 1.6 * unit
 let ad = .35
@@ -11,6 +13,8 @@ let units = {
   unit,
   vw,
   vh,
+  percent,
+  seconds,
 
   //  Fonts
   preferredFont: `"Roboto", "Helvetica", "Arial", sansSerif`,

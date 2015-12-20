@@ -1,5 +1,6 @@
-import { palette, translateY } from './prelude'
+import { palette, fns } from './prelude'
 
+let { translateY } = fns
 let { units, units: { unit, vw }, colors, effects } = palette()
 
 const modal = {

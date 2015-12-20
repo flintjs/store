@@ -1,4 +1,4 @@
-import { rgb } from './index'
+import { rgb } from './fns'
 
 // Color definitions taken from Material Design Lit
 

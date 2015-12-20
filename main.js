@@ -3,10 +3,24 @@ view Main {
   <ButtonExample />
   <CardExample />
   <CardExample />
+  <SliderExample />
 
   $ = {
     flexFlow: 'row'
   }
+}
+
+view SliderExample {
+  let slider1
+  let slider2 = 5
+  let slider3 = 1
+
+  <p>Normal slider</p>
+  <Slider sync={slider1} />
+  <p>With steps, initial value and editable</p>
+  <Slider min={0} max={10} editable sync={slider2} />
+  <p>Pinned and with snaps</p>
+  <Slider pinned snaps min={0} max={10} step={1} editable sync={slider3} />
 }
 
 view ModalExample {
