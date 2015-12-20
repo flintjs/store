@@ -245,8 +245,8 @@ view Slider {
     },
 
     !pinned && {
-      width: `100%`,
-      height: `100%`,
+      width: percent(100),
+      height: percent(100),
       transform: translateZ(0),
     }
   ]
@@ -385,8 +385,8 @@ view Slider {
     position: `absolute`,
     top: 0,
     left: styles.knobSize / 2,
-    width: `100%`,
-    height: `100%`,
+    width: percent(100),
+    height: percent(100),
   }
 
   $innerProgress = {
