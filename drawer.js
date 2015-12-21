@@ -3,7 +3,7 @@
 const Drawer = (props) => {
   const className = ClassNames([style.root, style[props.type]], {
     [style.active]: props.active
-  }, props.className);
+  }, props.className)
 
   return (
     <Overlay active={props.active} onClick={props.onOverlayClick}>
@@ -13,19 +13,19 @@ const Drawer = (props) => {
         </aside>
       </div>
     </Overlay>
-  );
-};
+  )
+}
 
 Drawer.propTypes = {
   active:? bool
   children:? node
   className:? string
   onOverlayClick:? func
-  type:? oneOf(['left' 'right'])
-};
+  type:? string//oneOf(['left' 'right'])
+}
 
 Drawer.defaultProps = {
   active: false,
   className: '',
   type: 'left'
-};
+}

@@ -25,7 +25,7 @@ let colors, units, styles, effects
     floatingFontSize: unit(2.4),
     floatingHeight: unit(5.6),
     floatingMiniHeight: unit(4),
-    floatingMiniFontSize: this.floatingMiniHeight / 2.25,
+    floatingMiniFontSize: floatingMiniHeight / 2.25,
     height: unit(3.6),
     squaredIconMargin: unit(.6),
     squaredMinWidth: unit(9),

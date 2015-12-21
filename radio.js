@@ -1,13 +1,13 @@
 
 
 const Radio = ({checked, children, onMouseDown}) => {
-  const className = style[checked ? 'radio-checked' : 'radio'];
-  return <div data-role='radio' onMouseDown={onMouseDown} className={className}>{children}</div>;
-};
+  const className = style[checked ? 'radio-checked' : 'radio']
+  return <div data-role='radio' onMouseDown={onMouseDown} className={className}>{children}</div>
+}
   className: style.ripple,
   spread: 2.6,
   centered: true
-})(Radio);
+})(Radio)
 
 
 
@@ -20,46 +20,46 @@ view RadioButton {
   prop onBlur:? func
   prop onChange:? func
   prop onFocus:? func
-  prop value: React.PropTypes.any
+  prop value: any
 
   static defaultProps = {
     checked: false,
     className: '',
     disabled: false
-  };
+  }
 
   handleClick = (event) => {
-    const {checked, disabled, onChange} = this.props;
-    if (event.pageX !== 0 && event.pageY !== 0) this.blur();
-    if (!disabled && !checked && onChange) onChange(event, this);
-  };
+    const {checked, disabled, onChange} = props
+    if (event.pageX !== 0 && event.pageY !== 0) blur()
+    if (!disabled && !checked && onChange) onChange(event, 
+  }
 
   blur () {
-    this.refs.input.blur();
+    view.refs.input.blur()
   }
 
   focus () {
-    this.refs.input.focus();
+    view.refs.input.focus()
   }
 
   render () {
-    const className = ClassNames(style[this.props.disabled ? 'disabled' : 'field'], this.props.className);
-    const { onChange, ...others } = this.props;
+    const className = ClassNames(style[props.disabled ? 'disabled' : 'field'], props.className)
+    const { onChange, ...others } = props
 
     return (
       <label className={className}>
         <input
           {...others}
           className={style.input}
-          onClick={this.handleClick}
+          onClick={handleClick}
           readOnly
           ref='input'
           type='radio'
         />
-        <Radio checked={this.props.checked} disabled={this.props.disabled}/>
-        {this.props.label ? <span className={style.text}>{this.props.label}</span> : null}
+        <Radio checked={props.checked} disabled={props.disabled}/>
+        {props.label ? <span className={style.text}>{props.label}</span> : null}
       </label>
-    );
+    )
   }
 }
 
@@ -71,39 +71,39 @@ view RadioGroup {
   prop disabled:? bool
   prop name:? string
   prop onChange:? func
-  prop value: React.PropTypes.any
+  prop value: any
 
   static defaultProps = {
     className: '',
     disabled: false
-  };
+  }
 
   handleChange = (value) => {
-    if (this.props.onChange) this.props.onChange(value);
-  };
+    if (props.onChange) props.onChange(value)
+  }
 
   renderRadioButtons () {
-    return React.Children.map(this.props.children, (radio, idx) => {
+    return React.Children.map(props.children, (radio, idx) => {
       return (
         <RadioButton
           {...radio.props}
-          checked={radio.props.value === this.props.value}
-          disabled={this.props.disabled || radio.props.disabled}
+          checked={radio.props.value === props.value}
+          disabled={props.disabled || radio.props.disabled}
           key={idx}
           label={radio.props.label}
-          onChange={this.handleChange.bind(this, radio.props.value)}
+          onChange={handleChange.bind( radio.props.value)}
           value={radio.props.value}
         />
-      );
-    });
+      )
+    })
   }
 
   render () {
     return (
-      <div className={this.props.className}>
-        {this.renderRadioButtons()}
+      <div className={props.className}>
+        {renderRadioButtons()}
       </div>
-    );
+    )
   }
 }
 

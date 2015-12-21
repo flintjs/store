@@ -7,39 +7,39 @@ view TabHeader {
   prop hidden:? bool
   prop label:? any.isRequired
   prop onActive:? func
-  prop onClick: React.PropTypes.func
+  prop onClick: func
 
   static defaultProps = {
     active: false,
     className: '',
     disabled: false,
     hidden: false
-  };
+  }
 
   componentDidUpdate (prevProps) {
-    if (!prevProps.active && this.props.active && this.props.onActive) {
-      this.props.onActive();
+    if (!prevProps.active && props.active && props.onActive) {
+      props.onActive()
     }
   }
 
   handleClick = () => {
-    if (!this.props.disabled && this.props.onClick) {
-      this.props.onClick();
+    if (!props.disabled && props.onClick) {
+      props.onClick()
     }
-  };
+  }
 
   render () {
     const className = ClassNames(style.label, {
-      [style.active]: this.props.active,
-      [style.hidden]: this.props.hidden,
-      [style.disabled]: this.props.disabled
-    }, this.props.className);
+      [style.active]: props.active,
+      [style.hidden]: props.hidden,
+      [style.disabled]: props.disabled
+    }, props.className)
 
     return (
-      <label className={className} onClick={this.handleClick}>
-        {this.props.label}
+      <label className={className} onClick={handleClick}>
+        {props.label}
       </label>
-    );
+    )
   }
 }
 
@@ -49,23 +49,23 @@ view TabContent {
   prop active:? bool
   prop children:? node
   prop className:? string
-  prop tabIndex: React.PropTypes.number
+  prop tabIndex: number
 
   static defaultProps = {
     active: false,
     className: ''
-  };
+  }
 
   render () {
-    let className = style.tab;
-    if (this.props.active) className += ` ${style.active}`;
-    if (this.props.className) className += ` ${this.props.className}`;
+    let className = style.tab
+    if (props.active) className += ` ${style.active}`
+    if (props.className) className += ` ${props.className}`
 
     return (
-      <section className={className} tabIndex={this.props.tabIndex}>
-        {this.props.children}
+      <section className={className} tabIndex={props.tabIndex}>
+        {props.children}
       </section>
-    );
+    )
   }
 }
 
@@ -75,94 +75,94 @@ view Tabs {
   prop children:? node
   prop className:? string
   prop index:? number
-  prop onChange: React.PropTypes.func
+  prop onChange: func
 
   static defaultProps = {
     index: 0
-  };
+  }
 
   state = {
     pointer: {}
-  };
+  }
 
   componentDidMount () {
     setTimeout(() => {
-      this.updatePointer(this.props.index);
-    }, 100);
+      updatePointer(props.index)
+    }, 100)
   }
 
   componentWillReceiveProps (nextProps) {
-    this.updatePointer(nextProps.index);
+    updatePointer(nextProps.index)
   }
 
   handleHeaderClick = (idx) => {
-    if (this.props.onChange) this.props.onChange(idx);
-  };
+    if (props.onChange) props.onChange(idx)
+  }
 
   parseChildren () {
-    const headers = [];
-    const contents = [];
+    const headers = []
+    const contents = []
 
-    React.Children.forEach(this.props.children, (item) => {
+    React.Children.forEach(props.children, (item) => {
       if (item.type === Tab) {
-        headers.push(item);
+        headers.push(item)
         if (item.props.children) {
-          contents.push(<TabContent children={item.props.children}/>);
+          contents.push(<TabContent children={item.props.children}/>)
         }
       } else if (item.type === TabContent) {
-        contents.push(item);
+        contents.push(item)
       }
-    });
+    })
 
-    return {headers, contents};
+    return {headers, contents}
   }
 
   updatePointer (idx) {
-    const startPoint = this.refs.tabs.getBoundingClientRect().left;
-    const label = this.refs.navigation.children[idx].getBoundingClientRect();
-    this.setState({
+    const startPoint = view.refs.tabs.getBoundingClientRect().left
+    const label = view.refs.navigation.children[idx].getBoundingClientRect()
+    setState({
       pointer: {
-        top: `${this.refs.navigation.getBoundingClientRect().height}px`,
+        top: `${view.refs.navigation.getBoundingClientRect().height}px`,
         left: `${label.left - startPoint}px`,
         width: `${label.width}px`
       }
-    });
+    })
   }
 
   renderHeaders (headers) {
     return headers.map((item, idx) => {
       return React.cloneElement(item, {
         key: idx,
-        active: this.props.index === idx,
-        onClick: this.handleHeaderClick.bind(this, idx, item)
-      });
-    });
+        active: props.index === idx,
+        onClick: handleHeaderClick.bind( idx, item)
+      })
+    })
   }
 
   renderContents (contents) {
     return contents.map((item, idx) => {
       return React.cloneElement(item, {
         key: idx,
-        active: this.props.index === idx,
+        active: props.index === idx,
         tabIndex: idx
-      });
-    });
+      })
+    })
   }
 
   render () {
-    let className = style.root;
-    const { headers, contents } = this.parseChildren();
-    if (this.props.className) className += ` ${this.props.className}`;
+    let className = style.root
+    const { headers, contents } = parseChildren()
+    if (props.className) className += ` ${props.className}`
 
     return (
       <div ref='tabs' className={className}>
         <nav className={style.navigation} ref='navigation'>
-          {this.renderHeaders(headers)}
+          {renderHeaders(headers)}
         </nav>
-        <span className={style.pointer} style={this.state.pointer} />
-        {this.renderContents(contents)}
+        <span className={style.pointer} style={state.pointer} />
+        {renderContents(contents)}
       </div>
-    );
+    )
   }
 }
 

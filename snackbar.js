@@ -9,21 +9,21 @@ view Snackbar {
   prop onClick:? func
   prop onTimeout:? func
   prop timeout:? number
-  prop type: React.PropTypes.string
+  prop type: string
 
   componentDidUpdate () {
-    if (this.props.active && this.props.timeout) {
+    if (props.active && props.timeout) {
       setTimeout(() => {
-        this.props.onTimeout();
-      }, this.props.timeout);
+        props.onTimeout()
+      }, props.timeout)
     }
   }
 
   render () {
-    const {action, active, icon, label, onClick, type } = this.props;
+    const {action, active, icon, label, onClick, type } = props
     const className = ClassNames([style.root, style[type]], {
       [style.active]: active
-    }, this.props.className);
+    }, props.className)
 
     return (
       <Overlay invisible>
@@ -33,7 +33,7 @@ view Snackbar {
           {action ? <Button className={style.button} label={action} onClick={onClick}/> : null}
         </div>
       </Overlay>
-    );
+    )
   }
 }
 

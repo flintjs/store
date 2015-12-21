@@ -7,8 +7,8 @@ view ProgressBar {
   prop min:? number
   prop mode:? string
   prop multicolor:? bool
-  prop type:? oneOf(['linear', 'circular'])
-  prop value: React.PropTypes.number
+  prop type:? string//oneOf(['linear', 'circular'])
+  prop value: number
 
   static defaultProps = {
     buffer: 0,
@@ -19,66 +19,66 @@ view ProgressBar {
     multicolor: false,
     type: 'linear',
     value: 0
-  };
+  }
 
   calculateRatio (value) {
-    if (value < this.props.min) return 0;
-    if (value > this.props.max) return 1;
-    return (value - this.props.min) / (this.props.max - this.props.min);
+    if (value < props.min) return 0
+    if (value > props.max) return 1
+    return (value - props.min) / (props.max - props.min)
   }
 
   circularStyle () {
-    if (this.props.mode !== 'indeterminate') {
-      return {strokeDasharray: `${2 * Math.PI * 25 * this.calculateRatio(this.props.value)}, 400`};
+    if (props.mode !== 'indeterminate') {
+      return {strokeDasharray: `${2 * Math.PI * 25 * calculateRatio(props.value)}, 400`}
     }
   }
 
   linearStyle () {
-    if (this.props.mode !== 'indeterminate') {
+    if (props.mode !== 'indeterminate') {
       return {
-        buffer: prefixer({transform: `scaleX(${this.calculateRatio(this.props.buffer)})`}),
-        value: prefixer({transform: `scaleX(${this.calculateRatio(this.props.value)})`})
-      };
+        buffer: prefixer({transform: `scaleX(${calculateRatio(props.buffer)})`}),
+        value: prefixer({transform: `scaleX(${calculateRatio(props.value)})`})
+      }
     } else {
-      return {};
+      return {}
     }
   }
 
   renderCircular () {
     return (
       <svg className={style.circle}>
-        <circle className={style.path} style={this.circularStyle()} cx='30' cy='30' r='25' />
+        <circle className={style.path} style={circularStyle()} cx='30' cy='30' r='25' />
       </svg>
-    );
+    )
   }
 
   renderLinear () {
-    const {buffer, value} = this.linearStyle();
+    const {buffer, value} = linearStyle()
     return (
       <div>
         <span ref='buffer' data-ref='buffer' className={style.buffer} style={buffer}></span>
         <span ref='value' data-ref='value' className={style.value} style={value}></span>
       </div>
-    );
+    )
   }
 
   render () {
-    const className = ClassNames(style[this.props.type], {
-      [style[this.props.mode]]: this.props.mode,
-      [style.multicolor]: this.props.multicolor
-    }, this.props.className);
+    const className = ClassNames(style[props.type], {
+      [style[props.mode]]: props.mode,
+      [style.multicolor]: props.multicolor
+    }, props.className)
 
     return (
       <div
         data-react-toolbox='progress-bar'
-        aria-valuenow={this.props.value}
-        aria-valuemin={this.props.min}
-        aria-valuemax={this.props.max}
+        aria-valuenow={props.value}
+        aria-valuemin={props.min}
+        aria-valuemax={props.max}
         className={className}
       >
-        {this.props.type === 'circular' ? this.renderCircular() : this.renderLinear()}
+        {props.type === 'circular' ? renderCircular() : renderLinear()}
       </div>
-    );
+    )
   }
 }
 

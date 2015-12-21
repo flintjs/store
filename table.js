@@ -8,7 +8,7 @@ view Table {
   prop onSelect:? func
   prop selectable:? bool
   prop selected:? array
-  prop source: React.PropTypes.array
+  prop source: array
 
   static defaultProps = {
     className: '',
@@ -16,112 +16,112 @@ view Table {
     selectable: true,
     selected: [],
     source: []
-  };
+  }
 
   handleFullSelect = () => {
-    if (this.props.onSelect) {
-      const {source, selected} = this.props;
-      const newSelected = source.length === selected.length ? [] : source.map((i, idx) => idx);
-      this.props.onSelect(newSelected);
+    if (props.onSelect) {
+      const {source, selected} = props
+      const newSelected = source.length === selected.length ? [] : source.map((i, idx) => idx)
+      props.onSelect(newSelected)
     }
-  };
+  }
 
   handleRowSelect = (index) => {
-    if (this.props.onSelect) {
-      const position = this.props.selected.indexOf(index);
-      const newSelected = [...this.props.selected];
-      if (position !== -1) newSelected.splice(position, 1); else newSelected.push(index);
-      this.props.onSelect(newSelected);
+    if (props.onSelect) {
+      const position = props.selected.indexOf(index)
+      const newSelected = [...props.selected]
+      if (position !== -1) newSelected.splice(position, 1) else newSelected.push(index)
+      props.onSelect(newSelected)
     }
-  };
+  }
 
   handleRowChange = (index, key, value) => {
-    if (this.props.onChange) {
-      this.props.onChange(index, key, value);
+    if (props.onChange) {
+      props.onChange(index, key, value)
     }
-  };
+  }
 
   renderHead () {
-    if (this.props.heading) {
-      const {model, selected, source, selectable} = this.props;
-      const isSelected = selected.length === source.length;
+    if (props.heading) {
+      const {model, selected, source, selectable} = props
+      const isSelected = selected.length === source.length
       return (
         <TableHead
           model={model}
-          onSelect={this.handleFullSelect}
+          onSelect={handleFullSelect}
           selectable={selectable}
           selected={isSelected}
         />
-      );
+      )
     }
   }
 
   renderBody () {
-    const rows = this.props.source.map((data, index) => {
+    const rows = props.source.map((data, index) => {
       return (
         <TableRow
           data={data}
           index={index}
           key={index}
-          model={this.props.model}
-          onChange={this.handleRowChange.bind(this, index)}
-          onSelect={this.handleRowSelect.bind(this, index)}
-          selectable={this.props.selectable}
-          selected={this.props.selected.indexOf(index) !== -1}
+          model={props.model}
+          onChange={handleRowChange.bind( index)}
+          onSelect={handleRowSelect.bind( index)}
+          selectable={props.selectable}
+          selected={props.selected.indexOf(index) !== -1}
         />
-      );
-    });
+      )
+    })
 
-    return <tbody>{rows}</tbody>;
+    return <tbody>{rows}</tbody>
   }
 
   render () {
-    let className = style.root;
-    if (this.props.className) className += ` ${this.props.className}`;
+    let className = style.root
+    if (props.className) className += ` ${props.className}`
     return (
       <table data-react-toolbox='table' className={className}>
-        {this.renderHead()}
-        {this.renderBody()}
+        {renderHead()}
+        {renderBody()}
       </table>
-    );
+    )
   }
 }
 
 
 
 const TableHead = ({model, onSelect, selectable, selected}) => {
-  let selectCell;
+  let selectCell
   const contentCells = Object.keys(model).map((key) => {
-    return <th key={key}>{key}</th>;
-  });
+    return <th key={key}>{key}</th>
+  })
 
   if (selectable) {
     selectCell = (
       <th key='select' className={style.selectable}>
         <Checkbox onChange={onSelect} checked={selected} />
       </th>
-    );
+    )
   }
 
   return (
     <thead>
       <tr>{[selectCell, ...contentCells]}</tr>
     </thead>
-  );
-};
+  )
+}
 
 TableHead.propTypes = {
   className:? string
   model:? object
   onSelect:? func
-  selected: React.PropTypes.bool
-};
+  selected: bool
+}
 
 TableHead.defaultProps = {
   className: '',
   model: {},
   selected: false
-};
+}
 
 
 
@@ -131,64 +131,64 @@ view TableRow {
   prop onChange:? func
   prop onSelect:? func
   prop selectable:? bool
-  prop selected: React.PropTypes.bool
+  prop selected: bool
 
   handleInputChange = (key, type, event) => {
-    const value = type === 'checkbox' ? event.target.checked : event.target.value;
-    this.props.onChange(key, value);
-  };
+    const value = type === 'checkbox' ? event.target.checked : event.target.value
+    props.onChange(key, value)
+  }
 
   renderSelectCell () {
-    if (this.props.selectable) {
+    if (props.selectable) {
       return (
         <td className={style.selectable}>
-          <Checkbox checked={this.props.selected} onChange={this.props.onSelect} />
+          <Checkbox checked={props.selected} onChange={props.onSelect} />
         </td>
-      );
+      )
     }
   }
 
   renderCells () {
-    return Object.keys(this.props.model).map((key) => {
-      return <td key={key}>{this.renderCell(key)}</td>;
-    });
+    return Object.keys(props.model).map((key) => {
+      return <td key={key}>{renderCell(key)}</td>
+    })
   }
 
   renderCell (key) {
-    const value = this.props.data[key];
-    if (this.props.onChange) {
-      return this.renderInput(key, value);
+    const value = props.data[key]
+    if (props.onChange) {
+      return renderInput(key, value)
     } else if (value) {
-      return value.toString();
+      return value.toString()
     }
   }
 
   renderInput (key, value) {
-    const inputType = utils.inputTypeForPrototype(this.props.model[key].type);
-    const inputValue = utils.prepareValueForInput(value, inputType);
-    const checked = inputType === 'checkbox' && value ? true : null;
+    const inputType = utils.inputTypeForPrototype(props.model[key].type)
+    const inputValue = utils.prepareValueForInput(value, inputType)
+    const checked = inputType === 'checkbox' && value ? true : null
     return (
       <input
         checked={checked}
-        onChange={this.handleInputChange.bind(null, key, inputType)}
+        onChange={handleInputChange.bind(null, key, inputType)}
         type={inputType}
         value={inputValue}
       />
-    );
+    )
   }
 
   render () {
     const className = ClassNames(style.row, {
-      [style.editable]: this.props.onChange,
-      [style.selected]: this.props.selected
-    });
+      [style.editable]: props.onChange,
+      [style.selected]: props.selected
+    })
 
     return (
       <tr data-react-toolbox-table='row' className={className}>
-        {this.renderSelectCell()}
-        {this.renderCells()}
+        {renderSelectCell()}
+        {renderCells()}
       </tr>
-    );
+    )
   }
 }
 

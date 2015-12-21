@@ -2,7 +2,7 @@
 const Link = (props) => {
   const className = ClassNames(style.root, {
     [style.active]: props.active
-  }, props.className);
+  }, props.className)
 
   return (
     <a {...props} data-react-toolbox='link'className={className}>
@@ -10,18 +10,18 @@ const Link = (props) => {
       {props.label ? <abbr>{props.label}</abbr> : null}
       {props.count && parseInt(props.count) !== 0 ? <small>{props.count}</small> : null}
     </a>
-  );
-};
+  )
+}
 
 Link.propTypes = {
   active:? bool
   className:? string
   count:? number
   icon:? string
-  label: React.PropTypes.string
-};
+  label: string
+}
 
 Link.defaultProps = {
   active: false,
   className: ''
-};
+}

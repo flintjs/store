@@ -1,69 +1,48 @@
-
-const Check = ({checked, children, onMouseDown}) => {
-  const className = ClassNames(style.check, {
-    [style.checked]: checked
-  });
-
-  return <div data-role='checkbox' onMouseDown={onMouseDown} className={className}>{children}</div>;
-};
-  className: style.ripple,
-  spread: 2.6,
-  centered: true
-})(Check);
-
-
-
 view Checkbox {
-  prop checked:? bool
-  prop className:? string
-  prop disabled:? bool
+  prop checked:? bool = false
+  prop disabled:? bool = false
+
   prop label:? any
   prop name:? string
   prop onBlur:? func
   prop onChange:? func
-  prop onFocus: React.PropTypes.func
+  prop onFocus: func
 
-  static defaultProps = {
-    checked: false,
-    className: '',
-    disabled: false
-  };
-
-  handleToggle = (event) => {
-    if (event.pageX !== 0 && event.pageY !== 0) this.blur();
-    if (!this.props.disabled && this.props.onChange) {
-      this.props.onChange(!this.props.checked, event);
+  let handleToggle = (event) => {
+    if (event.pageX !== 0 && event.pageY !== 0) blur()
+    if (!disabled && onChange) {
+      onChange(!checked, event)
     }
-  };
-
-  blur () {
-    this.refs.input.blur();
   }
 
-  focus () {
-    this.refs.input.focus();
-  }
+  let blur = () => view.refs.input.blur()
+  let focus = () => view.refs.input.focus()
 
-  render () {
-    const { onChange, ...others } = this.props;
-    const className = ClassNames(style.field, {
-      [style.disabled]: this.props.disabled
-    }, this.props.className);
-
-    return (
-      <label data-react-toolbox='checkbox' className={className}>
-        <input
-          {...others}
-          className={style.input}
-          onClick={this.handleToggle}
-          readOnly
-          ref='input'
-          type='checkbox'
-        />
-        <Check checked={this.props.checked} disabled={this.props.disabled}/>
-        {this.props.label ? <span data-role='label' className={style.text}>{this.props.label}</span> : null}
-      </label>
-    );
-  }
+  <label class={{ disabled }}>
+    <input
+      {...view.props} // remove disabled
+      onClick={handleToggle}
+      readOnly
+      ref='input'
+      type='checkbox'
+    />
+    <Check checked={checked} disabled={disabled}/>
+    <text if={label} data-role='label'>{label}</text>
+  </label>
 }
 
+view Check {
+  prop checked:? bool = false
+  prop children:? any
+  prop onMouseDown:? func = Flint.noop
+
+  <check
+    data-role='checkbox'
+    onMouseDown={onMouseDown}>
+    {children}
+  </check>
+
+  // className: style.ripple,
+  // spread: 2.6,
+  // centered: true
+}

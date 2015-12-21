@@ -4,194 +4,194 @@ const POSITION = {
   AUTO: 'auto',
   DOWN: 'down',
   UP: 'up'
-};
+}
 
 view Autocomplete {
   prop className:? string
-  prop direction:? oneOf(['auto', 'up', 'down'])
+  prop direction:? string//oneOf(['auto', 'up', 'down'])
   prop disabled:? bool
   prop error:? string
   prop label:? string
   prop multiple:? bool
   prop onChange:? func
   prop source:? any
-  prop value: React.PropTypes.any
+  prop value: any
 
   static defaultProps = {
     className: '',
     direction: 'auto',
     multiple: true,
     source: {}
-  };
+  }
 
   state = {
-    direction: this.props.direction,
+    direction: props.direction,
     focus: false,
-    query: this.query(this.props.value)
-  };
+    query: query(props.value)
+  }
 
   componentWillReceiveProps (nextProps) {
-    if (!this.props.multiple) {
-      this.setState({query: nextProps.value});
+    if (!props.multiple) {
+      let query = nextProps.value
     }
   }
 
   shouldComponentUpdate (nextProps, nextState) {
-    if (!this.state.focus && nextState.focus && this.props.direction === POSITION.AUTO) {
-      const direction = this.calculateDirection();
-      if (this.state.direction !== direction) {
-        this.setState({ direction });
-        return false;
+    if (!state.focus && nextState.focus && props.direction === POSITION.AUTO) {
+      const direction = calculateDirection()
+      if (state.direction !== direction) {
+        setState({ direction })
+        return false
       }
     }
-    return true;
+    return true
   }
 
   handleChange = (keys, event) => {
-    const key = this.props.multiple ? keys : keys[0];
-    const query = this.query(key);
-    if (this.props.onChange) this.props.onChange(key, event);
-    this.setState({ focus: false, query }, () => { this.refs.input.blur(); });
-  };
+    const key = props.multiple ? keys : keys[0]
+    const query = query(key)
+    if (props.onChange) props.onChange(key, event)
+    setState({ focus: false, query }, () => { view.refs.input.blur() })
+  }
 
   handleQueryBlur = () => {
-    if (this.state.focus) this.setState({focus: false});
-  };
+    if (state.focus) let focus = false
+  }
 
   handleQueryChange = (value) => {
-    this.setState({query: value});
-  };
+    let query = value
+  }
 
   handleQueryFocus = () => {
-    this.refs.suggestions.scrollTop = 0;
-    this.setState({active: '', focus: true});
-  };
+    view.refs.suggestions.scrollTop = 0
+    let active = '', focus: true
+  }
 
   handleQueryKeyUp = (event) => {
-    if (event.which === 13 && this.state.active) this.select(this.state.active, event);
-    if (event.which === 27) this.refs.input.blur();
+    if (event.which === 13 && state.active) select(state.active, event)
+    if (event.which === 27) view.refs.input.blur()
     if ([40, 38].indexOf(event.which) !== -1) {
-      const suggestionsKeys = [...this.suggestions().keys()];
-      let index = suggestionsKeys.indexOf(this.state.active) + (event.which === 40 ? +1 : -1);
-      if (index < 0) index = suggestionsKeys.length - 1;
-      if (index >= suggestionsKeys.length) index = 0;
-      this.setState({active: suggestionsKeys[index]});
+      const suggestionsKeys = [...suggestions().keys()]
+      let index = suggestionsKeys.indexOf(state.active) + (event.which === 40 ? +1 : -1)
+      if (index < 0) index = suggestionsKeys.length - 1
+      if (index >= suggestionsKeys.length) index = 0
+      let active = suggestionsKeys[index]
     }
-  };
+  }
 
   handleSuggestionHover = (key) => {
-    this.setState({active: key});
-  };
+    let active = key
+  }
 
   calculateDirection () {
-    if (this.props.direction === 'auto') {
-      const client = ReactDOM.findDOMNode(this.refs.input).getBoundingClientRect();
-      const screen_height = window.innerHeight || document.documentElement.offsetHeight;
-      const up = client.top > ((screen_height / 2) + client.height);
-      return up ? 'up' : 'down';
+    if (props.direction === 'auto') {
+      const client = ReactDOM.findDOMNode(view.refs.input).getBoundingClientRect()
+      const screen_height = window.innerHeight || document.documentElement.offsetHeight
+      const up = client.top > ((screen_height / 2) + client.height)
+      return up ? 'up' : 'down'
     } else {
-      return this.props.direction;
+      return props.direction
     }
   }
 
   query (key) {
-    return !this.props.multiple && this.props.value ? this.source().get(key) : '';
+    return !props.multiple && props.value ? source().get(key) : ''
   }
 
   suggestions () {
-    const suggestions = new Map();
-    const query = this.state.query.toLowerCase().trim() || '';
-    const values = this.values();
-    for (const [key, value] of this.source()) {
+    const suggestions = new Map()
+    const query = state.query.toLowerCase().trim() || ''
+    const values = values()
+    for (const [key, value] of source()) {
       if (!values.has(key) && value.toLowerCase().trim().startsWith(query)) {
-        suggestions.set(key, value);
+        suggestions.set(key, value)
       }
     }
-    return suggestions;
+    return suggestions
   }
 
   source () {
-    const { source } = this.props;
+    const { source } = props
     if (source.hasOwnProperty('length')) {
-      return new Map(source.map((item) => [item, item]));
+      return new Map(source.map((item) => [item, item]))
     } else {
-      return new Map(Object.keys(source).map((key) => [key, source[key]]));
+      return new Map(Object.keys(source).map((key) => [key, source[key]]))
     }
   }
 
   values () {
-    const valueMap = new Map();
-    const values = this.props.multiple ? this.props.value : [this.props.value];
-    for (const [k, v] of this.source()) {
-      if (values.indexOf(k) !== -1) valueMap.set(k, v);
+    const valueMap = new Map()
+    const values = props.multiple ? props.value : [props.value]
+    for (const [k, v] of source()) {
+      if (values.indexOf(k) !== -1) valueMap.set(k, v)
     }
-    return valueMap;
+    return valueMap
   }
 
   select (key, event) {
-    events.pauseEvent(event);
-    const values = this.values(this.props.value);
-    this.handleChange([key, ...values.keys()], event);
+    events.pauseEvent(event)
+    const values = values(props.value)
+    handleChange([key, ...values.keys()], event)
   }
 
   unselect (key, event) {
-    const values = this.values(this.props.value);
-    values.delete(key);
-    this.handleChange([...values.keys()], event);
+    const values = values(props.value)
+    values.delete(key)
+    handleChange([...values.keys()], event)
   }
 
   renderSelected () {
-    if (this.props.multiple) {
-      const selectedItems = [...this.values()].map(([key, value]) => {
-        return <li key={key} className={style.value} onClick={this.unselect.bind(this, key)}>{value}</li>;
-      });
+    if (props.multiple) {
+      const selectedItems = [...values()].map(([key, value]) => {
+        return <li key={key} className={style.value} onClick={unselect.bind( key)}>{value}</li>
+      })
 
-      return <ul className={style.values}>{selectedItems}</ul>;
+      return <ul className={style.values}>{selectedItems}</ul>
     }
   }
 
   renderSuggestions () {
-    const suggestions = [...this.suggestions()].map(([key, value]) => {
-      const className = ClassNames(style.suggestion, {[style.active]: this.state.active === key});
+    const suggestions = [...suggestions()].map(([key, value]) => {
+      const className = ClassNames(style.suggestion, {[style.active]: state.active === key})
       return (
         <li
           key={key}
           className={className}
-          onMouseDown={this.select.bind(this, key)}
-          onMouseOver={this.handleSuggestionHover.bind(this, key)}
+          onMouseDown={select.bind( key)}
+          onMouseOver={handleSuggestionHover.bind( key)}
         >
           {value}
         </li>
-      );
-    });
+      )
+    })
 
-    const className = ClassNames(style.suggestions, {[style.up]: this.state.direction === 'up'});
-    return <ul ref='suggestions' className={className}>{suggestions}</ul>;
+    const className = ClassNames(style.suggestions, {[style.up]: state.direction === 'up'})
+    return <ul ref='suggestions' className={className}>{suggestions}</ul>
   }
 
   render () {
-    const {error, label, ...other} = this.props;
+    const {error, label, ...other} = props
     const className = ClassNames(style.root, {
-      [style.focus]: this.state.focus
-    }, this.props.className);
+      [style.focus]: state.focus
+    }, props.className)
 
     return (
       <div data-react-toolbox='autocomplete' className={className}>
-        {this.renderSelected()}
+        {renderSelected()}
         <Input
           {...other}
           ref='input'
           className={style.input}
           error={error}
           label={label}
-          onBlur={this.handleQueryBlur}
-          onChange={this.handleQueryChange}
-          onFocus={this.handleQueryFocus}
-          onKeyUp={this.handleQueryKeyUp}
-          value={this.state.query}
+          onBlur={handleQueryBlur}
+          onChange={handleQueryChange}
+          onFocus={handleQueryFocus}
+          onKeyUp={handleQueryKeyUp}
+          value={state.query}
         />
-        {this.renderSuggestions()}
+        {renderSuggestions()}
       </div>
-    );
+    )
   }
 }

@@ -8,51 +8,51 @@ view Switch {
   prop name:? string
   prop onBlur:? func
   prop onChange:? func
-  prop onFocus: React.PropTypes.func
+  prop onFocus: func
 
   static defaultProps = {
     checked: false,
     className: '',
     disabled: false
-  };
+  }
 
   handleToggle = (event) => {
-    if (event.pageX !== 0 && event.pageY !== 0) this.blur();
-    if (!this.props.disabled && this.props.onChange) {
-      this.props.onChange(!this.props.checked, event);
+    if (event.pageX !== 0 && event.pageY !== 0) blur()
+    if (!props.disabled && props.onChange) {
+      props.onChange(!props.checked, event)
     }
-  };
+  }
 
   blur () {
-    this.refs.input.blur();
+    view.refs.input.blur()
   }
 
   focus () {
-    this.refs.input.focus();
+    view.refs.input.focus()
   }
 
   render () {
-    let className = style[this.props.disabled ? 'disabled' : 'field'];
-    const switchClassName = style[this.props.checked ? 'on' : 'off'];
-    const { onChange, ...others } = this.props;
-    if (this.props.className) className += ` ${this.props.className}`;
+    let className = style[props.disabled ? 'disabled' : 'field']
+    const switchClassName = style[props.checked ? 'on' : 'off']
+    const { onChange, ...others } = props
+    if (props.className) className += ` ${props.className}`
 
     return (
       <label data-react-toolbox='checkbox' className={className}>
         <input
           {...others}
-          checked={this.props.checked}
+          checked={props.checked}
           className={style.input}
-          onClick={this.handleToggle}
+          onClick={handleToggle}
           readOnly
           ref='input'
           type='checkbox'
         />
         <span role='switch' className={switchClassName}>
-          <Thumb disabled={this.props.disabled} />
+          <Thumb disabled={props.disabled} />
         </span>
-        {this.props.label ? <span className={style.text}>{this.props.label}</span> : null}
+        {props.label ? <span className={style.text}>{props.label}</span> : null}
       </label>
-    );
+    )
   }
 }

@@ -9,54 +9,54 @@ const Tooltip = (ComposedComponent) => view extends {
   prop onMouseLeave:? func
   prop tooltip:? string
   prop tooltipDelay:? number
-  prop tooltipHideOnClick: React.PropTypes.bool
+  prop tooltipHideOnClick: bool
 
   static defaultProps = {
     className: '',
     tooltipDelay: 0,
     tooltipHideOnClick: true
-  };
+  }
 
   state = {
     active: false
-  };
+  }
 
   handleMouseEnter = () => {
-    if (this.timeout) clearTimeout(this.timeout);
-    this.timeout = setTimeout(() =>this.setState({active: true}), this.props.tooltipDelay);
-    if (this.props.onMouseEnter) this.props.onMouseEnter();
-  };
+    if (timeout) clearTimeout(timeout)
+    timeout = setTimeout(() =>let active = true, props.tooltipDelay)
+    if (props.onMouseEnter) props.onMouseEnter()
+  }
 
   handleMouseLeave = () => {
-    if (this.timeout) clearTimeout(this.timeout);
-    if (this.state.active) this.setState({active: false});
-    if (this.props.onMouseLeave) this.props.onMouseLeave();
-  };
+    if (timeout) clearTimeout(timeout)
+    if (state.active) let active = false
+    if (props.onMouseLeave) props.onMouseLeave()
+  }
 
   handleClick = () => {
-    if (this.timeout) clearTimeout(this.timeout);
-    if (this.props.tooltipHideOnClick) this.setState({active: false});
-    if (this.props.onClick) this.props.onClick();
+    if (timeout) clearTimeout(timeout)
+    if (props.tooltipHideOnClick) let active = false
+    if (props.onClick) props.onClick()
   }
 
   render () {
-    const {children, className, tooltip, tooltipDelay, tooltipHideOnClick, ...other} = this.props;
-    const composedClassName = ClassNames(style.root, className);
+    const {children, className, tooltip, tooltipDelay, tooltipHideOnClick, ...other} = props
+    const composedClassName = ClassNames(style.root, className)
     const tooltipClassName = ClassNames(style.tooltip, {
-      [style.active]: this.state.active
-    });
+      [style.active]: state.active
+    })
 
     return (
       <ComposedComponent
         {...other}
         className={composedClassName}
-        onClick={this.handleClick}
-        onMouseEnter={this.handleMouseEnter}
-        onMouseLeave={this.handleMouseLeave}
+        onClick={handleClick}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         {children ? children : null}
         <span data-react-toolbox="tooltip" className={tooltipClassName}>{tooltip}</span>
       </ComposedComponent>
-    );
+    )
   }
-};
+}

@@ -12,97 +12,97 @@ view Dropdown {
   prop onFocus:? func
   prop source:? array.isRequired
   prop template:? func
-  prop value: React.PropTypes.string
+  prop value: string
 
   static defaultProps = {
     auto: true,
     className: '',
     disabled: false
-  };
+  }
 
   state = {
     active: false,
     up: false
-  };
+  }
 
   handleMouseDown = (event) => {
-    events.pauseEvent(event);
-    const client = event.target.getBoundingClientRect();
-    const screen_height = window.innerHeight || document.documentElement.offsetHeight;
-    const up = this.props.auto ? client.top > ((screen_height / 2) + client.height) : false;
-    if (this.props.onFocus) this.props.onFocus();
-    this.setState({active: true, up});
-  };
+    events.pauseEvent(event)
+    const client = event.target.getBoundingClientRect()
+    const screen_height = window.innerHeight || document.documentElement.offsetHeight
+    const up = props.auto ? client.top > ((screen_height / 2) + client.height) : false
+    if (props.onFocus) props.onFocus()
+    let active = true, up
+  }
 
   handleSelect = (item, event) => {
-    if (this.props.onBlur) this.props.onBlur();
-    if (!this.props.disabled && this.props.onChange) {
-      this.props.onChange(item, event);
-      this.setState({active: false});
+    if (props.onBlur) props.onBlur()
+    if (!props.disabled && props.onChange) {
+      props.onChange(item, event)
+      let active = false
     }
-  };
+  }
 
   getSelectedItem = () => {
-    if (this.props.value) {
-      for (const item of this.props.source) {
-        if (item.value === this.props.value) return item;
+    if (props.value) {
+      for (const item of props.source) {
+        if (item.value === props.value) return item
       }
     } else {
-      return this.props.source[0];
+      return props.source[0]
     }
-  };
+  }
 
   renderTemplateValue (selected) {
     const className = ClassNames(style.field, {
-      [style.errored]: this.props.error,
-      [style.disabled]: this.props.disabled
-    });
+      [style.errored]: props.error,
+      [style.disabled]: props.disabled
+    })
 
     return (
-      <div className={className} onMouseDown={this.handleMouseDown}>
+      <div className={className} onMouseDown={handleMouseDown}>
         <div className={`${style.templateValue} ${style.value}`}>
-          {this.props.template(selected)}
+          {props.template(selected)}
         </div>
-        {this.props.label ? <label className={style.label}>{this.props.label}</label> : null}
-        {this.props.error ? <span className={style.error}>{this.props.error}</span> : null}
+        {props.label ? <label className={style.label}>{props.label}</label> : null}
+        {props.error ? <span className={style.error}>{props.error}</span> : null}
       </div>
-    );
+    )
   }
 
   renderValue (item, idx) {
-    const className = item.value === this.props.value ? style.selected : null;
+    const className = item.value === props.value ? style.selected : null
     return (
-      <li key={idx} className={className} onMouseDown={this.handleSelect.bind(this, item.value)}>
-        {this.props.template ? this.props.template(item) : item.label}
+      <li key={idx} className={className} onMouseDown={handleSelect.bind( item.value)}>
+        {props.template ? props.template(item) : item.label}
       </li>
-    );
+    )
   }
 
   render () {
-    const {template, source, ...others} = this.props;
-    const selected = this.getSelectedItem();
+    const {template, source, ...others} = props
+    const selected = getSelectedItem()
     const className = ClassNames(style.root, {
-      [style.up]: this.state.up,
-      [style.active]: this.state.active,
-      [style.disabled]: this.props.disabled
-    }, this.props.className);
+      [style.up]: state.up,
+      [style.active]: state.active,
+      [style.disabled]: props.disabled
+    }, props.className)
 
     return (
       <div data-react-toolbox='dropdown' className={className}>
         <Input
           {...others}
           className={style.value}
-          onMouseDown={this.handleMouseDown}
+          onMouseDown={handleMouseDown}
           readOnly
           type={template ? 'hidden' : null}
           value={selected.label}
         />
-        {template ? this.renderTemplateValue(selected) : null}
+        {template ? renderTemplateValue(selected) : null}
         <ul className={style.values} ref='values'>
-          {source.map(this.renderValue.bind(this))}
+          {source.map(renderValue.bind()}
         </ul>
       </div>
-    );
+    )
   }
 }
 

@@ -10,7 +10,7 @@ const Component = {
   'slider': Slider,
   'switch': Switch,
   'timepicker': TimePicker
-};
+}
 
 view Form {
   prop attributes:? array
@@ -21,38 +21,38 @@ view Form {
   prop onError:? func
   prop onSubmit:? func
   prop onValid:? func
-  prop storage: React.PropTypes.string
+  prop storage: string
 
   static defaultProps = {
     attributes: [],
     className: ''
-  };
+  }
 
   onSubmit = (event) => {
-    event.preventDefault();
-    if (this.props.onSubmit) this.props.onSubmit(event);
-  };
+    event.preventDefault()
+    if (props.onSubmit) props.onSubmit(event)
+  }
 
   onChange = (field, value, event) => {
-    if (this.props.onChange) this.props.onChange(field, value, event);
-  };
+    if (props.onChange) props.onChange(field, value, event)
+  }
 
   renderFields () {
-    return Object.keys(this.props.model).map((field, index) => {
-      const properties = this.props.model[field];
-      const Field = Component[properties.kind.toLowerCase()];
-      return <Field key={index} {...properties} onChange={this.onChange.bind(this, field)} />;
-    });
+    return Object.keys(props.model).map((field, index) => {
+      const properties = props.model[field]
+      const Field = Component[properties.kind.toLowerCase()]
+      return <Field key={index} {...properties} onChange={onChange.bind( field)} />
+    })
   }
 
   render () {
-    const className = `${style.root} ${this.props.className}`;
+    const className = `${style.root} ${props.className}`
 
     return (
-      <form data-react-toolbox='form' className={className} onSubmit={this.onSubmit}>
-        {this.renderFields()}
-        {this.props.children}
+      <form data-react-toolbox='form' className={className} onSubmit={onSubmit}>
+        {renderFields()}
+        {props.children}
       </form>
-    );
+    )
   }
 }
