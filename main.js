@@ -1,12 +1,57 @@
+let isActive = s =>
+  location.pathname.toLowerCase().substr(1) == s.toLowerCase()
+
 view Main {
-  <ModalExample />
-  <ButtonExample />
-  <CardExample />
-  <CardExample />
-  <SliderExample />
+  let examples = [
+    'Button', 'Modal', 'Slider',
+    'Avatar', 'Card',
+  ]
+
+  let route = x => `/${x.toLowerCase()}`
+
+  <nav>
+    <a repeat={examples}
+       class={{active: isActive(_) }}
+       onClick={Flint.router.link(_.toLowerCase())}>{_}</a>
+  </nav>
+  <examples repeat={examples}>
+    <example route={route(_)}>
+      {view.el([`${_}Example`, 0], null)}
+    </example>
+  </examples>
+  <example route="/">
+    <Card>
+      <Card.Title
+        title="Welcome to Kit"
+        subtitle="A beautiful UI Kit by Flint"
+      />
+    </Card>
+  </example>
 
   $ = {
     flexFlow: 'row'
+  }
+
+
+  $example = {
+    margin: 30,
+  }
+
+  $Card = { width: 300, }
+  $active = {
+    fontWeight: 'bold',
+  }
+
+  $nav = {
+    width: 250,
+    margin: 20,
+  }
+
+  $a = {
+    marginTop: 30,
+    fontSize: 30,
+    textDecoration: 'none',
+    color: '#333',
   }
 }
 
@@ -35,7 +80,7 @@ view ModalExample {
     { label: "Save", onClick: handleToggle }
   ]
 
-  <Button label='Show my dialog' onClick={handleToggle}>
+  <Button onClick={handleToggle}>
     Show Modal
   </Button>
   <Modal
@@ -51,7 +96,7 @@ view CardExample {
   <Card>
     <Card.Title
       title="Hello World"
-      subtitle="Subtitle here"
+      subtitle="Flint is good, Flint is great."
       avatar="https://placeimg.com/80/80/animals"
     />
     <Card.Media
