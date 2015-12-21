@@ -1,24 +1,12 @@
-
-
 view Clock {
-  prop className:? string
-  prop display:? string//oneOf(['hours', 'minutes'])
-  prop format:? string//oneOf(['24hr', 'ampm'])
-  prop onChange:? func
-  prop onHandMoved:? func
-  prop time: object
+  prop display:? string = 'hours'//oneOf(['hours', 'minutes'])
+  prop format:? string = '24hr'//oneOf(['24hr', 'ampm'])
+  prop onChange:? func = Flint.noop
+  prop onHandMoved:? func = Flint.noop
+  prop time: object = new Date()
 
-  static defaultProps = {
-    className: '',
-    display: 'hours',
-    format: '24hr',
-    time: new Date()
-  }
-
-  state = {
-    center: {x: null, y: null},
-    radius: 0
-  }
+  let center = {x: null, y: null}
+  let radius = 0
 
   let componentDidMount = () => {
     window.addEventListener('resize', handleCalculateShape)
@@ -30,14 +18,14 @@ view Clock {
   }
 
   let handleHourChange = (hours) => {
-    if (props.time.getHours() !== hours) {
-      props.onChange(time.setHours(props.time, adaptHourToFormat(hours)))
+    if (time.getHours() !== hours) {
+      onChange(time.setHours(time, adaptHourToFormat(hours)))
     }
   }
 
   let handleMinuteChange = (minutes) => {
-    if (props.time.getMinutes() !== minutes) {
-      props.onChange(time.setMinutes(props.time, minutes))
+    if (time.getMinutes() !== minutes) {
+      onChange(time.setMinutes(time, minutes))
     }
   }
 
@@ -50,8 +38,8 @@ view Clock {
   }
 
   let adaptHourToFormat = (hour) => {
-    if (props.format === 'ampm') {
-      if (time.getTimeMode(props.time) === 'pm') {
+    if (format === 'ampm') {
+      if (time.getTimeMode(time) === 'pm') {
         return hour < 12 ? hour + 12 : hour
       } else {
         return hour === 12 ? 0 : hour
@@ -65,12 +53,12 @@ view Clock {
     return (
       <Hours
         center={state.center}
-        format={props.format}
+        format={format}
         onChange={handleHourChange}
         radius={state.radius}
-        selected={props.time.getHours()}
+        selected={time.getHours()}
         spacing={state.radius * 0.18}
-        onHandMoved={props.onHandMoved}
+        onHandMoved={onHandMoved}
       />
     )
   }
@@ -81,22 +69,22 @@ view Clock {
         center={state.center}
         onChange={handleMinuteChange}
         radius={state.radius}
-        selected={props.time.getMinutes()}
+        selected={time.getMinutes()}
         spacing={state.radius * 0.18}
-        onHandMoved={props.onHandMoved}
+        onHandMoved={onHandMoved}
       />
     )
   }
 
   let render = () => {
-    const animation = props.display === 'hours' ? ZoomOut : ZoomIn
+    const animation = display === 'hours' ? ZoomOut : ZoomIn
     return (
       <div data-react-toolbox='clock' className={style.root}>
         <div ref='placeholder' className={style.placeholder} style={{height: state.radius * 2}}>
           <CssTransitionGroup transitionName={animation} transitionEnterTimeout={500} transitionLeaveTimeout={500}>
-            <div key={props.display} className={style.wrapper} style={{height: state.radius * 2}}>
-              {props.display === 'hours' ? renderHours() : null}
-              {props.display === 'minutes' ? renderMinutes() : null}
+            <div key={display} className={style.wrapper} style={{height: state.radius * 2}}>
+              {display === 'hours' ? renderHours() : null}
+              {display === 'minutes' ? renderMinutes() : null}
             </div>
           </CssTransitionGroup>
         </div>
@@ -124,28 +112,28 @@ view Face {
   let numberStyle = (rad, num) => {
     return {
       position: 'absolute',
-      left: (rad + rad * Math.sin(360 * (Math.PI / 180) / 12 * (num - 1)) + props.spacing),
-      top: (rad - rad * Math.cos(360 * (Math.PI / 180) / 12 * (num - 1)) + props.spacing)
+      left: (rad + rad * Math.sin(360 * (Math.PI / 180) / 12 * (num - 1)) + spacing),
+      top: (rad - rad * Math.cos(360 * (Math.PI / 180) / 12 * (num - 1)) + spacing)
     }
   }
 
   let faceStyle = () => {
     return {
-      height: props.radius * 2,
-      width: props.radius * 2
+      height: radius * 2,
+      width: radius * 2
     }
   }
 
   let renderNumber = (number, idx) => {
     let className = style.number
-    if (number === props.active) className += ` ${style.active}`
+    if (number === active) className += ` ${style.active}`
     return (
       <span
         className={className}
-        style={numberStyle(props.radius - props.spacing, idx + 1)}
+        style={numberStyle(radius - spacing, idx + 1)}
         key={number}
       >
-        {props.twoDigits ? ('0' + number).slice(-2) : number}
+        {twoDigits ? ('0' + number).slice(-2) : number}
       </span>
     )
   }
@@ -155,11 +143,11 @@ view Face {
       <div
         ref='root'
         className={style.face}
-        onTouchStart={props.onTouchStart}
-        onMouseDown={props.onMouseDown}
+        onTouchStart={onTouchStart}
+        onMouseDown={onMouseDown}
         style={faceStyle()}
       >
-        {props.numbers.map(renderNumber.bind()}
+        {numbers.map(renderNumber.bind()}
       </div>
     )
   }
@@ -233,35 +221,35 @@ view Hand {
   }
 
   let getPositionRadius = (position) => {
-    const x = props.origin.x - position.x
-    const y = props.origin.y - position.y
+    const x = origin.x - position.x
+    const y = origin.y - position.y
     return Math.sqrt(x * x + y * y)
   }
 
   let trimAngleToValue = (angle) => {
-    return props.step * Math.round(angle / props.step)
+    return step * Math.round(angle / step)
   }
 
   let positionToAngle = (position) => {
-    return utils.angle360FromPositions(props.origin.x, props.origin.y, position.x, position.y)
+    return utils.angle360FromPositions(origin.x, origin.y, position.x, position.y)
   }
 
   let end = (evts) => {
-    if (props.onMoved) props.onMoved()
+    if (onMoved) onMoved()
     events.removeEventsFromDocument(evts)
   }
 
   let move = (position) => {
     const degrees = trimAngleToValue(positionToAngle(position))
     const radius = getPositionRadius(position)
-    if (props.onMove) props.onMove(degrees === 360 ? 0 : degrees, radius)
+    if (onMove) onMove(degrees === 360 ? 0 : degrees, radius)
   }
 
   let render = () => {
-    const className = `${style.hand} ${props.className}`
+    const className = `${style.hand} ${className}`
     const handStyle = prefixer({
-      height: props.length - state.knobWidth / 2,
-      transform: `rotate(${props.angle}deg)`
+      height: length - state.knobWidth / 2,
+      transform: `rotate(${angle}deg)`
     })
 
     return (
@@ -289,17 +277,17 @@ view Hours {
   prop spacing: number
 
   state = {
-    inner: props.format === '24hr' && props.selected > 0 && props.selected <= 12
+    inner: format === '24hr' && selected > 0 && selected <= 12
   }
 
   let handleHandMove = (degrees, radius) => {
-    const currentInner = radius < props.radius - props.spacing * innerSpacing
-    if (props.format === '24hr' && state.inner !== currentInner) {
+    const currentInner = radius < radius - spacing * innerSpacing
+    if (format === '24hr' && state.inner !== currentInner) {
       setState({inner: currentInner}, () => {
-        props.onChange(valueFromDegrees(degrees))
+        onChange(valueFromDegrees(degrees))
       })
     } else {
-      props.onChange(valueFromDegrees(degrees))
+      onChange(valueFromDegrees(degrees))
     }
   }
 
@@ -312,7 +300,7 @@ view Hours {
   }
 
   let valueFromDegrees = (degrees) => {
-    if (props.format === 'ampm' || props.format === '24hr' && state.inner) {
+    if (format === 'ampm' || format === '24hr' && state.inner) {
       return innerNumbers[degrees / step]
     } else {
       return outerNumbers[degrees / step]
@@ -320,15 +308,15 @@ view Hours {
   }
 
   let renderInnerFace = (innerRadius) => {
-    if (props.format === '24hr') {
+    if (format === '24hr') {
       return (
         <Face
           onTouchStart={handleTouchStart}
           onMouseDown={handleMouseDown}
           numbers={innerNumbers}
-          spacing={props.spacing}
+          spacing={spacing}
           radius={innerRadius}
-          active={props.selected}
+          active={selected}
         />
       )
     }
@@ -381,7 +369,7 @@ view Minutes {
   }
 
   let handleHandMove = (degrees) => {
-    props.onChange(degrees / step)
+    onChange(degrees / step)
   }
 
   let handleMouseDown = (event) => {
@@ -399,17 +387,17 @@ view Minutes {
           onTouchStart={handleTouchStart}
           onMouseDown={handleMouseDown}
           numbers={minutes}
-          spacing={props.spacing}
-          radius={props.radius}
+          spacing={spacing}
+          radius={radius}
           twoDigits
-          active={props.selected}
+          active={selected}
         />
         <Hand ref='hand'
-          className={minutes.indexOf(props.selected) === -1 ? style.small : ''}
-          angle={props.selected * step}
-          length={props.radius - props.spacing}
+          className={minutes.indexOf(selected) === -1 ? style.small : ''}
+          angle={selected * step}
+          length={radius - spacing}
           onMove={handleHandMove}
-          origin={props.center}
+          origin={center}
           step={step}
         />
       </div>
@@ -446,7 +434,7 @@ view TimePicker {
   }
 
   let handleSelect = (value, event) => {
-    if (props.onChange) props.onChange(value, event)
+    if (onChange) onChange(value, event)
     let active = false
   }
 
@@ -457,8 +445,8 @@ view TimePicker {
       <div data-react-toolbox='time-picker'>
         <Input
           className={style.input}
-          error={props.error}
-          label={props.label}
+          error={error}
+          label={label}
           onMouseDown={handleInputMouseDown}
           readOnly
           type='text'
@@ -466,11 +454,11 @@ view TimePicker {
         />
         <TimePickerDialog
           active={state.active}
-          className={props.className}
+          className={className}
           format={format}
           onDismiss={handleDismiss}
           onSelect={handleSelect}
-          value={props.value}
+          value={value}
         />
       </div>
     )
@@ -495,11 +483,11 @@ view TimePickerDialog {
 
   state = {
     display: 'hours',
-    displayTime: props.value
+    displayTime: value
   }
 
   let componentWillUpdate = (nextProps) => {
-    if (!props.active && nextProps.active) {
+    if (!active && nextProps.active) {
       setTimeout(view.refs.clock.handleCalculateShape, 1000)
     }
   }
@@ -509,7 +497,7 @@ view TimePickerDialog {
   }
 
   let handleSelect = (event) => {
-    props.onSelect(state.displayTime, event)
+    onSelect(state.displayTime, event)
   }
 
   let toggleTimeMode = () => {
@@ -525,12 +513,12 @@ view TimePickerDialog {
   }
 
   actions = [
-    { label: 'Cancel', className: style.button, onClick: props.onDismiss },
+    { label: 'Cancel', className: style.button, onClick: onDismiss },
     { label: 'Ok', className: style.button, onClick: handleSelect }
   ]
 
   let formatHours = () => {
-    if (props.format === 'ampm') {
+    if (format === 'ampm') {
       return state.displayTime.getHours() % 12 || 12
     } else {
       return state.displayTime.getHours()
@@ -538,7 +526,7 @@ view TimePickerDialog {
   }
 
   let renderAMPMLabels = () => {
-    if (props.format === 'ampm') {
+    if (format === 'ampm') {
       return (
         <div className={style.ampm}>
           <span className={style.am} onClick={toggleTimeMode}>AM</span>
@@ -551,9 +539,9 @@ view TimePickerDialog {
   let render = () => {
     const display = `display-${state.display}`
     const format = `format-${time.getTimeMode(state.displayTime)}`
-    const className = ClassNames([style.dialog, style[display], style[format]], props.className)
+    const className = ClassNames([style.dialog, style[display], style[format]], className)
     return (
-      <Dialog active={props.active} className={className} actions={actions}>
+      <Dialog active={active} className={className} actions={actions}>
         <header className={style.header}>
           <span className={style.hours} onClick={switchDisplay.bind( 'hours')}>
             {('0' + formatHours()).slice(-2)}
@@ -567,7 +555,7 @@ view TimePickerDialog {
         <Clock
           ref='clock'
           display={state.display}
-          format={props.format}
+          format={format}
           onChange={handleClockChange}
           onHandMoved={handleHandMoved}
           time={state.displayTime}

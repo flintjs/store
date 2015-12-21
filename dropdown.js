@@ -1,108 +1,73 @@
-
-
-
 view Dropdown {
-  prop auto:? bool
+  prop source: array
+
+  prop auto:? bool = true
   prop className:? string
-  prop disabled:? bool
+  prop disabled:? bool = false
   prop error:? string
   prop label:? string
-  prop onBlur:? func
-  prop onChange:? func
-  prop onFocus:? func
-  prop source:? array.isRequired
-  prop template:? func
+  prop onBlur:? func = Flint.noop
+  prop onChange:? func = Flint.noop
+  prop onFocus:? func = Flint.noop
+  prop template:? func = Flint.noop
   prop value: string
 
-  static defaultProps = {
-    auto: true,
-    className: '',
-    disabled: false
-  }
+  let active = false
+  let up = false
+  let selected = null
 
-  state = {
-    active: false,
-    up: false
-  }
+  on.render(() => {
+    selected = getSelectedItem()
+  })
 
-  handleMouseDown = (event) => {
+  let handleMouseDown = (event) => {
     events.pauseEvent(event)
     const client = event.target.getBoundingClientRect()
     const screen_height = window.innerHeight || document.documentElement.offsetHeight
-    const up = props.auto ? client.top > ((screen_height / 2) + client.height) : false
-    if (props.onFocus) props.onFocus()
+    const up = auto ? client.top > ((screen_height / 2) + client.height) : false
+    onFocus()
     let active = true, up
   }
 
-  handleSelect = (item, event) => {
-    if (props.onBlur) props.onBlur()
-    if (!props.disabled && props.onChange) {
-      props.onChange(item, event)
+  let handleSelect = (item, event) => {
+    if (onBlur) onBlur()
+    if (!disabled) {
+      onChange(item, event)
       let active = false
     }
   }
 
-  getSelectedItem = () => {
-    if (props.value) {
-      for (const item of props.source) {
-        if (item.value === props.value) return item
+  let getSelectedItem = () => {
+    if (value) {
+      for (const item of source) {
+        if (item.value === value) return item
       }
     } else {
-      return props.source[0]
+      return source[0]
     }
   }
 
-  renderTemplateValue (selected) {
-    const className = ClassNames(style.field, {
-      [style.errored]: props.error,
-      [style.disabled]: props.disabled
-    })
-
-    return (
-      <div className={className} onMouseDown={handleMouseDown}>
-        <div className={`${style.templateValue} ${style.value}`}>
-          {props.template(selected)}
-        </div>
-        {props.label ? <label className={style.label}>{props.label}</label> : null}
-        {props.error ? <span className={style.error}>{props.error}</span> : null}
+  <dropdown class={{ up, active, disabled }}>
+    <Input
+      {...view.props} // view.props - template , source
+      class="value"
+      onMouseDown={handleMouseDown}
+      readOnly
+      type={template ? 'hidden' : null}
+      value={selected.label}
+    />
+    <div if={template} class={{ errored: error, disabled }} onMouseDown={handleMouseDown}>
+      <div className={`${style.templateValue} ${style.value}`}>
+        {template(selected)}
       </div>
-    )
-  }
-
-  renderValue (item, idx) {
-    const className = item.value === props.value ? style.selected : null
-    return (
-      <li key={idx} className={className} onMouseDown={handleSelect.bind( item.value)}>
-        {props.template ? props.template(item) : item.label}
+      <label if={label}>{label}</label>
+      <error if={error}>{error}</error>
+    </div>
+    <ul class="values" ref='values'>
+      <li repeat={source} key={idx} class={item.value === value ? style.selected : null} onMouseDown={handleSelect.bind(_.value)}>
+        {template ? template(_) : _.label}
       </li>
-    )
-  }
-
-  render () {
-    const {template, source, ...others} = props
-    const selected = getSelectedItem()
-    const className = ClassNames(style.root, {
-      [style.up]: state.up,
-      [style.active]: state.active,
-      [style.disabled]: props.disabled
-    }, props.className)
-
-    return (
-      <div data-react-toolbox='dropdown' className={className}>
-        <Input
-          {...others}
-          className={style.value}
-          onMouseDown={handleMouseDown}
-          readOnly
-          type={template ? 'hidden' : null}
-          value={selected.label}
-        />
-        {template ? renderTemplateValue(selected) : null}
-        <ul className={style.values} ref='values'>
-          {source.map(renderValue.bind()}
-        </ul>
-      </div>
-    )
-  }
+    </ul>
+  </dropdown>
 }
 
