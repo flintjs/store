@@ -79,16 +79,37 @@ view ModalExample {
     { label: "Cancel", onClick: handleToggle },
     { label: "Save", onClick: handleToggle }
   ]
-
   <Button onClick={handleToggle}>
     Show Modal
   </Button>
+  <ModalExample.DeleteFile />
+
   <Modal
     actions={actions}
     active={active}
     title='My awesome dialog'
     onOverlayClick={handleToggle}>
     <p>Here you can add arbitrary content. Components like Pickers are using dialogs now.</p>
+  </Modal>
+}
+
+view ModalExample.DeleteFile {
+  let text = "Delete file?"
+  let active = false
+
+  function commit() {
+    text = "Deleted."
+    active = false
+    on.delay(1000, () => text = "Delete File?")
+  }
+  <Button onClick={() => active = true}>{text}</Button>
+  <h3>(file delete modal active {active.toString()})</h3>
+  <Modal active={active}
+         actions={[
+           { label: 'Yes', onClick: commit },
+           { label: 'No', onClick: () => active = false },
+         ]}>
+    <p>Are you sure?</p>
   </Modal>
 }
 
