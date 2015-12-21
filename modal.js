@@ -31,7 +31,7 @@ view Modal {
       <nav role="navigation">
         <Button
           repeat={actions}
-          action={_}
+          {..._}
         />
       </nav>
     </window>
