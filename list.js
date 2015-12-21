@@ -1,15 +1,8 @@
 
 view List {
   prop children:? node
-  prop className:? string
-  prop ripple:? bool
-  prop selectable: bool
-
-  static defaultProps = {
-    className: '',
-    ripple: false,
-    selectable: false
-  }
+  prop ripple:? bool = false
+  prop selectable: bool = false
 
   renderItems () {
     return React.Children.map(props.children, (item) => {
@@ -100,49 +93,43 @@ view ListItem {
   prop caption:? string.isRequired
   prop children:? any
   prop className:? string
-  prop disabled:? bool
+  prop disabled:? bool = false
   prop leftIcon:? string
   prop legend:? string
   prop onClick:? func
   prop rightIcon:? string
-  prop ripple:? bool
-  prop selectable:? bool
+  prop ripple:? bool = false
+  prop selectable:? bool = false
   prop to: string
 
-  static defaultProps = {
-    disabled: false,
-    ripple: false,
-    selectable: false
-  }
-
-  handleClick = (event) => {
-    if (props.onClick && !props.disabled) {
-      props.onClick(event)
+  let handleClick = (event) => {
+    if (onClick && !disabled) {
+      onClick(event)
     }
   }
 
   renderContent () {
     const className = ClassNames(style.item, {
-      [style.withLegend]: props.legend,
-      [style.disabled]: props.disabled,
-      [style.selectable]: props.selectable
-    }, props.className)
+      [style.withLegend]: legend,
+      [style.disabled]: disabled,
+      [style.selectable]: selectable
+    }, className)
 
     return (
       <span className={className}>
-        {props.leftIcon ? <FontIcon className={`${style.icon} ${style.left}`} value={props.leftIcon} /> : null}
-        {props.avatar ? <img className={style.avatar} src={props.avatar} /> : null}
-        <ListItemContent caption={props.caption} legend={props.legend} />
-        {props.rightIcon ? <FontIcon className={`${style.icon} ${style.right}`} value={props.rightIcon} /> : null}
+        {leftIcon ? <FontIcon className={`${style.icon} ${style.left}`} value={leftIcon} /> : null}
+        {avatar ? <img className={style.avatar} src={avatar} /> : null}
+        <ListItemContent caption={caption} legend={legend} />
+        {rightIcon ? <FontIcon className={`${style.icon} ${style.right}`} value={rightIcon} /> : null}
       </span>
     )
   }
 
   render () {
     return (
-      <li className={style.listItem} onClick={handleClick} onMouseDown={props.onMouseDown}>
-        {props.to ? <a href={props.to}>{renderContent()}</a> : renderContent()}
-        {props.children}
+      <li className={style.listItem} onClick={handleClick} onMouseDown={onMouseDown}>
+        {to ? <a href={to}>{renderContent()}</a> : renderContent()}
+        {children}
       </li>
     )
   }

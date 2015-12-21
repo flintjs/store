@@ -1,4 +1,3 @@
-
 const Component = {
   'autocomplete': Autocomplete,
   'button': Button,
@@ -13,46 +12,30 @@ const Component = {
 }
 
 view Form {
-  prop attributes:? array
+  prop attributes:? array = []
   prop children:? node
-  prop className:? string
   prop model:? object
-  prop onChange:? func
-  prop onError:? func
-  prop onSubmit:? func
-  prop onValid:? func
+  prop onChange:? func = Flint.noop
+  prop onError:? func = Flint.noop
+  prop onSubmit:? func = Flint.noop
+  prop onValid:? func = Flint.noop
   prop storage: string
 
-  static defaultProps = {
-    attributes: [],
-    className: ''
-  }
-
-  onSubmit = (event) => {
+  let _onSubmit = (event) => {
     event.preventDefault()
-    if (props.onSubmit) props.onSubmit(event)
+    onSubmit(event)
   }
 
-  onChange = (field, value, event) => {
-    if (props.onChange) props.onChange(field, value, event)
-  }
-
-  renderFields () {
-    return Object.keys(props.model).map((field, index) => {
-      const properties = props.model[field]
+  let renderFields = () => {
+    return Object.keys(model).map((field, index) => {
+      const properties = model[field]
       const Field = Component[properties.kind.toLowerCase()]
-      return <Field key={index} {...properties} onChange={onChange.bind( field)} />
+      return <Field key={index} {...properties} onChange={onChange.bind(field)} />
     })
   }
 
-  render () {
-    const className = `${style.root} ${props.className}`
-
-    return (
-      <form data-react-toolbox='form' className={className} onSubmit={onSubmit}>
-        {renderFields()}
-        {props.children}
-      </form>
-    )
-  }
+  <form onSubmit={_onSubmit}>
+    {renderFields()}
+    {children}
+  </form>
 }
