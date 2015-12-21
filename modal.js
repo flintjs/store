@@ -13,8 +13,8 @@ const modal = {
 }
 
 view Modal {
-  prop actions:? array = []
   prop active:? bool = false
+  prop actions:? array = []
   prop children:? any
   prop onOverlayClick:? func
   prop title:? string
@@ -31,7 +31,7 @@ view Modal {
       <nav role="navigation">
         <Button
           repeat={actions}
-          action={_}
+          {..._}
         />
       </nav>
     </window>
