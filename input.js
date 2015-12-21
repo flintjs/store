@@ -64,11 +64,154 @@ view Input {
       ref="input"
       role="input"
     />
-    <FontIcon if={icon} value={icon} />
+    <FontIcon class="icon" if={icon} value={icon} />
     <bar />
     <label if={labelText} class={{ fixed: !floating }}>{labelText}</label>
     <error if={error}>{error}</error>
     <counter if={maxLength}>{length}/{maxLength}</counter>
     {children}
   </input-div>
+
+
+  $ = {
+    position: `relative`,
+    padding: [styles.padding, 0],
+    marginLeft: withIcon ? styles.iconSize : 0
+  }
+
+  $errored = {
+    paddingBottom: 0
+  }
+
+  $icon = {
+    position: `absolute`,
+    top: styles.iconOffset,
+    left: Styles.iconSize,
+    display: `block`,
+    width: styles.iconSize,
+    height: styles.iconSize,
+    fontSize: styles.iconFontSize,
+    lineHeight: styles.iconSize,
+    color: focus ? styles.textHighlightColor : styles.textLabelColor,
+    textAlign: `center`,
+    transition: `color ${units.animationDuration} ${units.animationCurveDefault}`,
+  }
+
+  $input = [
+    {
+      display: `block`,
+      width: percent(100),
+      padding: [styles.fieldPadding, 0],
+      fontSize: styles.fieldFontSize,
+      color: colors.text,
+      backgroundColor: styles.textBackgroundColor,
+      border: 0,
+      borderBottom: [1, `solid`, styles.textBottomBorderColor],
+      outline: `none`,
+    },
+
+    disabled && {
+      color: styles.textDisabledTextColor,
+      borderBottomStyle: dotted,
+    },
+
+    errored && {
+      marginTop: 1,
+      borderBottomColor: styles.textErrorColor,
+    }
+  ]
+
+  $label = [
+    {
+      position: `absolute`,
+      top: styles.padding + (1.5 * styles.fieldPadding),
+      left: 0,
+      fontSize: styles.fieldFontSize,
+      lineHeight: styles.fieldFontSize,
+      color: styles.textLabelColor,
+      pointerEvents: `none`,
+      transitionTimingFunction: units.animationCurveDefault,
+      transitionDuration: units.animationDuration,
+      transitionProperty: `top, fontSize, color`,
+    },
+
+    fixed && filled && {
+      display: none,
+    },
+
+    focus && !fixed && {
+      color: styles.textErrorColor,
+    },
+
+    focus && !fixed && {
+      color: styles.textHighlightColor,
+    },
+
+    errored && {
+      color: styles.textErrorColor,
+    },
+
+    !fixed && (focus || filled || type == 'date' || type == 'time') && {
+      top: styles.focusLabelTop,
+      fontSize: styles.labelFontSize,
+    }
+  ]
+
+  const aroundBar = {
+    // @include materialAnimationDefault(),
+    position: `absolute`,
+    bottom: 0,
+    width: 0,
+    height: 2,
+    content: "",
+    backgroundColor: styles.textHighlightColor,
+    transitionProperty: `width, backgroundColor`,
+  }
+
+  $bar = [
+    {
+      position: `relative`,
+      display: `block`,
+      width: percent(100),
+
+      before: [aroundBar, { left: percent(50) }],
+      after: [aroundBar, { right: percent(50) }],
+    },
+
+    focus && {
+      before: { width: percent(50) },
+      after: { width: percent(50) },
+    },
+
+    focus && !fixed && {
+      before: { backgroundColor: styles.textErrorColor },
+      after: { backgroundColor: styles.textErrorColor },
+    },
+  ]
+
+  const subStyles = {
+    marginBottom:  styles.underlineHeight,
+    fontSize: styles.labelFontSize,
+    lineHeight: styles.underlineHeight,
+    color: styles.textErrorColor,
+  }
+
+  $error = [subStyles]
+
+  $counter = [
+    subStyles,
+    {
+      position: `absolute`,
+      right: 0,
+      color: styles.textLabelColor,
+    },
+
+    errored && {
+      color: styles.textErrorColor,
+    }
+  ]
+
+  $hidden = {
+    display: none,
+  }
 }
