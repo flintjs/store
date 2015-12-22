@@ -8,6 +8,8 @@ let colors, units, styles, effects
   ({ colors, units, effects } = palette())
   let { unit } = units
 
+  let floatingMiniHeight = unit(4)
+
   // set style
   styles = {
     neutralColor: colors.white,
@@ -24,7 +26,7 @@ let colors, units, styles, effects
     borderRadius: unit(0.2),
     floatingFontSize: unit(2.4),
     floatingHeight: unit(5.6),
-    floatingMiniHeight: unit(4),
+    floatingMiniHeight,
     floatingMiniFontSize: floatingMiniHeight / 2.25,
     height: unit(3.6),
     squaredIconMargin: unit(.6),

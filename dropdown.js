@@ -1,3 +1,9 @@
+import { fns, palette } from './prelude'
+
+let { calc, rgb, rgba, translateX, translateY, translateZ } = fns
+let { colors, units, effects } = palette()
+let { vh, unit, percent, seconds } = units
+
 const styles = {
   offset: unit(1.6),
   colorWhite: colors.white,

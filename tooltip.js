@@ -1,3 +1,9 @@
+// import { fns, palette } from './prelude'
+//
+// let { calc, rgb, rgba, translateX, translateY, translateZ } = fns
+// let { colors, units, effects } = palette()
+// let { unit, percent, seconds } = units
+
 // const styles = {
 //   tooltipBackground: rgba(97,97,97,.9),
 //   tooltipMargin: 0.5 * $unit,

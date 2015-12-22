@@ -1,14 +1,14 @@
 const Component = {
-  'autocomplete': Autocomplete,
-  'button': Button,
-  'checkbox': Checkbox,
-  'datepicker': DatePicker,
-  'dropdown': Dropdown,
-  'input': Input,
-  'radioGroup': RadioGroup,
-  'slider': Slider,
-  'switch': Switch,
-  'timepicker': TimePicker
+  'autocomplete': 'Autocomplete',
+  'button': 'Button',
+  'checkbox': 'Checkbox',
+  'datepicker': 'DatePicker',
+  'dropdown': 'Dropdown',
+  'input': 'Input',
+  'radioGroup': 'RadioGroup',
+  'slider': 'Slider',
+  'switch': 'Switch',
+  'timepicker': 'TimePicker',
 }
 
 view Form {

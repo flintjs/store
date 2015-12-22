@@ -1,7 +1,17 @@
+import { fns, palette } from './prelude'
+
+let { calc, rgb, rgba, translateX, translateY, translateZ } = fns
+let { colors, units, effects } = palette()
+let { unit, percent, seconds } = units
+
+let horizontalPadding = unit(1.6)
+let contentLeftSpacing = unit(7.2)
+let itemIconSize = unit(1.8)
+
 const styles = {
   verticalPadding: unit(.8),
-  horizontalPadding: unit(1.6),
-  contentLeftSpacing: unit(7.2),
+  horizontalPadding,
+  contentLeftSpacing,
   subheaderHeight: unit(4.8),
   subheaderFontSize: unit(1.4),
   subheaderFontWeight: 500,
@@ -12,8 +22,8 @@ const styles = {
   itemHoverColor: colors.grey200,
   itemLegendMarginTop: unit(.3),
   itemIconFontSize: unit(2.4),
-  itemIconSize: unit(1.8),
-  itemRightIconMargin: listContentLeftSpacing - listHorizontalPadding - listItemIconSize,
+  itemIconSize,
+  itemRightIconMargin: contentLeftSpacing - horizontalPadding - itemIconSize,
   itemAvatarHeight: unit(4),
   itemAvatarMargin: unit(.8),
 }

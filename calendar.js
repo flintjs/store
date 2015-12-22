@@ -1,3 +1,9 @@
+import { fns, palette } from './prelude'
+
+let { calc, rgb, rgba, translateX, translateY, translateZ } = fns
+let { colors, units, effects } = palette()
+let { unit, percent, seconds } = units
+
 let datepickerPrimary  = colors.primary
 let datepickerPrimaryContrast = colors.primaryContrast
 let datepickerPrimaryDark = colors.primaryDark
@@ -18,11 +24,11 @@ const styles = {
   datepickerDialogWidth: unit(33),
   datepickerInactiveOpacity: .6,
   datepickerWeekdayLineHeight: unit(2),
-  datepickerWeekdayFontSize: fontSizeSmall,
-  datepickerMonthFontSize: fontSizeBig,
+  datepickerWeekdayFontSize: units.fontSizeSmall,
+  datepickerMonthFontSize: units.fontSizeBig,
   datepickerDayFontSize: unit(5),
   datepickerDayLineHeight: unit(4),
-  datepickerYearFontSize: fontSizeSmall,
+  datepickerYearFontSize: units.fontSizeSmall,
 
   primary,
   primaryContrast,

@@ -3,6 +3,7 @@ import { rgba, cubicBezier } from './fns'
 let unit = n => `${n}rem`
 let vw = x => `${x}vw`
 let vh = x => `${x}vh`
+let ms = x => `${x}ms`
 let percent = x => `${x}%`
 let seconds = x => `${x}sec`
 
@@ -13,6 +14,7 @@ let units = {
   unit,
   vw,
   vh,
+  ms,
   percent,
   seconds,
 

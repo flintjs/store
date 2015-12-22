@@ -1,6 +1,12 @@
+import { fns, palette } from './prelude'
+
+let { calc, rgb, rgba, translateX, translateY, translateZ } = fns
+let { colors, units, effects } = palette()
+let { vh, unit, percent, seconds } = units
+
 const styles = {
-  navigationSpace: $unit,
-  navigationColor: colorBlack,
+  space: unit(1),
+  color: colors.black,
 }
 
 view Navigation {

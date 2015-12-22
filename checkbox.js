@@ -1,3 +1,9 @@
+import { fns, palette } from './prelude'
+
+let { calc, rgb, rgba, translateX, translateY, translateZ } = fns
+let { colors, units, effects } = palette()
+let { ms, unit, percent, seconds } = units
+
 let size = unit(1.8)
 
 const styles = {
@@ -5,12 +11,12 @@ const styles = {
   disabledColor: rgba(colors.black, 0.26),
   fieldMarginBottom: unit(1.5),
   focusCheckedColor: rgba(colors.primary, 0.26),
-  rippleDuration: milliseconds(650),
+  rippleDuration: ms(650),
   size,
   focusColor: rgba(colors.black, 0.1),
   focusSize: size * 2.3,
   textColor: colors.black,
-  textFontSize: fontSizeSmall,
+  textFontSize: units.fontSizeSmall,
   totalHeight: unit(1.8),
   transitionDuration: seconds(.2),
 }
@@ -155,7 +161,7 @@ view Check {
       borderBottomwidth: 2,
       borderLeft: 0,
       transform: rotate(degrees(45)),
-      animation: `checkmark-expand milliseconds(140) ease-out forwards`,
+      animation: `checkmark-expand ${ms(140)} ease-out forwards`,
     }
   }
 

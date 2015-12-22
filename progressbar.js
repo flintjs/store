@@ -1,9 +1,17 @@
+import { fns, palette } from './prelude'
+
+let { calc, rgb, rgba, translateX, translateY, translateZ } = fns
+let { colors, units, effects } = palette()
+let { unit, percent, seconds } = units
+
+let circleRadius = 25
+
 const styles = {
   progressHeight: unit(.4),
-  progressMainColor: colorPrimary,
-  progressSecondaryColor: rgba(colorPrimaryContrast, 0.7),
+  progressMainColor: colors.primary,
+  progressSecondaryColor: rgba(colors.primaryContrast, 0.7),
   circleWrapperWidth: 60,
-  circleRadius: 25,
+  circleRadius,
   scaleRatio: circleRadius / 20,
 }
 

@@ -1,3 +1,9 @@
+import { fns, palette } from './prelude'
+
+let { calc, rgb, rgba, translateX, translateY, translateZ } = fns
+let { colors, units, effects } = palette()
+let { unit, percent, seconds } = units
+
 const styles = {
   tableRowHeight: 48,
   tableRowDivider: [`solid`, 1, rgba(0,0,0,.12)],

@@ -1,6 +1,15 @@
+import { fns, palette } from './prelude'
+
+let { calc, rgb, rgba, translateX, translateY, translateZ } = fns
+let { colors, units, effects } = palette()
+let { unit, percent, seconds } = units
+
 let timepickerPrimary = colors.primary
 let timepickerPrimaryContrast = colors.primaryContrast
 let timepickerPrimaryDark = colors.primaryDark
+let clockPrimary = colors.primary
+let clockPrimaryContrast = colors.primaryContrast
+let clockPrimaryDark = colors.primaryDark
 
 const styles = {
   timepickerHeaderFontSize: unit(5.2),
@@ -15,9 +24,9 @@ const styles = {
   timepickerDialogWidth: unit(30),
 
   clockPadding: [unit(1.5), unit(2)],
-  clockPrimary: colors.primary,
-  clockPrimaryContrast: colors.primaryContrast,
-  clockPrimaryDark: colors.primaryDark,
+  clockPrimary,
+  clockPrimaryContrast,
+  clockPrimaryDark,
   clockPrimaryColor: clockPrimary,
   clockPrimaryHoverColor: rgba(clockPrimary, 0.20),
   clockPrimaryContrastColor: clockPrimaryContrast,
@@ -232,7 +241,7 @@ view Hand {
   }
 
   let positionToAngle = (position) => {
-    return utils.angle360FromPositions(origin.x, origin.y, position.x, position.y)
+    return fns.angle360FromPositions(origin.x, origin.y, position.x, position.y)
   }
 
   let end = (evts) => {
@@ -264,8 +273,8 @@ view Hand {
 
 
 
-const outerNumbers = [0, ...utils.range(13, 24)]
-const innerNumbers = [12, ...utils.range(1, 12)]
+const outerNumbers = [0, ...fns.range(13, 24)]
+const innerNumbers = [12, ...fns.range(1, 12)]
 const innerSpacing = 1.7
 // const step = 360 / 12
 
@@ -355,7 +364,7 @@ view Hours {
 
 
 
-const minutes = utils.range(0, 60, 5)
+const minutes = fns.range(0, 60, 5)
 const step = 360 / 60
 
 view Minutes {

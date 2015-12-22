@@ -1,3 +1,9 @@
+import { fns, palette } from './prelude'
+
+let { calc, rgb, rgba, translateX, translateY, translateZ } = fns
+let { colors, units, effects } = palette()
+let { unit, percent, seconds } = units
+
 const styles = {
   backgroundColor: colors.grey50,
   borderColor: colors.grey300,

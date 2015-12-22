@@ -1,3 +1,11 @@
+import { fns, palette } from './prelude'
+
+let { calc, rgb, rgba, translateX, translateY, translateZ } = fns
+let { colors, units, effects } = palette()
+let { ms, unit, percent, seconds } = units
+
+let itemIconFontSize = unit(2.4)
+
 const styles = {
   expandDuration: seconds(.3),
   fadeDuration: seconds(.2),
@@ -6,14 +14,14 @@ const styles = {
   padding: [unit(.8), 0],
   outlineBorderRadius: unit(.2),
   itemHoverBackground: colors.grey200,
-  itemIconFontSize: unit(2.4),
-  itemIconSize: 1.6 * menuItemIconFontSize,
+  itemIconFontSize,
+  itemIconSize: 1.6 * itemIconFontSize,
   itemHeight: unit(4.8),
   itemPadding: unit(1.6),
   itemFontSize: unit(1.6),
   dividerHeight: unit(4.8 / 4),
   iconSize: unit(2.3),
-  iconRippleDuration: milliseconds(650),
+  iconRippleDuration: ms(650),
 }
 
 const POSITION = {

@@ -6,24 +6,27 @@ let { unit, percent, seconds } = units
 
 const fieldPadding = unit(.8)
 const fieldFontSize = unit(1.6)
+let textBottomBorderColor = rgba(colors.black, 0.12)
+let textLabelColor = rgba(colors.black, 0.26)
+let iconFontSize = unit(2.4)
 
 const styles = {
   fieldPadding,
   fieldFontSize,
   padding:  unit(2),
-  fieldHeight: input.fieldPadding * 2 + input.fieldFontSize * 1.4,
+  fieldHeight: fieldPadding * 2 + fieldFontSize * 1.4,
   labelFontSize: unit(1.2),
   focusLabelTop: unit(.6),
   textBackgroundColor: `transparent`,
-  textLabelColor: rgba(colors.black, 0.26),
-  textBottomBorderColor: rgba(colors.black, 0.12),
+  textLabelColor,
+  textBottomBorderColor,
   textHighlightColor: colors.primary,
-  textDisabledColor: input.textBottomBorderColor,
-  textDisabledTextColor: input.textLabelColor,
+  textDisabledColor: textBottomBorderColor,
+  textDisabledTextColor: textLabelColor,
   textErrorColor: rgb(222, 50, 38),
   underlineHeight: unit( 2),
-  iconFontSize: unit(2.4),
-  iconSize: 2 * input.iconFontSize,
+  iconFontSize,
+  iconSize: 2 * iconFontSize,
   iconOffset: unit(1.6),
   chevronOffset: unit(.8),
 }
