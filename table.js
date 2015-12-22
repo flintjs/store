@@ -1,30 +1,21 @@
 const styles = {
   tableRowHeight: 48,
-  tableRowDivider: solid 1 rgba(0,0,0,.12),
-  tableRowOffset: 1.8)unit,
-  tableRowHighlight: #eee,
-  tableTextColor: #757575,
+  tableRowDivider: [`solid`, 1, rgba(0,0,0,.12)],
+  tableRowOffset: unit(1.8),
+  tableRowHighlight: `#eee`,
+  tableTextColor: `#757575`,
 }
 
 view Table {
-  prop className:? string
-  prop heading:? bool
+  prop heading:? bool = true
   prop model:? object
-  prop onChange:? func
-  prop onSelect:? func
-  prop selectable:? bool
-  prop selected:? array
-  prop source: array
+  prop onChange:? func = Flint.noop
+  prop onSelect:? func = Flint.noop
+  prop selectable:? bool = true
+  prop selected:? array = []
+  prop source: array = []
 
-  static defaultProps = {
-    className: '',
-    heading: true,
-    selectable: true,
-    selected: [],
-    source: []
-  }
-
-  handleFullSelect = () => {
+  let handleFullSelect = () => {
     if (props.onSelect) {
       const {source, selected} = props
       const newSelected = source.length === selected.length ? [] : source.map((i, idx) => idx)
@@ -32,22 +23,22 @@ view Table {
     }
   }
 
-  handleRowSelect = (index) => {
+  let handleRowSelect = (index) => {
     if (props.onSelect) {
       const position = props.selected.indexOf(index)
       const newSelected = [...props.selected]
-      if (position !== -1) newSelected.splice(position, 1) else newSelected.push(index)
+      // if (position !== -1) newSelected.splice(position, 1) else newSelected.push(index)
       props.onSelect(newSelected)
     }
   }
 
-  handleRowChange = (index, key, value) => {
+  let handleRowChange = (index, key, value) => {
     if (props.onChange) {
       props.onChange(index, key, value)
     }
   }
 
-  renderHead () {
+  let renderHead = () => {
     if (props.heading) {
       const {model, selected, source, selectable} = props
       const isSelected = selected.length === source.length
@@ -62,7 +53,7 @@ view Table {
     }
   }
 
-  renderBody () {
+  let renderBody = () => {
     const rows = props.source.map((data, index) => {
       return (
         <TableRow
@@ -81,7 +72,7 @@ view Table {
     return <tbody>{rows}</tbody>
   }
 
-  render () {
+  let render = () => {
     let className = style.root
     if (props.className) className += ` ${props.className}`
     return (
@@ -115,19 +106,19 @@ const TableHead = ({model, onSelect, selectable, selected}) => {
     </thead>
   )
 }
-
-TableHead.propTypes = {
-  className:? string
-  model:? object
-  onSelect:? func
-  selected: bool
-}
-
-TableHead.defaultProps = {
-  className: '',
-  model: {},
-  selected: false
-}
+//
+// TableHead.propTypes = {
+//   className:? string
+//   model:? object
+//   onSelect:? func
+//   selected: bool
+// }
+//
+// TableHead.defaultProps = {
+//   className: '',
+//   model: {},
+//   selected: false
+// }
 
 
 
@@ -144,7 +135,7 @@ view TableRow {
     props.onChange(key, value)
   }
 
-  renderSelectCell () {
+  let renderSelectCell = () => {
     if (props.selectable) {
       return (
         <td className={style.selectable}>
@@ -154,13 +145,13 @@ view TableRow {
     }
   }
 
-  renderCells () {
+  let renderCells = () => {
     return Object.keys(props.model).map((key) => {
       return <td key={key}>{renderCell(key)}</td>
     })
   }
 
-  renderCell (key) {
+  let renderCell = (key) => {
     const value = props.data[key]
     if (props.onChange) {
       return renderInput(key, value)
@@ -169,7 +160,7 @@ view TableRow {
     }
   }
 
-  renderInput (key, value) {
+  let renderInput = (key, value) => {
     const inputType = utils.inputTypeForPrototype(props.model[key].type)
     const inputValue = utils.prepareValueForInput(value, inputType)
     const checked = inputType === 'checkbox' && value ? true : null
@@ -183,7 +174,7 @@ view TableRow {
     )
   }
 
-  render () {
+  let render = () => {
     const className = ClassNames(style.row, {
       [style.editable]: props.onChange,
       [style.selected]: props.selected
