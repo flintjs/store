@@ -35,7 +35,7 @@ view List {
 
   <list-ul>
     {React.Children.map(children, (item) => {
-      if (item.type === ListItem) {
+      if (item.type === 'List.Item') {
         return React.cloneElement(item, {
           ripple: ripple,
           selectable: selectable
@@ -50,8 +50,8 @@ view List {
     position: `relative`,
     display: `inline-block`,
     width: percent(100),
-    padding: [listVerticalPadding, 0],
-    textAlign: left,
+    padding: [styles.verticalPadding, 0],
+    textAlign: `left`,
     whiteSpace: `nowrap`,
     listStyle: `none`,
   }
@@ -59,12 +59,12 @@ view List {
   // .checkbox {
   //   display: flex,
   //   width: percent(100),
-  //   minHeight: listItemMinHeight,
+  //   minHeight: styles.itemMinHeight,
   //   alignItems: `center`,
   //   margin: 0,
   //   cursor: `pointer`,
   //   > [data-role='checkbox'] {
-  //     marginRight: listItem-right-icon-margin,
+  //     marginRight: styles.itemRightIconMargin,
   //   }
   //   > [data-role='label'] {
   //     paddingLeft: 0,
@@ -87,18 +87,18 @@ view List {
   //
   // .legend {
   //   display: `block`,
-  //   paddingTop: listItem-legend-marginTop,
-  //   fontSize: fontSizeSmall,
-  //   color: colorTextSecondary,
+  //   paddingTop: styles.itemLegendMarginTop,
+  //   fontSize: units.fontSizeSmall,
+  //   color: colors.textSecondary,
   //   whiteSpace: normal,
   // }
   //
   // .avatar {
   //   display: flex,
   //   flex: 0 0 `auto`,
-  //   width: listItemAvatarHeight,
-  //   height: listItemAvatarHeight,
-  //   margin: listItemAvatarMargin listHorizontalPadding listItemAvatarMargin 0,
+  //   width: styles.itemAvatarHeight,
+  //   height: styles.itemAvatarHeight,
+  //   margin: styles.itemAvatarMargin styles.horizontalPadding styles.itemAvatarMargin 0,
   //   overflow: `hidden`,
   //   borderRadius: percent(50),
   // }
@@ -108,24 +108,24 @@ view List {
   //   alignItems: `center`,
   //   verticalAlign: middle,
   //   &.icon {
-  //     fontSize: listItem-icon-fontSize,
-  //     color: colorTextSecondary,
+  //     fontSize: styles.itemIconFontSize,
+  //     color: colors.textSecondary,
   //   }
   // }
   //
   // .right {
-  //   marginLeft: listHorizontalPadding,
+  //   marginLeft: styles.horizontalPadding,
   // }
   //
   // .left {
   //   &.icon {
   //     width: listItemIconSize,
-  //     marginRight: listItem-right-icon-margin,
+  //     marginRight: styles.itemRightIconMargin,
   //   }
   // }
 }
 
-view ListCheckbox {
+view List.Checkbox {
   prop caption: string
 
   prop checked:? bool = false
@@ -139,9 +139,8 @@ view ListCheckbox {
   <listcheckbox-li class={{ legend, disabled }}>
     <Checkbox
       checked={checked}
-      className={style.checkbox}
       disabled={disabled}
-      label={<ListItemContent caption={caption} legend={legend} />}
+      label={<List.ItemContent caption={caption} legend={legend} />}
       name={name}
       onBlur={onBlur}
       onChange={onChange}
@@ -150,31 +149,31 @@ view ListCheckbox {
   </listcheckbox-li>
 }
 
-view ListDivider {
+view List.Divider {
   prop inset:? bool = false
 
   <listdivider-hr class={{ inset }} />
 
   $ = {
-    height: listDividerHeight,
-    margin: [-listDividerHeight, 0, 0],
-    backgroundColor: colorDivider,
+    height: styles.dividerHeight,
+    margin: [-styles.dividerHeight, 0, 0],
+    backgroundColor: colors.divider,
     border: 0,
 
     // &.inset {
-    //   marginRight: listHorizontalPadding,
-    //   marginLeft: listContentLeftSpacing,
+    //   marginRight: styles.horizontalPadding,
+    //   marginLeft: styles.contentLeftSpacing,
     // }
     // .list + & {
-    //   marginTop: - listVerticalPadding,
+    //   marginTop: - styles.verticalPadding,
     // }
     // .listItem ~ & {
-    //   margin: listVerticalPadding 0,
+    //   margin: styles.verticalPadding 0,
     // }
   }
 }
 
-view ListItem {
+view List.Item {
   prop caption: string
 
   prop avatar:? string
@@ -183,6 +182,7 @@ view ListItem {
   prop leftIcon:? string
   prop legend:? string
   prop onClick:? func = Flint.noop
+  prop onMouseDown:? func = Flint.noop
   prop rightIcon:? string
   prop ripple:? bool = false
   prop selectable:? bool = false
@@ -192,10 +192,10 @@ view ListItem {
 
   let renderContent = () =>
       <span class={{ legend, disabled, selectable }}>
-        {leftIcon ? <FontIcon className={`${style.icon} ${style.left}`} value={leftIcon} /> : null}
-        {avatar ? <img className={style.avatar} src={avatar} /> : null}
-        <ListItemContent caption={caption} legend={legend} />
-        {rightIcon ? <FontIcon className={`${style.icon} ${style.right}`} value={rightIcon} /> : null}
+        <FontIcon if={leftIcon} class="icon left" value={leftIcon} />
+        <img if={avatar} class="avatar" src={avatar} />
+        <List.ItemContent caption={caption} legend={legend} />
+        <FontIcon if={rightIcon} class="icon right" value={rightIcon} />
       </span>
 
   <listitem-li onClick={handleClick} onMouseDown={onMouseDown}>
@@ -210,10 +210,10 @@ view ListItem {
   $item = {
     position: `relative`,
     display: `flex`,
-    minHeight: listItemMinHeight,
+    minHeight: styles.itemMinHeight,
     alignItems: `center`,
-    padding: [0, listHorizontalPadding],
-    color: colorText,
+    padding: [0, styles.horizontalPadding],
+    color: colors.text,
 
     // &.selectable:not(.disabled):hover {
     //   cursor: `pointer`,
@@ -234,7 +234,7 @@ view ListItem {
   }
 }
 
-view ListItemContent {
+view List.ItemContent {
   prop caption: string
   prop legend: any
 
@@ -242,17 +242,17 @@ view ListItemContent {
   <legend>{legend}</legend>
 }
 
-view ListSubHeader {
+view List.SubHeader {
   prop caption:? string
 
   <h5>{caption}</h5>
 
   $h5 = {
-    paddingLeft: listHorizontalPadding,
-    margin: [-listVerticalPadding, 0, 0],
-    fontSize: listSubheaderFontSize,
-    fontWeight: listSubheaderFontWeight,
-    lineHeight: listSubheaderHeight,
-    color: colorTextSecondary,
+    paddingLeft: styles.horizontalPadding,
+    margin: [-styles.verticalPadding, 0, 0],
+    fontSize: styles.subheaderFontSize,
+    fontWeight: styles.subheaderFontWeight,
+    lineHeight: styles.subheaderHeight,
+    color: colors.textSecondary,
   }
 }
