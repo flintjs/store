@@ -134,7 +134,7 @@ view Input {
     },
 
     !floating && filled && {
-      display: none,
+      display: `none`,
     },
 
     focus && floating && {
@@ -210,6 +210,6 @@ view Input {
   ]
 
   $hidden = {
-    display: none,
+    display: `none`,
   }
 }

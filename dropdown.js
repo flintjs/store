@@ -30,7 +30,7 @@ view Dropdown {
 
   let active = false
   let up = false
-  let selected = null
+  let selected = {}
 
   on.render(() => {
     selected = getSelectedItem()
@@ -73,14 +73,14 @@ view Dropdown {
       value={selected.label}
     />
     <div if={template} class={{ errored: error, disabled }} onMouseDown={handleMouseDown}>
-      <div className={`${style.templateValue} ${style.value}`}>
+      <value className="templateValue">
         {template(selected)}
-      </div>
+      </value>
       <label if={label}>{label}</label>
       <error if={error}>{error}</error>
     </div>
     <ul class="values" ref='values'>
-      <li repeat={source} key={idx} class={item.value === value ? style.selected : null} onMouseDown={handleSelect.bind(_.value)}>
+      <li repeat={source} class={_.value === value ? 'selected' : null} onMouseDown={handleSelect.bind(_.value)}>
         {template ? template(_) : _.label}
       </li>
     </ul>
