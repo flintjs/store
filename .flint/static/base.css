@@ -128,3 +128,63 @@ body td { display: table-cell; }
 body tbody { display: table-row-group; }
 body thead { display: table-header-group; }
 body tr { display: table-row; }
+
+
+
+
+
+
+
+
+// -- Material design font sizes
+h1 small, h2 small, h3 small, h4 small, h5 small, h6 small {
+  font-size: 5.6rem;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: -.02em;
+  opacity: .54;
+}
+
+h1 {
+  font-size: 5.6rem;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: -.02em;
+}
+
+h2 {
+  font-size: 4.5rem;
+  font-weight: 400;
+  line-height: 4.8rem;
+}
+
+h3 {
+  font-size: 3.4rem;
+  font-weight: 400;
+  line-height: 4rem;
+}
+
+h4 {
+  font-size: 2.4rem;
+  font-weight: 400;
+  line-height: 3.2rem;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h5 {
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: .02em;
+}
+
+h6 {
+  @include typo-subhead;
+}
+
+p {
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 2.4rem;
+  letter-spacing: 0;
+}
