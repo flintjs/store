@@ -24,9 +24,9 @@ view Dropdown {
     events.pauseEvent(event)
     const client = event.target.getBoundingClientRect()
     const screen_height = window.innerHeight || document.documentElement.offsetHeight
-    const up = auto ? client.top > ((screen_height / 2) + client.height) : false
+    up = auto ? client.top > ((screen_height / 2) + client.height) : false
+    active = true
     onFocus()
-    let active = true, up
   }
 
   let handleSelect = (item, event) => {
