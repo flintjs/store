@@ -1,4 +1,13 @@
-
+const styles = {
+  tooltipBackground: rgba(97,97,97,.9),
+  tooltipMargin: 0.5 * $unit,
+  tooltipBorderRadius: .2 * $unit,
+  tooltipColor: #fff,
+  tooltipFontSize: $unit,
+  tooltipMaxWidth: 17 * $unit,
+  tooltipPadding: .8 * $unit,
+  tooltipAnimationDuration: milliseconds(200),
+}
 
 
 const Tooltip = (ComposedComponent) => view extends {
@@ -58,5 +67,35 @@ const Tooltip = (ComposedComponent) => view extends {
         <span data-react-toolbox="tooltip" className={tooltipClassName}>{tooltip}</span>
       </ComposedComponent>
     )
+  }
+
+  .root {
+    position: `relative`,
+  }
+
+  .tooltip {
+    position: `absolute`,
+    top: percent(100),
+    left: percent(50),
+    zIndex: zIndexHigher,
+    display: `block`,
+    maxWidth: tooltipMaxWidth,
+    padding: tooltipPadding,
+    margin: tooltipMargin 0,
+    fontFamily: Roboto, sans-serif,
+    fontSize: tooltipFontSize,
+    font-weight: fontWeightBold,
+    lineHeight: fontSizeSmall,
+    color: tooltipColor,
+    textAlign: `center`,
+    textTransform: `none`,
+    background: tooltipBackground,
+    borderRadius: tooltipBorderRadius,
+    transition: animationCurveDefault tooltipAnimationDuration transform,
+    transform: scale(0) translateX(percent(-50)),
+    transform-origin: top left,
+    &.active {
+      transform: scale(1) translateX(percent(-50)),
+    }
   }
 }

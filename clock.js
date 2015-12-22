@@ -1,3 +1,33 @@
+const styles = {
+  timepickerHeaderFontSize: 5.2)unit,
+  timepickerHeaderPadding: $unit,
+  timepickerAmpmFontSize: 1.6)unit,
+  timepickerPrimary: colorPrimary,
+  timepickerPrimaryContrast: colorPrimaryContrast,
+  timepickerPrimaryDark: colorPrimaryDark,
+  timepickerPrimaryColor: timepickerPrimary !default,
+  timepickerPrimaryHoverColor: rgba(timepickerPrimary, 0.20) !default,
+  timepickerPrimaryContrastColor: timepickerPrimaryContrast !default,
+  timepickerPrimaryDarkColor: timepickerPrimaryDark !default,
+  timepickerAmpmHeight: 2.2)unit,
+  timepickerAmpmWidth: 4)unit,
+  timepickerDialogWidth: 30)unit,
+
+  clockPadding: 1.5 * $unit 2)unit,
+  clockPrimary: colorPrimary,
+  clockPrimaryContrast: colorPrimaryContrast,
+  clockPrimaryDark: colorPrimaryDark,
+  clockPrimaryColor: clockPrimary !default,
+  clockPrimaryHoverColor: rgba(clockPrimary, 0.20) !default,
+  clockPrimaryContrastColor: clockPrimaryContrast !default,
+  clockPrimaryDarkColor: clockPrimaryDark !default,
+  clockNumberSize: 2)unit,
+  clockHandWidth: .4)unit,
+  clockHandDotSize: 1)unit,
+  clockKnobSize: 3.4)unit,
+  clockKnobSmallSize: 1.2)unit,
+}
+
 view Clock {
   prop display:? string = 'hours'//oneOf(['hours', 'minutes'])
   prop format:? string = '24hr'//oneOf(['24hr', 'ampm'])
@@ -564,3 +594,169 @@ view TimePickerDialog {
     )
   }
 }
+
+// .root {
+//   padding: clockPadding,
+// }
+//
+// .placeholder {
+//   position: `relative`,
+//   zIndex: zIndexHigh,
+// }
+//
+// .wrapper {
+//   position: `absolute`,
+//   width: percent(100),
+//   backgroundColor: colorDivider,
+//   borderRadius: percent(50),
+// }
+//
+// .face {
+//   position: `absolute`,
+//   top: percent(50),
+//   left: percent(50),
+//   zIndex: zIndexHigh,
+//   cursor: `pointer`,
+//   borderRadius: percent(50),
+//   transform: translateX(percent(-50)) translateY(percent(-50)),
+// }
+//
+// .number {
+//   position: `relative`,
+//   width: clockNumberSize,
+//   height: clockNumberSize,
+//   marginTop: - clockNumberSize / 2,
+//   marginLeft: - clockNumberSize / 2,
+//   textAlign: `center`,
+//   pointerEvents: `none`,
+//   userSelect: `none`,
+//   &.active {
+//     color: clockPrimaryContrastColor,
+//   }
+// }
+//
+// .hand {
+//   position: `absolute`,
+//   bottom: percent(50),
+//   left: percent(50),
+//   display: `block`,
+//   width: clockHandWidth,
+//   marginLeft: - clockHandWidth / 2,
+//   backgroundColor: clockPrimaryColor,
+//   transform-origin: percent(50) percent(100),
+//   &:before {
+//     position: `absolute`,
+//     bottom: 0,
+//     left: percent(50),
+//     width: clockHandDotSize,
+//     height: clockHandDotSize,
+//     marginBottom: - clockHandDotSize / 2,
+//     marginLeft: - clockHandDotSize / 2,
+//     content: "",
+//     backgroundColor: clockPrimaryColor,
+//     borderRadius: percent(50),
+//   }
+//   &.small > .knob {
+//     backgroundColor: clockPrimaryHoverColor,
+//     &:after {
+//       position: `absolute`,
+//       top: percent(50),
+//       left: percent(50),
+//       width: clockKnobSmallSize,
+//       height: clockKnobSmallSize,
+//       marginTop: - clockKnobSmallSize / 2,
+//       marginLeft: - clockKnobSmallSize / 2,
+//       content: "",
+//       background: clockPrimaryColor,
+//       borderRadius: percent(50),
+//     }
+//     &:before {
+//       position: `absolute`,
+//       bottom: 0,
+//       left: percent(50),
+//       width: clockHandWidth,
+//       height: clockKnobSize - clockKnobSmallSize,
+//       marginLeft: - clockHandWidth / 2,
+//       content: "",
+//       background: clockPrimaryColor,
+//     }
+//   }
+// }
+//
+// .knob {
+//   position: `absolute`,
+//   top: - clockKnobSize,
+//   left: percent(50),
+//   width: clockKnobSize,
+//   height: clockKnobSize,
+//   marginLeft: - clockKnobSize / 2,
+//   cursor: `pointer`,
+//   backgroundColor: clockPrimaryColor,
+//   borderRadius: percent(50),
+// }
+// @import "../base",
+// @import "./config",
+//
+// .input > [role="input"] {
+//   cursor: `pointer`,
+// }
+//
+// .header {
+//   position: `relative`,
+//   width: percent(100),
+//   padding: timepickerHeaderPadding,
+//   fontSize: timepickerHeaderFontSize,
+//   color: timepickerPrimaryContrastColor,
+//   textAlign: `center`,
+//   background: timepickerPrimaryColor,
+// }
+//
+// .hours, .minutes {
+//   display: `inline-block`,
+//   cursor: `pointer`,
+//   opacity: .6,
+// }
+//
+// .separator {
+//   margin: 0 timepickerHeaderPadding / 2,
+//   opacity: .6,
+// }
+//
+// .ampm {
+//   position: `absolute`,
+//   top: percent(50),
+//   right: 2)unit,
+//   width: timepickerAmpmWidth,
+//   height: timepickerAmpmHeight * 2,
+//   marginTop: - timepickerAmpmHeight,
+//   fontSize: timepickerAmpmFontSize,
+//   lineHeight: timepickerAmpmHeight,
+//   textAlign: `center`,
+// }
+//
+// .am, .pm {
+//   display: `block`,
+//   cursor: `pointer`,
+//   opacity: .6,
+// }
+//
+// .dialog {
+//   width: timepickerDialogWidth,
+//   > [role="body"] {
+//     padding: 0,
+//     overflowY: `visible`,
+//   }
+//   > [role="navigation"] > .button {
+//     color: timepickerPrimaryColor,
+//     &:hover {
+//       background: timepickerPrimaryHoverColor,
+//     }
+//     &:focus:not(:active) {
+//       background: timepickerPrimaryHoverColor,
+//     }
+//   }
+//   &.display-hours .hours, &.display-minutes .minutes, &.format-am .am,
+//   &.format-pm .pm {
+//     opacity: 1,
+//   }
+// }

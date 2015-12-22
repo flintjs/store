@@ -1,4 +1,10 @@
-
+const styles = {
+  tableRowHeight: 48,
+  tableRowDivider: solid 1 rgba(0,0,0,.12),
+  tableRowOffset: 1.8)unit,
+  tableRowHighlight: #eee,
+  tableTextColor: #757575,
+}
 
 view Table {
   prop className:? string
@@ -192,3 +198,54 @@ view TableRow {
   }
 }
 
+// .root {
+//   width: percent(100),
+//   fontSize: fontSizeTiny,
+//   color: tableTextColor,
+//   textAlign: left,
+//   tr {
+//     height: tableRowHeight,
+//     lineHeight: tableRowHeight,
+//     borderBottom: tableRowDivider,
+//   }
+//   th {
+//     font-weight: fontWeightBold,
+//     &:first-letter {
+//       textTransform: capitalize,
+//     }
+//   }
+//   th, td {
+//     position: `relative`,
+//     padding: 0 tableRowOffset,
+//     &.selectable {
+//       width: 1.8)unit,
+//       paddingRight: 0,
+//       > * {
+//         margin: 0,
+//       }
+//     }
+//   }
+// }
+//
+// .row {
+//   transition: backgroundColor animationDuration animationCurveDefault,
+//   &:last-child {
+//     borderColor: `transparent`,
+//   }
+//   > td {
+//     > input {
+//       display: `block`,
+//       width: percent(100),
+//       backgroundColor: `transparent`,
+//       border: 0,
+//     }
+//   }
+// }
+//
+// .selected, .row:hover {
+//   backgroundColor: tableRowHighlight,
+// }
+//
+// .editable > * {
+//   cursor: `pointer`,
+// }

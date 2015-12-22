@@ -1,3 +1,36 @@
+const styles = {
+  datepickerPrimary: colorPrimary,
+  datepickerPrimaryContrast: colorPrimaryContrast,
+  datepickerPrimaryDark: colorPrimaryDark,
+  datepickerPrimaryColor: datepickerPrimary,
+  datepickerPrimaryHoverColor: rgba(datepickerPrimary, 0.20),
+  datepickerPrimaryContrastColor: datepickerPrimaryContrast,
+  datepickerPrimaryDarkColor: datepickerPrimaryDark,
+  datepickerDialogWidth: 33)unit,
+  datepickerInactiveOpacity: .6,
+  datepickerWeekdayLineHeight: 2)unit,
+  datepickerWeekdayFontSize: fontSizeSmall,
+  datepickerMonthFontSize: fontSizeBig,
+  datepickerDayFontSize: 5)unit,
+  datepickerDayLineHeight: 4)unit,
+  datepickerYearFontSize: fontSizeSmall,
+
+  calendarPrimary: colorPrimary,
+  calendarPrimaryContrast: colorPrimaryContrast,
+  calendarPrimaryColor: calendarPrimary,
+  calendarPrimaryContrastColor: calendarPrimaryContrast,
+  calendarPrimaryHoverColor: rgba(calendarPrimary, 0.21),
+  calendarArrowsColor: paletteGrey-600,
+  calendarArrowsFontSize: 2)unit,
+  calendarYearFontSize: 2.4,
+  calendarDayFontSize: 1.3)unit,
+  calendarDayDisableOpacity: 0.25,
+  calendarRowHeight: 3)unit,
+  calendarDayPadding: .2)unit,
+  calendarTitleHeight: 3.6)unit,
+  calendarTotalHeight: calendarRowHeight * 7 + calendarTitleHeight + calendarDayPadding * 12,
+}
+
 view Calendar {
   prop display:? string = 'months'//oneOf(['months', 'years'])
   prop selectedDate:? object = new Date()
@@ -62,6 +95,50 @@ view Calendar {
       {_}
     </li>
   </years-ul>
+
+  .root {
+    position: `relative`,
+    height: calendarTotalHeight,
+    overflow: `hidden`,
+    fontSize: fontSizeSmall,
+    lineHeight: calendarRowHeight,
+    textAlign: `center`,
+    background: calendarPrimaryContrastColor,
+    .prev, .next {
+      position: `absolute`,
+      top: 0,
+      zIndex: zIndexHigh,
+      height: 3.6)unit,
+      cursor: `pointer`,
+      opacity: .7,
+    }
+    .prev {
+      left: 0,
+    }
+    .next {
+      right: 0,
+    }
+  }
+
+  .title {
+    display: `inline-block`,
+    font-weight: 500,
+    lineHeight: calendarRowHeight,
+  }
+
+  .years {
+    height: percent(100),
+    overflowY: `auto`,
+    fontSize: fontSizeBig,
+    > li {
+      lineHeight: 2.4,
+      cursor: `pointer`,
+      &.active {
+        fontSize: calendarYearFontSize,
+        color: calendarPrimaryColor,
+      }
+    }
+  }
 }
 
 
@@ -73,14 +150,6 @@ view Day {
   prop selectedDate:? object
   prop viewDate: object
 
-  let dayStyle = () => {
-    if (day === 1) {
-      return {
-        marginLeft: `${time.getFirstWeekDay(viewDate) * 100 / 7}%`
-      }
-    }
-  }
-
   let isSelected = () => {
     const sameYear = viewDate.getFullYear() === selectedDate.getFullYear()
     const sameMonth = viewDate.getMonth() === selectedDate.getMonth()
@@ -88,19 +157,37 @@ view Day {
     return sameYear && sameMonth && sameDay
   }
 
-  let render = () => {
-    const className = ClassNames(style.day, {
-      [style.active]: isSelected(),
-      [style.disabled]: disabled
-    })
+  <day class={{ active, disabled }}>
+    <inner onClick={onClick}>
+      {day}
+    </inner>
+  </day>
 
-    return (
-      <div className={className} style={dayStyle()}>
-        <span onClick={onClick}>
-          {day}
-        </span>
-      </div>
-    )
+  $ = {
+    marginLeft: day === 1 ? `${time.getFirstWeekDay(viewDate) * 100 / 7}%` : 0,
+    flex: 0 0 (percent(100) / 7),
+    padding: calendarDayPadding,
+    > span {
+      display: `inline-block`,
+      width: calendarRowHeight,
+      height: calendarRowHeight,
+      lineHeight: calendarRowHeight,
+      borderRadius: percent(50),
+    }
+    &:hover:not(.active):not(.disabled) > span {
+      color: calendarPrimaryContrastColor,
+      background: calendarPrimaryHoverColor,
+    }
+    &.active > span {
+      color: calendarPrimaryContrastColor,
+      background: calendarPrimaryColor,
+    }
+    &:hover:not(.disabled) > span {
+      cursor: `pointer`,
+    }
+    &.disabled {
+      opacity: calendarDayDisableOpacity,
+    }
   }
 }
 
@@ -141,17 +228,34 @@ view Month {
     })
   }
 
-  let render = () => {
-    return (
-      <div className={style.month}>
-        <span className={style.title}>
-          {time.getFullMonth(viewDate)} {viewDate.getFullYear()}
-        </span>
-        <div className={style.week}>{renderWeeks()}</div>
-        <div className={style.days}>{renderDays()}</div>
-      </div>
-    )
+  <title>
+    {time.getFullMonth(viewDate)} {viewDate.getFullYear()}
+  </title>
+  <week>{renderWeeks()}</week>
+  <days>{renderDays()}</days>
+
+  $ = {
+    backgroundColor: calendarPrimaryContrastColor,
   }
+
+  $week = {
+    display: `flex`,
+    height: calendarRowHeight,
+    flexWrap: `wrap`,
+    fontSize: calendarDayFontSize,
+    lineHeight: calendarRowHeight,
+    opacity: .5,
+    > span {
+      flex: 0 0 (percent(100) / 7),
+    }
+  }
+
+  $days = {
+    display: flex,
+    flexWrap: `wrap`,
+    fontSize: calendarDayFontSize,
+  }
+
 }
 
 
@@ -260,5 +364,48 @@ view CalendarDialog {
           selectedDate={date} />
       </wrapper>
   </Dialog>
+
+  .input > [role="input"] {
+    cursor: `pointer`,
+  }
+
+  .header {
+    padding: 1.6 * $unit 2)unit,
+    color: datepickerPrimaryContrastColor,
+    cursor: `pointer`,
+    backgroundColor: datepickerPrimaryColor,
+  }
+
+  .year {
+    display: `inline-block`,
+    fontSize: datepickerYearFontSize,
+    transition: opacity, fontSize animationDuration animationCurveDefault,
+  }
+
+  .date {
+    display: `block`,
+    font-weight: fontWeightSemiBold,
+    textTransform: capitalize,
+    transition: opacity animationDuration animationCurveDefault,
+  }
+
+  .wrapper {
+    padding: $unit .5 * $unit 0,
+  }
+
+  .display-years {
+    .date {
+      opacity: datepickerInactiveOpacity,
+    }
+    .year {
+      fontSize: fontSizeNormal,
+    }
+  }
+
+  .display-months {
+    .year {
+      opacity: datepickerInactiveOpacity,
+    }
+  }
 }
 

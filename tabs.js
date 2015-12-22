@@ -1,4 +1,16 @@
-
+const styles = {
+  tabLabelDisabledOpacity: .2,
+  tabLabelH-Adding: 1.2)unit,
+  tabLabelHeight: 4.8)unit,
+  tabTextHeight: 1.4)unit,
+  tabLabelV-Adding: (tabLabelHeight - tabTextHeight) / 2,
+  tabNavigationBorderColor: colorDivider,
+  tabPointerColor: colorPrimary,
+  tabPointerHeight: .2)unit,
+  tabText: colorBlack,
+  tabTextColor: tabText,
+  tabTextInactiveColor: rgba(tabText, 0.70),
+}
 
 view TabHeader {
   prop active:? bool
@@ -166,3 +178,63 @@ view Tabs {
   }
 }
 
+
+//
+// .root {
+//   position: `relative`,
+//   display: flex,
+//   flexDirection: column,
+// }
+//
+// .navigation {
+//   display: flex,
+//   flexDirection: row,
+//   boxShadow: inset 0 -1 tabNavigationBorderColor,
+// }
+//
+// .label {
+//   padding: tabLabelV-Adding tabLabelH-Adding,
+//   fontSize: tabTextHeight,
+//   font-weight: fontWeightSemiBold,
+//   lineHeight: 1,
+//   color: tabTextInactiveColor,
+//   textTransform: uppercase,
+//   transitionTimingFunction: animationCurveDefault,
+//   transitionDuration: animationDuration,
+//   transitionProperty: boxShadow, color,
+//   &.active {
+//     color: tabTextColor,
+//   }
+//   &.disabled {
+//     opacity: tabLabelDisabledOpacity,
+//   }
+//   &:not(.disabled) {
+//     cursor: `pointer`,
+//   }
+//   &.hidden {
+//     display: `none`,
+//   }
+// }
+//
+// .pointer {
+//   position: `absolute`,
+//   width: 0,
+//   height: tabPointerHeight,
+//   marginTop: - tabPointerHeight,
+//   backgroundColor: tabPointerColor,
+//   transitionTimingFunction: animationCurveDefault,
+//   transitionDuration: animationDuration,
+//   transitionProperty: left, width,
+// }
+//
+// .tab {
+//   display: flex,
+//   flexDirection: column,
+//   padding: tabLabelV-Adding tabLabelH-Adding,
+//   &:not(.active) {
+//     display: `none`,
+//   }
+//   &.active {
+//     display: `block`,
+//   }
+// }

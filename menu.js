@@ -1,3 +1,21 @@
+const styles = {
+  menuExpandDuration: seconds(.3),
+  menuFadeDuration: seconds(.2),
+  menuRippleDelay: seconds(.3),
+  menuBackgroundColor: colorWhite,
+  menuPadding: .8 * $unit 0,
+  menuOutlineBorderRadius: .2)unit,
+  menuItemHoverBackground: paletteGrey-200,
+  menuItem-icon-fontSize: 2.4)unit,
+  menuItemIconSize: 1.6 * menuItem-icon-fontSize,
+  menuItemHeight: 4.8)unit,
+  menuItemPadding: 1.6)unit,
+  menuItemFontSize: 1.6)unit,
+  menuDividerHeight: (4.8 * $unit) / 4,
+  menuIconSize: 2.3)unit,
+  menuIconRippleDuration: milliseconds(650),
+}
+
 const POSITION = {
   AUTO: 'auto',
   STATIC: 'static',
@@ -147,12 +165,113 @@ view Menu {
       </div>
     )
   }
+
+  $ = {
+    position: `relative`,
+    display: `inline-block`,
+    &.top-left {
+      position: `absolute`,
+      top: 0,
+      left: 0,
+      > .outline {
+        transform-origin: 0 0,
+      }
+    }
+    &.top-right {
+      position: `absolute`,
+      top: 0,
+      right: 0,
+      > .outline {
+        transform-origin: percent(100) 0,
+      }
+    }
+    &.bottom-left {
+      position: `absolute`,
+      bottom: 0,
+      left: 0,
+      > .outline {
+        transform-origin: 0 percent(100),
+      }
+    }
+    &.bottom-right {
+      position: `absolute`,
+      right: 0,
+      bottom: 0,
+      > .outline {
+        transform-origin: percent(100) percent(100),
+      }
+    }
+    &:not(.static) {
+      zIndex: zIndexHigher,
+      pointerEvents: `none`,
+      > .outline {
+        opacity: 0,
+        transition: transform menuExpandDuration animationCurveDefault,
+        opacity menuFadeDuration animationCurveDefault,
+        transform: scale(0),
+        will-change: transform,
+      }
+      > .menu {
+        position: `absolute`,
+        top: 0,
+        left: 0,
+        opacity: 0,
+      }
+      &.rippled:not(.active) {
+        > .outline {
+          transitionDelay: menuRippleDelay,
+        }
+        > .menu {
+          transitionDelay: menuRippleDelay,
+        }
+      }
+      &.active {
+        pointerEvents: all,
+        > .outline {
+          opacity: 1,
+          transform: scale(1),
+        }
+        > .menu {
+          opacity: 1,
+          transition: opacity menuFadeDuration animationCurveDefault,
+          clip menuExpandDuration animationCurveDefault,
+        }
+      }
+    }
+  }
+
+  .outline {
+    @include shadow-2dp(),
+    position: `absolute`,
+    top: 0,
+    left: 0,
+    display: `block`,
+    backgroundColor: menuBackgroundColor,
+    borderRadius: menuOutlineBorderRadius,
+  }
+
+  .menu {
+    position: `relative`,
+    display: `block`,
+    padding: menuPadding,
+    textAlign: left,
+    whiteSpace: `nowrap`,
+    list-style: `none`,
+  }
 }
 
 
 
 const MenuDivider = () => (
   <hr data-react-toolbox='menu-divider' className={style.root}/>
+
+  .root {
+    display: `block`,
+    width: percent(100),
+    height: 1,
+    margin: menuDividerHeight 0,
+    backgroundColor: colorDivider,
+  }
 )
 
 
@@ -195,8 +314,46 @@ view MenuItem {
       </li>
     )
   }
+
+  .root {
+    position: `relative`,
+    display: flex,
+    height: menuItemHeight,
+    alignItems: `center`,
+    padding: 0 menuItemPadding,
+    overflow: `hidden`,
+    fontSize: menuItemFontSize,
+    color: colorText,
+    &:not(.disabled):hover {
+      cursor: `pointer`,
+      backgroundColor: menuItemHoverBackground,
+    }
+    &.disabled {
+      pointerEvents: `none`,
+      opacity: .5,
+    }
+    &.selected {
+      font-weight: 500,
+    }
+  }
+
+  .icon {
+    width: menuItemIconSize,
+    fontSize: menuItemIconFontSize !important,
+  }
+
+  .caption {
+    flex-grow: 1,
+    fontSize: fontSizeNormal,
+  }
+
+  .shortcut {
+    marginLeft: menuItemPadding,
+  }
+
+  .ripple {
+    color: colorTextSecondary,
+  }
 }
-  className: style.ripple
-})(MenuItem)
 
 

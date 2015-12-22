@@ -1,4 +1,14 @@
-
+const styles = {
+  snackbarColorCancel: paletteRed-500,
+  snackbarColorAccept: paletteGreen-500,
+  snackbarColorWarning: paletteLimeA200,
+  snackbarBackgroundColor: colorText,
+  snackbarBorderRadius: .2 * $unit,
+  snackbarButtonOffset: 4.8 * $unit,
+  snackbarColor: colorWhite,
+  snackbarHorizontalOffset: 2.4 * $unit,
+  snackbarVerticalOffset: 1.4 * $unit,
+}
 
 view Snackbar {
   prop action:? string
@@ -37,3 +47,52 @@ view Snackbar {
   }
 }
 
+// 
+// .root {
+//   position: fixed,
+//   right: snackbarHorizontalOffset,
+//   bottom: 0,
+//   left: snackbarHorizontalOffset,
+//   zIndex: zIndexHigher,
+//   display: flex,
+//   alignItems: `center`,
+//   padding: snackbarVerticalOffset snackbarHorizontalOffset,
+//   margin: 0 `auto`,
+//   marginTop: snackbarVerticalOffset,
+//   color: snackbarColor,
+//   backgroundColor: snackbarBackgroundColor,
+//   borderRadius: snackbarBorderRadius,
+//   transition: all animationDuration animationCurveDefault animationDuration,
+//   &.accept .button {
+//     color: snackbarColorAccept,
+//   }
+//   &.warning .button {
+//     color: snackbarColorWarning,
+//   }
+//   &.cancel .button {
+//     color: snackbarColorCancel,
+//   }
+//   &:not(.active) {
+//     transform: translateY(percent(100)),
+//   }
+//   &.active {
+//     transform: translateY(percent(0)),
+//   }
+// }
+//
+// .icon {
+//   marginRight: snackbarVerticalOffset,
+// }
+//
+// .label {
+//   flex-grow: 1,
+//   fontSize: fontSizeSmall,
+// }
+//
+// .button {
+//   minWidth: inherit,
+//   marginTop: - snackbarVerticalOffset / 2,
+//   marginRight: - snackbarHorizontalOffset / 2,
+//   marginBottom: - snackbarVerticalOffset / 2,
+//   marginLeft: snackbarButtonOffset,
+// }

@@ -1,3 +1,15 @@
+const styles = {
+  autocompleteColorPrimaryContrast: colorPrimaryContrast,
+  autocompleteColorPrimary: colorPrimary,
+  autocompleteOverflowMaxHeight: vh(45),
+  autocompleteSuggestionActiveBackground: paletteGrey-200,
+  autocompleteSuggestionPadding: $unit,
+  autocompleteSuggestionsBackground: colorWhite,
+  autocompleteValueBorderRadius: .2)unit,
+  autocompleteValueMargin: $unit * .25 $unit * .5 $unit * .25 0,
+  autocompleteValuePadding: $unit * .5 $unit * .75,
+}
+
 const POSITION = {
   AUTO: 'auto',
   DOWN: 'down',
@@ -179,4 +191,81 @@ view Autocomplete {
     />
     {renderSuggestions()}
   </autocomplete>
+
+  $ = {
+    position: `relative`,
+    padding: $unit 0,
+    &.focus {
+      .label {
+        color: autocompleteColorPrimary,
+      }
+      .suggestions {
+        maxHeight: autocompleteOverflowMaxHeight,
+        visibility: `visible`,
+        boxShadow: zdepthShadow-1,
+      }
+    }
+    &.errored {
+      .suggestions {
+        marginTop: - inputUnderlineHeight,
+      }
+    }
+  }
+
+  $label = {
+    fontSize: fontSizeTiny,
+    color: colorTextSecondary,
+    transition: color animationDuration animationCurveDefault,
+  }
+
+  $values = {
+    flexDirection: row,
+    flexWrap: `wrap`,
+    padding-bottom: $unit / 2,
+  }
+
+  $value = {
+    display: `inline-block`,
+    padding: autocompleteValuePadding,
+    margin: autocompleteValueMargin,
+    fontSize: fontSizeTiny,
+    color: autocompleteColorPrimaryContrast,
+    cursor: `pointer`,
+    backgroundColor: autocompleteColorPrimary,
+    borderRadius: autocompleteValueBorderRadius,
+  }
+
+  $suggestions = {
+    @include no-webkit-scrollbar,
+    position: `absolute`,
+    zIndex: zIndexHigh,
+    width: percent(100),
+    maxHeight: 0,
+    overflowX: `hidden`,
+    overflowY: `auto`,
+    visibility: `hidden`,
+    backgroundColor: autocompleteSuggestionsBackground,
+    transitionTimingFunction: animationCurveDefault,
+    transitionDuration: animationDuration,
+    transitionProperty: maxHeight, boxShadow,
+    &:not(.up) {
+      bottom: `auto`,
+    }
+    &.up {
+      bottom: 0,
+    }
+  }
+
+  $suggestion = {
+    padding: autocompleteSuggestionPadding,
+    cursor: `pointer`,
+    &.active {
+      backgroundColor: autocompleteSuggestionActiveBackground,
+    }
+  }
+
+  $input = {
+    padding-top: 0,
+    padding-bottom: 0,
+  }
 }

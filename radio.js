@@ -1,4 +1,14 @@
-
+const styles = {
+  radioFieldMarginBottom: 1.5)unit,
+  radioButtonSize: 1.6 * $unit !default,
+  radioInnerMargin: radioButtonSize / 4,
+  radioInnerColor: colorPrimary !default,
+  radioFocusColor: rgba(colorBlack, 0.1) !default,
+  radioCheckedFocusColor: rgba(colorPrimary, 0.26) !default,
+  radioTextColor: colorBlack !default,
+  radioDisabledColor: rgba(colorBlack, 0.26) !default,
+  radioTextFontSize: 1.4)unit,
+}
 
 const Radio = ({checked, children, onMouseDown}) => {
   const className = style[checked ? 'radio-checked' : 'radio']
@@ -31,7 +41,7 @@ view RadioButton {
   handleClick = (event) => {
     const {checked, disabled, onChange} = props
     if (event.pageX !== 0 && event.pageY !== 0) blur()
-    if (!disabled && !checked && onChange) onChange(event, 
+    if (!disabled && !checked && onChange) onChange(event,
   }
 
   blur () {
@@ -107,3 +117,95 @@ view RadioGroup {
   }
 }
 
+//
+// .field {
+//   position: `relative`,
+//   display: `block`,
+//   height: radioButtonSize,
+//   marginBottom: radioFieldMarginBottom,
+//   whiteSpace: `nowrap`,
+//   verticalAlign: middle,
+// }
+//
+// .text {
+//   display: `inline-block`,
+//   paddingLeft: $unit,
+//   fontSize: radioTextFontSize,
+//   lineHeight: radioButtonSize,
+//   color: radioTextColor,
+//   whiteSpace: `nowrap`,
+//   verticalAlign: `top`,
+// }
+//
+// .input {
+//   position: `absolute`,
+//   width: 0,
+//   height: 0,
+//   padding: 0,
+//   margin: 0,
+//   border: 0,
+//   opacity: 0,
+//   appearance: `none`,
+//   &:focus ~ .radio {
+//     boxShadow: 0 0 0 $unit radioFocusColor,
+//   }
+//   &:focus ~ .radio-checked {
+//     boxShadow: 0 0 0 $unit radioCheckedFocusColor,
+//   }
+// }
+//
+// .radio {
+//   position: `relative`,
+//   display: `inline-block`,
+//   width: radioButtonSize,
+//   height: radioButtonSize,
+//   verticalAlign: `top`,
+//   cursor: `pointer`,
+//   border: .2 * $unit solid radioTextColor,
+//   borderRadius: percent(50),
+//   &:before {
+//     @include material-animation-default(),
+//     position: `absolute`,
+//     top: radioInnerMargin - .2)unit,
+//     left: radioInnerMargin - .2)unit,
+//     width: radioButtonSize - radioInnerMargin * 2,
+//     height: radioButtonSize - radioInnerMargin * 2,
+//     content: "",
+//     backgroundColor: radioInnerColor,
+//     borderRadius: percent(50),
+//     transitionProperty: transform,
+//     transform: scale(0),
+//   }
+// }
+//
+// .radio-checked {
+//   @extend .radio,
+//   border: .2 * $unit solid radioInnerColor,
+//   &:before {
+//     transform: scale(1),
+//   }
+// }
+//
+// .ripple {
+//   backgroundColor: radioInnerColor,
+//   opacity: .3,
+//   transitionDuration: milliseconds(650),
+// }
+//
+// .disabled {
+//   @extend .field,
+//   .text {
+//     color: radioDisabledColor,
+//   }
+//   .radio {
+//     cursor: `auto`,
+//     borderColor: radioDisabledColor,
+//   }
+//   .radio-checked {
+//     cursor: `auto`,
+//     borderColor: radioDisabledColor,
+//     &:before {
+//       backgroundColor: radioDisabledColor,
+//     }
+//   }
+// }
