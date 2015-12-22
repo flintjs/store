@@ -26,9 +26,7 @@ view Checkbox {
 
   let handleToggle = (event) => {
     if (event.pageX !== 0 && event.pageY !== 0) blur()
-    if (!disabled && onChange) {
-      onChange(!checked, event)
-    }
+    !disabled && onChange(!checked, event)
   }
 
   let blur = () => view.refs.input.blur()

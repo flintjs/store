@@ -1,20 +1,21 @@
 const styles = {
-  listVerticalPadding: .8)unit,
-  listHorizontalPadding: 1.6)unit,
-  listContentLeftSpacing: 7.2)unit,
-  listSubheaderHeight: 4.8)unit,
-  listSubheaderFontSize: 1.4)unit,
-  listSubheaderFontWeight: 500,
-  listDividerHeight: .1)unit,
-  listItemMinHeight: 4.8)unit,
-  listItem-minHeight-legend: 7.2)unit,
-  listItemHoverColor: paletteGrey-200,
-  listItem-legend-marginTop: .3)unit,
-  listItem-icon-fontSize: 2.4)unit,
-  listItemIconSize: 1.8)unit,
-  listItem-right-icon-margin: listContentLeftSpacing - listHorizontalPadding - listItemIconSize,
-  listItemAvatarHeight: 4)unit,
-  listItemAvatarMargin: .8)unit,
+  verticalPadding: unit(.8),
+  horizontalPadding: unit(1.6),
+  contentLeftSpacing: unit(7.2),
+  subheaderHeight: unit(4.8),
+  subheaderFontSize: unit(1.4),
+  subheaderFontWeight: 500,
+  dividerHeight: unit(.1),
+
+  itemMinHeight: unit(4.8),
+  itemMinHeightLegend: unit(7.2),
+  itemHoverColor: colors.grey200,
+  itemLegendMarginTop: unit(.3),
+  itemIconFontSize: unit(2.4),
+  itemIconSize: unit(1.8),
+  itemRightIconMargin: listContentLeftSpacing - listHorizontalPadding - listItemIconSize,
+  itemAvatarHeight: unit(4),
+  itemAvatarMargin: unit(.8),
 }
 
 view List {
@@ -39,10 +40,10 @@ view List {
     position: `relative`,
     display: `inline-block`,
     width: percent(100),
-    padding: listVerticalPadding 0,
+    padding: [listVerticalPadding, 0],
     textAlign: left,
     whiteSpace: `nowrap`,
-    list-style: `none`,
+    listStyle: `none`,
   }
 
   // .checkbox {
@@ -146,19 +147,20 @@ view ListDivider {
 
   $ = {
     height: listDividerHeight,
-    margin: - listDividerHeight 0 0,
+    margin: [-listDividerHeight, 0, 0],
     backgroundColor: colorDivider,
     border: 0,
-    &.inset {
-      marginRight: listHorizontalPadding,
-      marginLeft: listContentLeftSpacing,
-    }
-    .list + & {
-      marginTop: - listVerticalPadding,
-    }
-    .listItem ~ & {
-      margin: listVerticalPadding 0,
-    }
+
+    // &.inset {
+    //   marginRight: listHorizontalPadding,
+    //   marginLeft: listContentLeftSpacing,
+    // }
+    // .list + & {
+    //   marginTop: - listVerticalPadding,
+    // }
+    // .listItem ~ & {
+    //   margin: listVerticalPadding 0,
+    // }
   }
 }
 
@@ -193,34 +195,32 @@ view ListItem {
 
   $ = {
     position: `relative`,
-    > [data-react-toolbox='ripple'] {
-      overflow: `hidden`,
-    }
   }
 
-  .item {
+  $item = {
     position: `relative`,
-    display: flex,
+    display: `flex`,
     minHeight: listItemMinHeight,
     alignItems: `center`,
-    padding: 0 listHorizontalPadding,
+    padding: [0, listHorizontalPadding],
     color: colorText,
-    &.selectable:not(.disabled):hover {
-      cursor: `pointer`,
-      backgroundColor: listItemHoverColor,
-    }
-    &.withLegend {
-      height: listItem-minHeight-legend,
-    }
-    &.disabled {
-      pointerEvents: `none`,
-      &:not(.checkboxItem) {
-        opacity: .5,
-      }
-      > .checkbox > [data-role='label'] {
-        opacity: .5,
-      }
-    }
+
+    // &.selectable:not(.disabled):hover {
+    //   cursor: `pointer`,
+    //   backgroundColor: listItemHoverColor,
+    // }
+    // &.withLegend {
+    //   height: listItem-minHeight-legend,
+    // }
+    // &.disabled {
+    //   pointerEvents: `none`,
+    //   &:not(.checkboxItem) {
+    //     opacity: .5,
+    //   }
+    //   > .checkbox > [data-role='label'] {
+    //     opacity: .5,
+    //   }
+    // }
   }
 }
 
@@ -239,9 +239,9 @@ view ListSubHeader {
 
   $h5 = {
     paddingLeft: listHorizontalPadding,
-    margin: - listVerticalPadding 0 0,
+    margin: [-listVerticalPadding, 0, 0],
     fontSize: listSubheaderFontSize,
-    font-weight: listSubheaderFontWeight,
+    fontWeight: listSubheaderFontWeight,
     lineHeight: listSubheaderHeight,
     color: colorTextSecondary,
   }

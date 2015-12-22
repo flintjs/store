@@ -1,6 +1,6 @@
 const styles = {
-  snackbarColorCancel: paletteRed-500,
-  snackbarColorAccept: paletteGreen-500,
+  snackbarColorCancel: paletteRed500,
+  snackbarColorAccept: paletteGreen500,
   snackbarColorWarning: paletteLimeA200,
   snackbarBackgroundColor: colorText,
   snackbarBorderRadius: .2 * $unit,
@@ -11,17 +11,18 @@ const styles = {
 }
 
 view Snackbar {
+  prop label: string
+
   prop action:? string
   prop active:? bool
   prop className:? string
   prop icon:? string
-  prop label:? string.isRequired
   prop onClick:? func
   prop onTimeout:? func
   prop timeout:? number
   prop type: string
 
-  componentDidUpdate () {
+  let componentDidUpdate = () => {
     if (props.active && props.timeout) {
       setTimeout(() => {
         props.onTimeout()
@@ -29,7 +30,7 @@ view Snackbar {
     }
   }
 
-  render () {
+  let render = () => {
     const {action, active, icon, label, onClick, type } = props
     const className = ClassNames([style.root, style[type]], {
       [style.active]: active
@@ -47,7 +48,7 @@ view Snackbar {
   }
 }
 
-// 
+//
 // .root {
 //   position: fixed,
 //   right: snackbarHorizontalOffset,

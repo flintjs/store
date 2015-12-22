@@ -1,30 +1,30 @@
 const styles = {
-  radioFieldMarginBottom: 1.5)unit,
-  radioButtonSize: 1.6 * $unit !default,
+  radioFieldMarginBottom: unit(1.5),
+  radioButtonSize: unit(1.6),
   radioInnerMargin: radioButtonSize / 4,
-  radioInnerColor: colorPrimary !default,
-  radioFocusColor: rgba(colorBlack, 0.1) !default,
-  radioCheckedFocusColor: rgba(colorPrimary, 0.26) !default,
-  radioTextColor: colorBlack !default,
-  radioDisabledColor: rgba(colorBlack, 0.26) !default,
-  radioTextFontSize: 1.4)unit,
+  radioInnerColor: colorPrimary,
+  radioFocusColor: rgba(colorBlack, 0.1),
+  radioCheckedFocusColor: rgba(colorPrimary, 0.26),
+  radioTextColor: colorBlack,
+  radioDisabledColor: rgba(colorBlack, 0.26),
+  radioTextFontSize: unit(1.4),
 }
 
 const Radio = ({checked, children, onMouseDown}) => {
   const className = style[checked ? 'radio-checked' : 'radio']
   return <div data-role='radio' onMouseDown={onMouseDown} className={className}>{children}</div>
 }
-  className: style.ripple,
-  spread: 2.6,
-  centered: true
-})(Radio)
+//   className: style.ripple,
+//   spread: 2.6,
+//   centered: true
+// })(Radio)
 
 
 
 view RadioButton {
-  prop checked:? bool
+  prop checked:? bool = false
   prop className:? string
-  prop disabled:? bool
+  prop disabled:? bool = false
   prop label:? string
   prop name:? string
   prop onBlur:? func
@@ -32,27 +32,21 @@ view RadioButton {
   prop onFocus:? func
   prop value: any
 
-  static defaultProps = {
-    checked: false,
-    className: '',
-    disabled: false
-  }
-
-  handleClick = (event) => {
+  let handleClick = (event) => {
     const {checked, disabled, onChange} = props
     if (event.pageX !== 0 && event.pageY !== 0) blur()
-    if (!disabled && !checked && onChange) onChange(event,
+    if (!disabled && !checked && onChange) onChange(event)
   }
 
-  blur () {
+  let blur = () => {
     view.refs.input.blur()
   }
 
-  focus () {
+  let focus = () => {
     view.refs.input.focus()
   }
 
-  render () {
+  let render = () => {
     const className = ClassNames(style[props.disabled ? 'disabled' : 'field'], props.className)
     const { onChange, ...others } = props
 
@@ -77,22 +71,16 @@ view RadioButton {
 
 view RadioGroup {
   prop children:? node
-  prop className:? string
-  prop disabled:? bool
+  prop disabled:? bool = false
   prop name:? string
   prop onChange:? func
   prop value: any
 
-  static defaultProps = {
-    className: '',
-    disabled: false
-  }
-
-  handleChange = (value) => {
+  let handleChange = (value) => {
     if (props.onChange) props.onChange(value)
   }
 
-  renderRadioButtons () {
+  let renderRadioButtons = () => {
     return React.Children.map(props.children, (radio, idx) => {
       return (
         <RadioButton
@@ -108,7 +96,7 @@ view RadioGroup {
     })
   }
 
-  render () {
+  let render = () => {
     return (
       <div className={props.className}>
         {renderRadioButtons()}

@@ -1,31 +1,32 @@
-const styles = {
-  timepickerHeaderFontSize: 5.2)unit,
-  timepickerHeaderPadding: $unit,
-  timepickerAmpmFontSize: 1.6)unit,
-  timepickerPrimary: colorPrimary,
-  timepickerPrimaryContrast: colorPrimaryContrast,
-  timepickerPrimaryDark: colorPrimaryDark,
-  timepickerPrimaryColor: timepickerPrimary !default,
-  timepickerPrimaryHoverColor: rgba(timepickerPrimary, 0.20) !default,
-  timepickerPrimaryContrastColor: timepickerPrimaryContrast !default,
-  timepickerPrimaryDarkColor: timepickerPrimaryDark !default,
-  timepickerAmpmHeight: 2.2)unit,
-  timepickerAmpmWidth: 4)unit,
-  timepickerDialogWidth: 30)unit,
+let timepickerPrimary = colors.primary
+let timepickerPrimaryContrast = colors.primaryContrast
+let timepickerPrimaryDark = colors.primaryDark
 
-  clockPadding: 1.5 * $unit 2)unit,
-  clockPrimary: colorPrimary,
-  clockPrimaryContrast: colorPrimaryContrast,
-  clockPrimaryDark: colorPrimaryDark,
-  clockPrimaryColor: clockPrimary !default,
-  clockPrimaryHoverColor: rgba(clockPrimary, 0.20) !default,
-  clockPrimaryContrastColor: clockPrimaryContrast !default,
-  clockPrimaryDarkColor: clockPrimaryDark !default,
-  clockNumberSize: 2)unit,
-  clockHandWidth: .4)unit,
-  clockHandDotSize: 1)unit,
-  clockKnobSize: 3.4)unit,
-  clockKnobSmallSize: 1.2)unit,
+const styles = {
+  timepickerHeaderFontSize: unit(5.2),
+  timepickerHeaderPadding: unit(1),
+  timepickerAmpmFontSize: unit(1.6),
+  timepickerPrimaryColor: timepickerPrimary,
+  timepickerPrimaryHoverColor: rgba(timepickerPrimary, 0.20),
+  timepickerPrimaryContrastColor: timepickerPrimaryContrast,
+  timepickerPrimaryDarkColor: timepickerPrimaryDark,
+  timepickerAmpmHeight: unit(2.2),
+  timepickerAmpmWidth: unit(4),
+  timepickerDialogWidth: unit(30),
+
+  clockPadding: [unit(1.5), unit(2)],
+  clockPrimary: colors.primary,
+  clockPrimaryContrast: colors.primaryContrast,
+  clockPrimaryDark: colors.primaryDark,
+  clockPrimaryColor: clockPrimary,
+  clockPrimaryHoverColor: rgba(clockPrimary, 0.20),
+  clockPrimaryContrastColor: clockPrimaryContrast,
+  clockPrimaryDarkColor: clockPrimaryDark,
+  clockNumberSize: unit(2),
+  clockHandWidth: unit(.4),
+  clockHandDotSize: unit(1),
+  clockKnobSize: unit(3.4),
+  clockKnobSmallSize: unit(1.2),
 }
 
 view Clock {
@@ -126,87 +127,57 @@ view Clock {
 
 
 view Face {
-  prop active:? number
-  prop numbers:? array
-  prop radius:? number
+  prop active:? number = false
+  prop numbers:? array = []
+  prop onTouchStart:? func = Flint.noop
+  prop onMouseDown:? func = Flint.noop
+  prop radius:? number = 0
   prop spacing:? number
-  prop twoDigits: bool
+  prop twoDigits: bool = false
 
-  static defaultProps = {
-    active: null,
-    numbers: [],
-    radius: 0,
-    twoDigits: false
+  let rad
+
+  on.update(() => {
+    rad = radius - spacing
+  })
+
+  <face
+    ref='root'
+    onTouchStart={onTouchStart}
+    onMouseDown={onMouseDown}>
+    <number
+      class={{ active }}
+      key={number}>
+      {twoDigits ? ('0' + number).slice(-2) : number}
+    </number>
+  </face>
+
+  $face = {
+    height: radius * 2,
+    width: radius * 2
   }
 
-  let numberStyle = (rad, num) => {
-    return {
-      position: 'absolute',
-      left: (rad + rad * Math.sin(360 * (Math.PI / 180) / 12 * (num - 1)) + spacing),
-      top: (rad - rad * Math.cos(360 * (Math.PI / 180) / 12 * (num - 1)) + spacing)
-    }
-  }
-
-  let faceStyle = () => {
-    return {
-      height: radius * 2,
-      width: radius * 2
-    }
-  }
-
-  let renderNumber = (number, idx) => {
-    let className = style.number
-    if (number === active) className += ` ${style.active}`
-    return (
-      <span
-        className={className}
-        style={numberStyle(radius - spacing, idx + 1)}
-        key={number}
-      >
-        {twoDigits ? ('0' + number).slice(-2) : number}
-      </span>
-    )
-  }
-
-  let render = () => {
-    return (
-      <div
-        ref='root'
-        className={style.face}
-        onTouchStart={onTouchStart}
-        onMouseDown={onMouseDown}
-        style={faceStyle()}
-      >
-        {numbers.map(renderNumber.bind()}
-      </div>
-    )
+  $number = {
+    position: 'absolute',
+    left: (rad + rad * Math.sin(360 * (Math.PI / 180) / 12 * (num - 1)) + spacing),
+    top: (rad - rad * Math.cos(360 * (Math.PI / 180) / 12 * (num - 1)) + spacing)
   }
 }
 
 
 
 view Hand {
-  prop angle:? number
-  prop className:? string
-  prop length:? number
+  prop angle:? number = 0
+  prop length:? number = 0
   prop onMove:? func
   prop onMoved:? func
-  prop origin:? object
+  prop origin:? object = {}
   prop step: number
 
-  static defaultProps = {
-    className: '',
-    angle: 0,
-    length: 0,
-    origin: {}
-  }
-
-  state = {
-    knobWidth: 0
-  }
+  let knobWidth = 0
 
   let componentDidMount = () => {
-    let knobWidth = view.refs.knob.offsetWidth
+    knobWidth = view.refs.knob.offsetWidth
   }
 
   let getMouseEventMap = () => {
@@ -275,18 +246,19 @@ view Hand {
     if (onMove) onMove(degrees === 360 ? 0 : degrees, radius)
   }
 
-  let render = () => {
-    const className = `${style.hand} ${className}`
-    const handStyle = prefixer({
-      height: length - state.knobWidth / 2,
-      transform: `rotate(${angle}deg)`
-    })
+  let handStyle
 
-    return (
-      <div className={className} style={handStyle}>
-        <div ref='knob' className={style.knob}></div>
-      </div>
-    )
+  on.render(() => {
+    const className = `${style.hand} ${className}`
+  })
+
+  <hand>
+    <knob ref='knob' />
+  </hand>
+
+  $hand = {
+    height: length - knobWidth / 2,
+    transform: `rotate(${angle}deg)`
   }
 }
 
@@ -295,7 +267,7 @@ view Hand {
 const outerNumbers = [0, ...utils.range(13, 24)]
 const innerNumbers = [12, ...utils.range(1, 12)]
 const innerSpacing = 1.7
-const step = 360 / 12
+// const step = 360 / 12
 
 view Hours {
   prop center:? object
@@ -388,15 +360,10 @@ const step = 360 / 60
 
 view Minutes {
   prop center:? object
-  prop onChange:? func
+  prop onChange:? func = Flint.noop
   prop radius:? number
-  prop selected:? number
+  prop selected:? number = 0
   prop spacing: number
-
-  static defaultProps = {
-    selected: 0,
-    onChange: null
-  }
 
   let handleHandMove = (degrees) => {
     onChange(degrees / step)
@@ -438,34 +405,26 @@ view Minutes {
 
 
 view TimePicker {
-  prop className:? string
   prop error:? string
-  prop format:? string//oneOf(['24hr', 'ampm'])
+  prop format:? string = '24hr'//oneOf(['24hr', 'ampm'])
   prop label:? string
   prop onChange:? func
   prop value: object
 
-  static defaultProps = {
-    className: '',
-    format: '24hr'
-  }
-
-  state = {
-    active: false
-  }
+  let active = false
 
   let handleDismiss = () => {
-    let active = false
+    active = false
   }
 
   let handleInputMouseDown = (event) => {
     events.pauseEvent(event)
-    let active = true
+    active = true
   }
 
   let handleSelect = (value, event) => {
     if (onChange) onChange(value, event)
-    let active = false
+    active = false
   }
 
   let render = () => {
@@ -498,18 +457,12 @@ view TimePicker {
 
 
 view TimePickerDialog {
-  prop active:? bool
+  prop active:? bool = false
   prop className:? string
-  prop format:? string//oneOf(['24hr', 'ampm'])
+  prop format:? string = '24hr'//oneOf(['24hr', 'ampm'])
   prop onDismiss:? func
   prop onSelect:? func
-  prop value: object
-
-  static defaultProps = {
-    active: false,
-    format: '24hr',
-    value: new Date()
-  }
+  prop value: object = new Date()
 
   state = {
     display: 'hours',
@@ -535,7 +488,8 @@ view TimePickerDialog {
   }
 
   let handleHandMoved = () => {
-    if (state.display === 'hours') let display = 'minutes'
+    if (display === 'hours')
+      display = 'minutes'
   }
 
   let switchDisplay = (display) => {

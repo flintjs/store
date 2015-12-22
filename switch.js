@@ -24,37 +24,31 @@ const styles = {
 }
 
 view Switch {
-  prop checked:? bool
+  prop checked:? bool = false
   prop className:? string
-  prop disabled:? bool
+  prop disabled:? bool = false
   prop label:? string
   prop name:? string
   prop onBlur:? func
   prop onChange:? func
   prop onFocus: func
 
-  static defaultProps = {
-    checked: false,
-    className: '',
-    disabled: false
-  }
-
-  handleToggle = (event) => {
+  let handleToggle = (event) => {
     if (event.pageX !== 0 && event.pageY !== 0) blur()
     if (!props.disabled && props.onChange) {
       props.onChange(!props.checked, event)
     }
   }
 
-  blur () {
+  let blur = () => {
     view.refs.input.blur()
   }
 
-  focus () {
+  let focus = () => {
     view.refs.input.focus()
   }
 
-  render () {
+  let render = () => {
     let className = style[props.disabled ? 'disabled' : 'field']
     const switchClassName = style[props.checked ? 'on' : 'off']
     const { onChange, ...others } = props

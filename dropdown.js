@@ -1,11 +1,11 @@
 const styles = {
-  dropdownOffset: 1.6)unit,
-  dropdownColorWhite: colorWhite,
-  dropdownColorPrimary: colorPrimary,
-  dropdownColorPrimaryContrast: colorPrimaryContrast,
-  dropdownValueHoverBackground: paletteGrey-200,
-  dropdownOverflowMaxHeight: vh(45),
-  dropdownValueBorderRadius: .2)unit,
+  offset: unit(1.6),
+  colorWhite: colors.white,
+  colorPrimary: colors.primary,
+  colorPrimaryContrast: colors.primaryContrast,
+  valueHoverBackground: colors.grey200,
+  overflowMaxHeight: vh(45),
+  valueBorderRadius: unit(.2),
 }
 
 view Dropdown {
@@ -80,108 +80,108 @@ view Dropdown {
     </ul>
   </dropdown>
 
-  $ = {
-    position: `relative`,
-    width: inherit,
-    marginBottom: dropdownOffset,
-    color: colorText,
-    cursor: `pointer`,
-    borderBottom: 1 solid inputText-bottom-borderColor,
-    &:not(.active) {
-      > .values {
-        maxHeight: 0,
-        visibility: `hidden`,
-      }
-    }
-    &.active {
-      > .label, > .value {
-        opacity: .5,
-      }
-      > .values {
-        maxHeight: dropdownOverflowMaxHeight,
-        visibility: `visible`,
-        boxShadow: zdepthShadow-1,
-      }
-    }
-    &.disabled {
-      color: colorTextSecondary,
-      pointerEvents: `none`,
-      cursor: normal,
-      borderBottom-style: dotted,
-      > .value:after {
-        transform: scale(0),
-      }
-    }
-    &:not(.up) > .values {
-      top: 0,
-      bottom: `auto`,
-    }
-    &.up > .values {
-      top: `auto`,
-      bottom: 0,
-    }
-  }
-
-  .label {
-    fontSize: fontSizeTiny,
-    color: colorTextSecondary,
-  }
-
-  .values {
-    @include no-webkit-scrollbar,
-    position: `absolute`,
-    zIndex: 2,
-    width: percent(100),
-    overflowX: `hidden`,
-    overflowY: `auto`,
-    list-style: `none`,
-    backgroundColor: dropdownColorWhite,
-    borderRadius: dropdownValueBorderRadius,
-    transitionTimingFunction: animationCurveDefault,
-    transitionDuration: animationDuration,
-    transitionProperty: maxHeight, boxShadow,
-    > * {
-      position: `relative`,
-      padding: $unit,
-      overflow: `hidden`,
-      cursor: `pointer`,
-      &:hover {
-        backgroundColor: dropdownValueHoverBackground,
-      }
-      &.selected {
-        color: dropdownColorPrimary,
-      }
-    }
-  }
-
-  .value {
-    display: `block`,
-    > span {
-      display: `inline-block`,
-      height: inputFieldHeight,
-      fontSize: inputFieldFontSize,
-      lineHeight: inputFieldHeight,
-    }
-    > :not(span) {
-      margin: (dropdownOffset / 2) 0,
-    }
-    &:after {
-      $size: (inputFieldHeight / 7),
-      $border: $size solid `transparent`,
-      position: `absolute`,
-      right: (dropdownOffset / 2),
-      bottom: dropdownOffset,
-      width: 0,
-      height: 0,
-      content: "",
-      borderTop: $size solid inputText-bottom-borderColor,
-      borderRight: $border,
-      borderLeft: $border,
-      transition: transform animationDuration animationCurveDefault,
-    }
-  }
-  root > :last-child = {
-    marginBottom: 0,
-  }
+  // $ = {
+  //   position: `relative`,
+  //   width: inherit,
+  //   marginBottom: dropdownOffset,
+  //   color: colorText,
+  //   cursor: `pointer`,
+  //   borderBottom: [1, `solid`, inputText-bottom-borderColor,
+  //   &:not(.active) {
+  //     > .values {
+  //       maxHeight: 0,
+  //       visibility: `hidden`,
+  //     }
+  //   }
+  //   &.active {
+  //     > .label, > .value {
+  //       opacity: .5,
+  //     }
+  //     > .values {
+  //       maxHeight: dropdownOverflowMaxHeight,
+  //       visibility: `visible`,
+  //       boxShadow: zdepthShadow-1,
+  //     }
+  //   }
+  //   &.disabled {
+  //     color: colorTextSecondary,
+  //     pointerEvents: `none`,
+  //     cursor: normal,
+  //     borderBottom-style: dotted,
+  //     > .value:after {
+  //       transform: scale(0),
+  //     }
+  //   }
+  //   &:not(.up) > .values {
+  //     top: 0,
+  //     bottom: `auto`,
+  //   }
+  //   &.up > .values {
+  //     top: `auto`,
+  //     bottom: 0,
+  //   }
+  // }
+  //
+  // .label {
+  //   fontSize: fontSizeTiny,
+  //   color: colorTextSecondary,
+  // }
+  //
+  // .values {
+  //   @include no-webkit-scrollbar,
+  //   position: `absolute`,
+  //   zIndex: 2,
+  //   width: percent(100),
+  //   overflowX: `hidden`,
+  //   overflowY: `auto`,
+  //   list-style: `none`,
+  //   backgroundColor: dropdownColorWhite,
+  //   borderRadius: dropdownValueBorderRadius,
+  //   transitionTimingFunction: animationCurveDefault,
+  //   transitionDuration: animationDuration,
+  //   transitionProperty: maxHeight, boxShadow,
+  //   > * {
+  //     position: `relative`,
+  //     padding: $unit,
+  //     overflow: `hidden`,
+  //     cursor: `pointer`,
+  //     &:hover {
+  //       backgroundColor: dropdownValueHoverBackground,
+  //     }
+  //     &.selected {
+  //       color: dropdownColorPrimary,
+  //     }
+  //   }
+  // }
+  //
+  // .value {
+  //   display: `block`,
+  //   > span {
+  //     display: `inline-block`,
+  //     height: inputFieldHeight,
+  //     fontSize: inputFieldFontSize,
+  //     lineHeight: inputFieldHeight,
+  //   }
+  //   > :not(span) {
+  //     margin: (dropdownOffset / 2) 0,
+  //   }
+  //   &:after {
+  //     $size: (inputFieldHeight / 7),
+  //     $border: $size solid `transparent`,
+  //     position: `absolute`,
+  //     right: (dropdownOffset / 2),
+  //     bottom: dropdownOffset,
+  //     width: 0,
+  //     height: 0,
+  //     content: "",
+  //     borderTop: $size solid inputText-bottom-borderColor,
+  //     borderRight: $border,
+  //     borderLeft: $border,
+  //     transition: transform animationDuration animationCurveDefault,
+  //   }
+  // }
+  // root > :last-child = {
+  //   marginBottom: 0,
+  // }
 }
 

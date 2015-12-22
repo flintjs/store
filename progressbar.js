@@ -1,7 +1,7 @@
 const styles = {
-  progressHeight: .4)unit,
-  progressMainColor: colorPrimary !default,
-  progressSecondaryColor: rgba(colorPrimaryContrast, 0.7) !default,
+  progressHeight: unit(.4),
+  progressMainColor: colorPrimary,
+  progressSecondaryColor: rgba(colorPrimaryContrast, 0.7),
   circleWrapperWidth: 60,
   circleRadius: 25,
   scaleRatio: circleRadius / 20,

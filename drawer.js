@@ -1,8 +1,8 @@
 const styles = {
-  drawerBackgroundColor: paletteGrey-50,
-  drawerBorderColor: paletteGrey-300,
-  drawerTextColor: paletteGrey-800,
-  drawerWidth: 24)unit,
+  backgroundColor: colors.grey50,
+  borderColor: colors.grey300,
+  textColor: colors.grey800,
+  width: unit(24),
 }
 
 view Drawer {
@@ -20,41 +20,40 @@ view Drawer {
   </Overlay>
 
   $ = {
-    @include shadow-2dp(),
+    // @include shadow-2dp(),
     position: `absolute`,
     top: 0,
     display: `block`,
-    width: drawerWidth,
+    width: styles.width,
     height: percent(100),
     overflowX: `hidden`,
     overflowY: `auto`,
-    color: drawerTextColor,
+    color: styles.textColor,
     pointerEvents: `none`,
-    backgroundColor: drawerBackgroundColor,
+    backgroundColor: styles.backgroundColor,
     transitionDelay: seconds(0),
-    transitionTimingFunction: animationCurveDefault,
-    transitionDuration: animationDuration,
-    transitionProperty: transform,
-    transform-style: preserve-3d,
-    will-change: transform,
-    &.active {
-      pointerEvents: all,
-      transitionDelay: animationDelay,
-      transform: translateX(0),
-    }
-    &.right {
-      right: 0,
-      borderLeft: 1 solid drawerBorderColor,
-      &:not(.active) {
-        transform: translateX(percent(100)),
-      }
-    }
-    &.left {
-      left: 0,
-      borderRight: 1 solid drawerBorderColor,
-      &:not(.active) {
-        transform: translateX(- percent(100)),
-      }
-    }
+    transitionTimingFunction: `animationCurveDefault`,
+    transitionDuration: `animationDuration`,
+    transitionProperty: `transform`,
+    transformStyle: `preserve-3d`,
+    willChange: `transform`,
+  }
+
+  $active = {
+    pointerEvents: `all`,
+    transitionDelay: `animationDelay`,
+    transform: translateX(0),
+  }
+
+  $right = {
+    right: 0,
+    borderLeft: [1, `solid`, styles.borderColor],
+    transform: !active ? translateX(percent(100)) : `auto`,
+  }
+
+  $left = {
+    left: 0,
+    borderRight: [1, `solid`, styles.borderColor],
+    transform: !active ? translateX(- percent(100)) : `auto`,
   }
 }
