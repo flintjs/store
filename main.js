@@ -3,7 +3,6 @@ let isActive = s =>
 
 view Main {
   let examples = [
-    'Avatar',
     'Button',
     'Card',
     'Dropdown',
