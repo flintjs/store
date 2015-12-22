@@ -1,12 +1,57 @@
+let isActive = s =>
+  location.pathname.toLowerCase().substr(1) == s.toLowerCase()
+
 view Main {
-  <ModalExample />
-  <ButtonExample />
-  <CardExample />
-  <CardExample />
-  <SliderExample />
+  let examples = [
+    'Button', 'Modal', 'Slider',
+    'Avatar', 'Card',
+  ]
+
+  let route = x => `/${x.toLowerCase()}`
+
+  <nav>
+    <a repeat={examples}
+       class={{active: isActive(_) }}
+       onClick={Flint.router.link(_.toLowerCase())}>{_}</a>
+  </nav>
+  <examples repeat={examples}>
+    <example route={route(_)}>
+      {view.el([`${_}Example`, 0], null)}
+    </example>
+  </examples>
+  <example route="/">
+    <Card>
+      <Card.Title
+        title="Welcome to Kit"
+        subtitle="A beautiful UI Kit by Flint"
+      />
+    </Card>
+  </example>
 
   $ = {
     flexFlow: 'row'
+  }
+
+
+  $example = {
+    margin: 30,
+  }
+
+  $Card = { width: 300, }
+  $active = {
+    fontWeight: 'bold',
+  }
+
+  $nav = {
+    width: 250,
+    margin: 20,
+  }
+
+  $a = {
+    marginTop: 30,
+    fontSize: 30,
+    textDecoration: 'none',
+    color: '#333',
   }
 }
 
@@ -34,10 +79,11 @@ view ModalExample {
     { label: "Cancel", onClick: handleToggle },
     { label: "Save", onClick: handleToggle }
   ]
-
-  <Button label='Show my dialog' onClick={handleToggle}>
+  <Button onClick={handleToggle}>
     Show Modal
   </Button>
+  <ModalExample.DeleteFile />
+
   <Modal
     actions={actions}
     active={active}
@@ -47,11 +93,31 @@ view ModalExample {
   </Modal>
 }
 
+view ModalExample.DeleteFile {
+  let text = "Delete file?"
+  let active = false
+
+  function commit() {
+    text = "Deleted."
+    active = false
+    on.delay(1000, () => text = "Delete File?")
+  }
+  <Button onClick={() => active = true}>{text}</Button>
+  <h3>(file delete modal active {active.toString()})</h3>
+  <Modal active={active}
+         actions={[
+           { label: 'Yes', onClick: commit },
+           { label: 'No', onClick: () => active = false },
+         ]}>
+    <p>Are you sure?</p>
+  </Modal>
+}
+
 view CardExample {
   <Card>
     <Card.Title
       title="Hello World"
-      subtitle="Subtitle here"
+      subtitle="Flint is good, Flint is great."
       avatar="https://placeimg.com/80/80/animals"
     />
     <Card.Media
@@ -89,6 +155,6 @@ view ButtonExample {
   <Button icon='add' floating accent mini />
   <IconButton icon='favorite' accent />
   <IconButton primary><GithubIcon /></IconButton>
-  <Button icon='add' label='Add this' flat primary />
-  <Button icon='add' label='Add this' flat disabled />
+  <Button icon='add' label='Add flat primary' />
+  <Button icon='add' label='Add flat disabled' />
 }
