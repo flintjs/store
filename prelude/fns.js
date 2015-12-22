@@ -53,7 +53,7 @@ export default {
     const length = Math.max(Math.ceil((_stop - _start) / step), 0)
     const range = Array(length)
 
-    for (let idx = 0 idx < length idx++, _start += step) {
+    for (let idx = 0; idx < length; idx++, _start += step) {
       range[idx] = _start
     }
 
