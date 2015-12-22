@@ -32,21 +32,20 @@ const styles = {
 }
 
 view Input {
-  prop disabled:? bool = false
-  prop floating:? bool = true
-  prop multiline:? bool = false
-  prop required:? bool = false
-  prop type:? string = 'text'
-  prop onChange:? func = Flint.noop
-
   prop children:? any
+  prop disabled:? bool = false
   prop error:? string
+  prop floating:? bool = true
   prop icon:? string
   prop label:? string
   prop maxLength:? number
+  prop multiline:? bool = false
   prop onBlur:? func
+  prop onChange:? func = Flint.noop
   prop onFocus:? func
   prop onKeyPress:? func
+  prop required:? bool = false
+  prop type:? string = 'text'
   prop value:? any
 
   const handleChange = event => onChange(event.target.value, event)
@@ -69,7 +68,7 @@ view Input {
     />
     <FontIcon class="icon" if={icon} value={icon} />
     <bar />
-    <label if={labelText} class={{ fixed: !floating }}>{labelText}</label>
+    <label if={label}>{label}</label>
     <error if={error}>{error}</error>
     <counter if={maxLength}>{length}/{maxLength}</counter>
     {children}
@@ -79,11 +78,7 @@ view Input {
   $ = {
     position: `relative`,
     padding: [styles.padding, 0],
-    marginLeft: withIcon ? styles.iconSize : 0
-  }
-
-  $errored = {
-    paddingBottom: 0
+    marginLeft: icon ? styles.iconSize : 0
   }
 
   $icon = {
@@ -118,7 +113,7 @@ view Input {
       borderBottomStyle: dotted,
     },
 
-    errored && {
+    error && {
       marginTop: 1,
       borderBottomColor: styles.textErrorColor,
     }
@@ -138,23 +133,23 @@ view Input {
       transitionProperty: `top, fontSize, color`,
     },
 
-    fixed && filled && {
+    !floating && filled && {
       display: none,
     },
 
-    focus && !fixed && {
+    focus && floating && {
       color: styles.textErrorColor,
     },
 
-    focus && !fixed && {
+    focus && floating && {
       color: styles.textHighlightColor,
     },
 
-    errored && {
+    error && {
       color: styles.textErrorColor,
     },
 
-    !fixed && (focus || filled || type == 'date' || type == 'time') && {
+    floating && (focus || filled || type == 'date' || type == 'time') && {
       top: styles.focusLabelTop,
       fontSize: styles.labelFontSize,
     }
@@ -186,7 +181,7 @@ view Input {
       after: { width: percent(50) },
     },
 
-    focus && !fixed && {
+    focus && floating && {
       before: { backgroundColor: styles.textErrorColor },
       after: { backgroundColor: styles.textErrorColor },
     },
@@ -209,7 +204,7 @@ view Input {
       color: styles.textLabelColor,
     },
 
-    errored && {
+    error && {
       color: styles.textErrorColor,
     }
   ]

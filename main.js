@@ -61,11 +61,11 @@ view SliderExample {
   let slider3 = 1
 
   <p>Normal slider</p>
-  <Slider sync={slider1} />
+  <Slider value={slider1} onChange={_ => slider1 = _} />
   <p>With steps, initial value and editable</p>
-  <Slider min={0} max={10} editable sync={slider2} />
+  <Slider min={0} max={10} editable value={slider2} onChange={_ => slider2 = _} />
   <p>Pinned and with snaps</p>
-  <Slider pinned snaps min={0} max={10} step={1} editable sync={slider3} />
+  <Slider pinned snaps min={0} max={10} step={1} editable value={slider3} onChange={_ => slider3 = _} />
 }
 
 view ModalExample {
