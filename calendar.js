@@ -1,12 +1,10 @@
-
-
 view Calendar {
   prop display:? string = 'months'//oneOf(['months', 'years'])
   prop selectedDate:? object = new Date()
 
   prop maxDate:? object
   prop minDate:? object
-  prop onChange:? func
+  prop onChange:? func = Flint.noop
   prop viewDate: object
 
   let _viewDate = selectedDate
@@ -25,71 +23,45 @@ view Calendar {
   }
 
   let handleDayClick = (day) => {
-    props.onChange(time.setDay(_viewDate, day))
+    onChange(time.setDay(_viewDate, day))
   }
 
   let handleYearClick = (year) => {
-    const viewDate = time.setYear(props.selectedDate, year)
-    setState({viewDate})
-    props.onChange(viewDate)
+    viewDate = time.setYear(selectedDate, year)
+    onChange(viewDate)
   }
 
   let changeViewMonth = (direction, step) => {
-    setState({
-      direction,
-      viewDate: time.addMonths(_viewDate, step)
-    })
+    direction = direction
+    viewDate = time.addMonths(_viewDate, step)
   }
 
-  renderYear (year) {
-    const props = {
-      className: year === _viewDate.getFullYear() ? style.active : '',
-      key: year,
-      onClick: handleYearClick.bind( year)
-    }
-
-    if (year === _viewDate.getFullYear()) {
-      props.ref = 'activeYear'
-    }
-
-    return <li {...props}>{year}</li>
-  }
-
-  renderYears () {
-    return (
-      <ul data-react-toolbox='years' ref="years" className={style.years}>
-        {utils.range(1900, 2100).map((i) => { return renderYear(i) })}
-      </ul>
-    )
-  }
-
-  renderMonths () {
-    const animation = state.direction === 'left' ? SlideLeft : SlideRight
-    return (
-      <div data-react-toolbox='calendar'>
-        <IconButton className={style.prev} icon='chevron_left' onClick={changeViewMonth.bind( 'left', -1)} />
-        <IconButton className={style.next} icon='chevron_right' onClick={changeViewMonth.bind( 'right', 1)} />
-        <CssTransitionGroup transitionName={animation} transitionEnterTimeout={350} transitionLeaveTimeout={350}>
-          <CalendarMonth
-            key={_viewDate.getMonth()}
-            maxDate={props.maxDate}
-            minDate={props.minDate}
-            viewDate={_viewDate}
-            selectedDate={props.selectedDate}
-            onDayClick={handleDayClick}
-          />
-        </CssTransitionGroup>
-      </div>
-    )
-  }
-
-  render () {
-    return (
-      <div className={style.root}>
-        {props.display === 'months' ? renderMonths() : renderYears()}
-      </div>
-    )
-  }
+  <months if={display == 'months'}>
+    <IconButton className={style.prev} icon='chevron_left' onClick={changeViewMonth.bind( 'left', -1)} />
+    <IconButton className={style.next} icon='chevron_right' onClick={changeViewMonth.bind( 'right', 1)} />
+    <CssTransitionGroup transitionName={animation = direction === 'left' ? SlideLeft : SlideRight} transitionEnterTimeout={350} transitionLeaveTimeout={350}>
+      <CalendarMonth
+        key={_viewDate.getMonth()}
+        maxDate={maxDate}
+        minDate={minDate}
+        viewDate={_viewDate}
+        selectedDate={selectedDate}
+        onDayClick={handleDayClick}
+      />
+    </CssTransitionGroup>
+  </months>
+  <years-ul if={display != months} ref="years" className={style.years}>
+    <li
+      repeat={utils.range(1900, 2100)}
+      {...({
+        className: year === _viewDate.getFullYear() ? style.active : '',
+        key: year,
+        ref: year === _viewDate.getFullYear() ? 'activeYear' : null,
+        onClick: handleYearClick.bind( year)
+      })}>
+      {_}
+    </li>
+  </years-ul>
 }
 
 
@@ -97,35 +69,35 @@ view Calendar {
 view Day {
   prop day:? number
   prop disabled:? bool
-  prop onClick:? func
+  prop onClick:? func = Flint.noop
   prop selectedDate:? object
   prop viewDate: object
 
   let dayStyle = () => {
-    if (props.day === 1) {
+    if (day === 1) {
       return {
-        marginLeft: `${time.getFirstWeekDay(props.viewDate) * 100 / 7}%`
+        marginLeft: `${time.getFirstWeekDay(viewDate) * 100 / 7}%`
       }
     }
   }
 
   let isSelected = () => {
-    const sameYear = props.viewDate.getFullYear() === props.selectedDate.getFullYear()
-    const sameMonth = props.viewDate.getMonth() === props.selectedDate.getMonth()
-    const sameDay = props.day === props.selectedDate.getDate()
+    const sameYear = viewDate.getFullYear() === selectedDate.getFullYear()
+    const sameMonth = viewDate.getMonth() === selectedDate.getMonth()
+    const sameDay = day === selectedDate.getDate()
     return sameYear && sameMonth && sameDay
   }
 
   let render = () => {
     const className = ClassNames(style.day, {
       [style.active]: isSelected(),
-      [style.disabled]: props.disabled
+      [style.disabled]: disabled
     })
 
     return (
-      <div data-react-toolbox='day' className={className} style={dayStyle()}>
-        <span onClick={props.onClick}>
-          {props.day}
+      <div className={className} style={dayStyle()}>
+        <span onClick={onClick}>
+          {day}
         </span>
       </div>
     )
@@ -137,24 +109,24 @@ view Day {
 view Month {
   prop maxDate:? object
   prop minDate:? object
-  prop onDayClick:? func
+  prop onDayClick:? func = Flint.noop
   prop selectedDate:? object
   prop viewDate: object
 
   let handleDayClick = (day) => {
-    if (props.onDayClick) props.onDayClick(day)
+    if (onDayClick) onDayClick(day)
   }
 
-  renderWeeks () {
+  let renderWeeks = () => {
     return utils.range(0, 7).map(i => {
       return <span key={i}>{time.getFullDayOfWeek(i).charAt(0)}</span>
     })
   }
 
-  renderDays () {
-    return utils.range(1, time.getDaysInMonth(props.viewDate) + 1).map(i => {
-      const date = new Date(props.viewDate.getFullYear(), props.viewDate.getMonth(), i)
-      const disabled = time.dateOutOfRange(date, props.minDate, props.maxDate)
+  let renderDays = () => {
+    return utils.range(1, time.getDaysInMonth(viewDate) + 1).map(i => {
+      const date = new Date(viewDate.getFullYear(), viewDate.getMonth(), i)
+      const disabled = time.dateOutOfRange(date, minDate, maxDate)
 
       return (
         <CalendarDay
@@ -162,18 +134,18 @@ view Month {
           day={i}
           disabled={disabled}
           onClick={!disabled ? handleDayClick.bind( i) : null}
-          selectedDate={props.selectedDate}
-          viewDate={props.viewDate}
+          selectedDate={selectedDate}
+          viewDate={viewDate}
         />
       )
     })
   }
 
-  render () {
+  let render = () => {
     return (
-      <div data-react-toolbox='month' className={style.month}>
+      <div className={style.month}>
         <span className={style.title}>
-          {time.getFullMonth(props.viewDate)} {props.viewDate.getFullYear()}
+          {time.getFullMonth(viewDate)} {viewDate.getFullYear()}
         </span>
         <div className={style.week}>{renderWeeks()}</div>
         <div className={style.days}>{renderDays()}</div>
@@ -191,7 +163,7 @@ view DatePicker {
   prop label:? string
   prop maxDate:? object
   prop minDate:? object
-  prop onChange:? func
+  prop onChange:? func = Flint.noop
   prop value: object
 
   state = {
@@ -208,11 +180,11 @@ view DatePicker {
   }
 
   let handleSelect = (value, event) => {
-    if (props.onChange) props.onChange(value, event)
+    if (onChange) onChange(value, event)
     let active = false
   }
 
-  render () {
+  let render = () => {
     const { value } = props
     const date = value ? `${value.getDate()} ${time.getFullMonth(value)} ${value.getFullYear()}` : null
 
@@ -220,96 +192,73 @@ view DatePicker {
       <div data-toolbox='date-picker'>
         <Input
           className={style.input}
-          error={props.error}
+          error={error}
           onMouseDown={handleInputMouseDown}
-          label={props.label}
+          label={label}
           readOnly
           type='text'
           value={date}
         />
         <DatePickerDialog
-          active={state.active}
-          className={props.className}
-          maxDate={props.maxDate}
-          minDate={props.minDate}
+          active={active}
+          className={className}
+          maxDate={maxDate}
+          minDate={minDate}
           onDismiss={handleDismiss}
           onSelect={handleSelect}
-          value={props.value}
+          value={value}
         />
       </div>
     )
   }
 }
 
-
-
 view CalendarDialog {
-  prop active:? bool
-  prop className:? string
+  prop active:? bool = false
   prop maxDate:? object
   prop minDate:? object
-  prop onDismiss:? func
-  prop onSelect:? func
-  prop value: object
+  prop onDismiss:? func = Flint.noop
+  prop onSelect:? func = Flint.noop
+  prop value: object = new Date()
 
-  static defaultProps = {
-    active: false,
-    className: '',
-    value: new Date()
-  }
-
-  state = {
-    date: props.value,
-    display: 'months'
-  }
+  let date = value
+  let display = 'months'
 
   let handleCalendarChange = (value) => {
-    const state = {display: 'months', date: value}
-    if (time.dateOutOfRange(value, props.minDate, props.maxDate)) {
-      state.date = props.maxDate || props.minDate
+    display = 'months'
+    date = value
+
+    if (time.dateOutOfRange(value, minDate, maxDate)) {
+      date = maxDate || minDate
     }
-    setState(state)
   }
 
-  let handleSelect = (event) => {
-    if (props.onSelect) props.onSelect(state.date, event)
-  }
+  let handleSelect = (event) => onSelect(date, event)
+  let handleSwitchDisplay = _ => display = _
 
-  let handleSwitchDisplay = (display) => {
-    setState({ display })
-  }
-
-  actions = [
-    { label: 'Cancel', className: style.button, onClick: props.onDismiss },
+  let actions = [
+    { label: 'Cancel', className: style.button, onClick: onDismiss },
     { label: 'Ok', className: style.button, onClick: handleSelect }
   ]
 
-  render () {
-    const display = `display-${state.display}`
-    const className = ClassNames(style.dialog, props.className)
-    const headerClassName = ClassNames(style.header, style[display])
+  <Dialog active={active} type="custom" actions={actions}>
+      <header className={{ [`display-${display}`]: true }}>
+        <year onClick={handleSwitchDisplay.bind( 'years')}>
+          {date.getFullYear()}
+        </year>
+        <date-h3 onClick={handleSwitchDisplay.bind( 'months')}>
+          {time.getShortDayOfWeek(date.getDay())}, {time.getShortMonth(date)} {date.getDate()}
+        </date-h3>
+      </header>
 
-    return (
-      <Dialog active={props.active} type="custom" className={className} actions={actions}>
-          <header className={headerClassName}>
-            <span className={style.year} onClick={handleSwitchDisplay.bind( 'years')}>
-              {state.date.getFullYear()}
-            </span>
-            <h3 className={style.date} onClick={handleSwitchDisplay.bind( 'months')}>
-              {time.getShortDayOfWeek(state.date.getDay())}, {time.getShortMonth(state.date)} {state.date.getDate()}
-            </h3>
-          </header>
-
-          <div className={style.wrapper}>
-            <Calendar
-              display={state.display}
-              maxDate={props.maxDate}
-              minDate={props.minDate}
-              onChange={handleCalendarChange}
-              selectedDate={state.date} />
-          </div>
-      </Dialog>
-    )
-  }
+      <wrapper>
+        <Calendar
+          display={display}
+          maxDate={maxDate}
+          minDate={minDate}
+          onChange={handleCalendarChange}
+          selectedDate={date} />
+      </wrapper>
+  </Dialog>
 }
 

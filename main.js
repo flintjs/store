@@ -155,6 +155,6 @@ view ButtonExample {
   <Button icon='add' floating accent mini />
   <IconButton icon='favorite' accent />
   <IconButton primary><GithubIcon /></IconButton>
-  <Button icon='add' label='Add  flat primary />
-  <Button icon='add' label='Add  flat disabled />
+  <Button icon='add' label='Add flat primary' />
+  <Button icon='add' label='Add flat disabled' />
 }
