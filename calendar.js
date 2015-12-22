@@ -1,34 +1,43 @@
+let datepickerPrimary  = colors.primary
+let datepickerPrimaryContrast = colors.primaryContrast
+let datepickerPrimaryDark = colors.primaryDark
+let primary = colors.primary
+let primaryContrast = colors.primaryContrast
+let rowHeight = unit(3)
+let dayPadding = unit(.2)
+let titleHeight = unit(3.6)
+
 const styles = {
-  datepickerPrimary: colorPrimary,
-  datepickerPrimaryContrast: colorPrimaryContrast,
-  datepickerPrimaryDark: colorPrimaryDark,
+  datepickerPrimary,
+  datepickerPrimaryContrast,
+  datepickerPrimaryDark,
   datepickerPrimaryColor: datepickerPrimary,
   datepickerPrimaryHoverColor: rgba(datepickerPrimary, 0.20),
   datepickerPrimaryContrastColor: datepickerPrimaryContrast,
   datepickerPrimaryDarkColor: datepickerPrimaryDark,
-  datepickerDialogWidth: 33)unit,
+  datepickerDialogWidth: unit(33),
   datepickerInactiveOpacity: .6,
-  datepickerWeekdayLineHeight: 2)unit,
+  datepickerWeekdayLineHeight: unit(2),
   datepickerWeekdayFontSize: fontSizeSmall,
   datepickerMonthFontSize: fontSizeBig,
-  datepickerDayFontSize: 5)unit,
-  datepickerDayLineHeight: 4)unit,
+  datepickerDayFontSize: unit(5),
+  datepickerDayLineHeight: unit(4),
   datepickerYearFontSize: fontSizeSmall,
 
-  calendarPrimary: colorPrimary,
-  calendarPrimaryContrast: colorPrimaryContrast,
-  calendarPrimaryColor: calendarPrimary,
-  calendarPrimaryContrastColor: calendarPrimaryContrast,
-  calendarPrimaryHoverColor: rgba(calendarPrimary, 0.21),
-  calendarArrowsColor: paletteGrey-600,
-  calendarArrowsFontSize: 2)unit,
-  calendarYearFontSize: 2.4,
-  calendarDayFontSize: 1.3)unit,
-  calendarDayDisableOpacity: 0.25,
-  calendarRowHeight: 3)unit,
-  calendarDayPadding: .2)unit,
-  calendarTitleHeight: 3.6)unit,
-  calendarTotalHeight: calendarRowHeight * 7 + calendarTitleHeight + calendarDayPadding * 12,
+  primary,
+  primaryContrast,
+  primaryColor: primary,
+  primaryContrastColor: primaryContrast,
+  primaryHoverColor: rgba(primary, 0.21),
+  arrowsColor: colors.grey600,
+  arrowsFontSize: unit(2),
+  yearFontSize: 2.4,
+  dayFontSize: unit(1.3),
+  dayDisableOpacity: 0.25,
+  rowHeight,
+  dayPadding,
+  titleHeight,
+  totalHeight: rowHeight * 7 + titleHeight + dayPadding * 12,
 }
 
 view Calendar {
@@ -70,8 +79,8 @@ view Calendar {
   }
 
   <months if={display == 'months'}>
-    <IconButton className={style.prev} icon='chevron_left' onClick={changeViewMonth.bind( 'left', -1)} />
-    <IconButton className={style.next} icon='chevron_right' onClick={changeViewMonth.bind( 'right', 1)} />
+    <IconButton class="prev" icon='chevron_left' onClick={changeViewMonth.bind( 'left', -1)} />
+    <IconButton class="next" icon='chevron_right' onClick={changeViewMonth.bind( 'right', 1)} />
     <CssTransitionGroup transitionName={animation = direction === 'left' ? SlideLeft : SlideRight} transitionEnterTimeout={350} transitionLeaveTimeout={350}>
       <CalendarMonth
         key={_viewDate.getMonth()}
@@ -96,48 +105,42 @@ view Calendar {
     </li>
   </years-ul>
 
-  .root {
+  $ = {
     position: `relative`,
-    height: calendarTotalHeight,
+    height: styles.totalHeight,
     overflow: `hidden`,
     fontSize: fontSizeSmall,
-    lineHeight: calendarRowHeight,
+    lineHeight: styles.rowHeight,
     textAlign: `center`,
-    background: calendarPrimaryContrastColor,
-    .prev, .next {
-      position: `absolute`,
-      top: 0,
-      zIndex: zIndexHigh,
-      height: 3.6)unit,
-      cursor: `pointer`,
-      opacity: .7,
-    }
-    .prev {
-      left: 0,
-    }
-    .next {
-      right: 0,
-    }
+    background: styles.primaryContrastColor,
   }
 
-  .title {
-    display: `inline-block`,
-    font-weight: 500,
-    lineHeight: calendarRowHeight,
+  const move = {
+    position: `absolute`,
+    top: 0,
+    zIndex: units.zIndexHigh,
+    height: units(3.6),
+    cursor: `pointer`,
+    opacity: .7,
   }
 
-  .years {
+  $prev = [move, { left: 0 }]
+  $next = [move, { right: 0 }]
+
+  $years = {
     height: percent(100),
     overflowY: `auto`,
     fontSize: fontSizeBig,
-    > li {
-      lineHeight: 2.4,
-      cursor: `pointer`,
-      &.active {
-        fontSize: calendarYearFontSize,
-        color: calendarPrimaryColor,
-      }
-    }
+  }
+
+  $li = {
+    lineHeight: 2.4,
+    cursor: `pointer`,
+  }
+
+  $active = {
+    fontSize: styles.yearFontSize,
+    color: styles.primaryColor,
   }
 }
 
@@ -165,30 +168,43 @@ view Day {
 
   $ = {
     marginLeft: day === 1 ? `${time.getFirstWeekDay(viewDate) * 100 / 7}%` : 0,
-    flex: 0 0 (percent(100) / 7),
-    padding: calendarDayPadding,
-    > span {
-      display: `inline-block`,
-      width: calendarRowHeight,
-      height: calendarRowHeight,
-      lineHeight: calendarRowHeight,
-      borderRadius: percent(50),
-    }
-    &:hover:not(.active):not(.disabled) > span {
-      color: calendarPrimaryContrastColor,
-      background: calendarPrimaryHoverColor,
-    }
-    &.active > span {
-      color: calendarPrimaryContrastColor,
-      background: calendarPrimaryColor,
-    }
-    &:hover:not(.disabled) > span {
-      cursor: `pointer`,
-    }
-    &.disabled {
-      opacity: calendarDayDisableOpacity,
-    }
+    flex: `0 0 (${percent(100) / 7})`,
+    padding: styles.dayPadding,
   }
+
+  $inner = [
+    {
+      display: `inline-block`,
+      width: styles.rowHeight,
+      height: styles.rowHeight,
+      lineHeight: styles.rowHeight,
+      borderRadius: percent(50),
+
+      hover: {
+        cursor: `pointer`
+      }
+    },
+
+    disabled && {
+      opacity: styles.dayDisableOpacity,
+
+      hover: {
+        cursor: `auto`
+      }
+    },
+
+    active && {
+      color: styles.primaryContrastColor,
+      background: styles.primaryColor,
+    },
+
+    !active && !disabled && {
+      hover: {
+        color: styles.primaryContrastColor,
+        background: styles.primaryHoverColor,
+      }
+    }
+  ]
 }
 
 
@@ -200,15 +216,7 @@ view Month {
   prop selectedDate:? object
   prop viewDate: object
 
-  let handleDayClick = (day) => {
-    if (onDayClick) onDayClick(day)
-  }
-
-  let renderWeeks = () => {
-    return utils.range(0, 7).map(i => {
-      return <span key={i}>{time.getFullDayOfWeek(i).charAt(0)}</span>
-    })
-  }
+  let handleDayClick = (day) => onDayClick(day)
 
   let renderDays = () => {
     return utils.range(1, time.getDaysInMonth(viewDate) + 1).map(i => {
@@ -231,35 +239,42 @@ view Month {
   <title>
     {time.getFullMonth(viewDate)} {viewDate.getFullYear()}
   </title>
-  <week>{renderWeeks()}</week>
+  <week>
+    <weekletter repeat={range(0, 7)}>
+      {time.getFullDayOfWeek(i).charAt(0)}
+    </weekletter>
+  </week>
   <days>{renderDays()}</days>
 
   $ = {
-    backgroundColor: calendarPrimaryContrastColor,
+    backgroundColor: styles.primaryContrastColor,
+  }
+
+  $title = {
+    display: `inline-block`,
+    fontWeight: 500,
+    lineHeight: styles.rowHeight,
   }
 
   $week = {
     display: `flex`,
-    height: calendarRowHeight,
+    height: styles.rowHeight,
     flexWrap: `wrap`,
-    fontSize: calendarDayFontSize,
-    lineHeight: calendarRowHeight,
+    fontSize: styles.dayFontSize,
+    lineHeight: styles.rowHeight,
     opacity: .5,
-    > span {
-      flex: 0 0 (percent(100) / 7),
-    }
+  }
+
+  $weekletter = {
+    flex: `0 0 (${percent(100) / 7})`,
   }
 
   $days = {
-    display: flex,
+    display: `flex`,
     flexWrap: `wrap`,
-    fontSize: calendarDayFontSize,
+    fontSize: styles.dayFontSize,
   }
-
 }
-
-
-
 
 view DatePicker {
   prop className:? string
@@ -270,51 +285,45 @@ view DatePicker {
   prop onChange:? func = Flint.noop
   prop value: object
 
-  state = {
-    active: false
-  }
+  let date
+  let active = false
+
+  on.props(() => {
+    date = value ? `${value.getDate()} ${time.getFullMonth(value)} ${value.getFullYear()}` : null
+  })
 
   let handleDismiss = () => {
-    let active = false
+    active = false
   }
 
   let handleInputMouseDown = (event) => {
     events.pauseEvent(event)
-    let active = true
+    active = true
   }
 
   let handleSelect = (value, event) => {
-    if (onChange) onChange(value, event)
-    let active = false
+    onChange(value, event)
+    active = false
   }
 
-  let render = () => {
-    const { value } = props
-    const date = value ? `${value.getDate()} ${time.getFullMonth(value)} ${value.getFullYear()}` : null
-
-    return (
-      <div data-toolbox='date-picker'>
-        <Input
-          className={style.input}
-          error={error}
-          onMouseDown={handleInputMouseDown}
-          label={label}
-          readOnly
-          type='text'
-          value={date}
-        />
-        <DatePickerDialog
-          active={active}
-          className={className}
-          maxDate={maxDate}
-          minDate={minDate}
-          onDismiss={handleDismiss}
-          onSelect={handleSelect}
-          value={value}
-        />
-      </div>
-    )
-  }
+  <Input
+    // className={style.input}
+    error={error}
+    onMouseDown={handleInputMouseDown}
+    label={label}
+    readOnly
+    type='text'
+    value={date}
+  />
+  <DatePickerDialog
+    active={active}
+    // className={className}
+    maxDate={maxDate}
+    minDate={minDate}
+    onDismiss={handleDismiss}
+    onSelect={handleSelect}
+    value={value}
+  />
 }
 
 view CalendarDialog {
@@ -346,66 +355,48 @@ view CalendarDialog {
   ]
 
   <Dialog active={active} type="custom" actions={actions}>
-      <header className={{ [`display-${display}`]: true }}>
-        <year onClick={handleSwitchDisplay.bind( 'years')}>
-          {date.getFullYear()}
-        </year>
-        <date-h3 onClick={handleSwitchDisplay.bind( 'months')}>
-          {time.getShortDayOfWeek(date.getDay())}, {time.getShortMonth(date)} {date.getDate()}
-        </date-h3>
-      </header>
+    <header>
+      <year onClick={handleSwitchDisplay.bind( 'years')}>
+        {date.getFullYear()}
+      </year>
+      <date-h3 onClick={handleSwitchDisplay.bind( 'months')}>
+        {time.getShortDayOfWeek(date.getDay())}, {time.getShortMonth(date)} {date.getDate()}
+      </date-h3>
+    </header>
 
-      <wrapper>
-        <Calendar
-          display={display}
-          maxDate={maxDate}
-          minDate={minDate}
-          onChange={handleCalendarChange}
-          selectedDate={date} />
-      </wrapper>
+    <wrapper>
+      <Calendar
+        display={display}
+        maxDate={maxDate}
+        minDate={minDate}
+        onChange={handleCalendarChange}
+        selectedDate={date} />
+    </wrapper>
   </Dialog>
 
-  .input > [role="input"] {
+  $header = {
+    padding: [unit(1.6), unit(2)],
+    color: styles.datepickerPrimaryContrastColor,
     cursor: `pointer`,
+    backgroundColor: styles.datepickerPrimaryColor,
   }
 
-  .header {
-    padding: 1.6 * $unit 2)unit,
-    color: datepickerPrimaryContrastColor,
-    cursor: `pointer`,
-    backgroundColor: datepickerPrimaryColor,
-  }
-
-  .year {
+  $year = {
     display: `inline-block`,
-    fontSize: datepickerYearFontSize,
-    transition: opacity, fontSize animationDuration animationCurveDefault,
+    transition: `opacity, fontSize animationDuration animationCurveDefault`,
+    fontSize: display == 'years' ? styles.fontSizeNormal : styles.datepickerYearFontSize,
+    opacity: display == 'months' ? styles.datepickerInactiveOpacity : `auto`,
   }
 
-  .date {
+  $date = {
     display: `block`,
-    font-weight: fontWeightSemiBold,
-    textTransform: capitalize,
-    transition: opacity animationDuration animationCurveDefault,
+    fontWeight: styles.fontWeightSemiBold,
+    textTransform: `capitalize`,
+    transition: `opacity animationDuration animationCurveDefault`,
+    opacity: display == 'years' ? styles.datepickerInactiveOpacity : `auto`,
   }
 
-  .wrapper {
-    padding: $unit .5 * $unit 0,
-  }
-
-  .display-years {
-    .date {
-      opacity: datepickerInactiveOpacity,
-    }
-    .year {
-      fontSize: fontSizeNormal,
-    }
-  }
-
-  .display-months {
-    .year {
-      opacity: datepickerInactiveOpacity,
-    }
+  $wrapper = {
+    padding: [unit(.5), unit(0)],
   }
 }
-

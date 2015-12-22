@@ -1,13 +1,13 @@
 const styles = {
-  autocompleteColorPrimaryContrast: colorPrimaryContrast,
-  autocompleteColorPrimary: colorPrimary,
-  autocompleteOverflowMaxHeight: vh(45),
-  autocompleteSuggestionActiveBackground: paletteGrey-200,
-  autocompleteSuggestionPadding: $unit,
-  autocompleteSuggestionsBackground: colorWhite,
-  autocompleteValueBorderRadius: .2)unit,
-  autocompleteValueMargin: $unit * .25 $unit * .5 $unit * .25 0,
-  autocompleteValuePadding: $unit * .5 $unit * .75,
+  colorPrimaryContrast: colors.primaryContrast,
+  colorPrimary: colors.primary,
+  overflowMaxHeight: vh(45),
+  suggestionActiveBackground: colors.grey200,
+  suggestionPadding: unit(1),
+  suggestionsBackground: colors.white,
+  valueBorderRadius: unit(.2),
+  valueMargin: [unit(.25), unit(.5), unit(.25), 0],
+  valuePadding: [unit(.5), unit(.75)],
 }
 
 const POSITION = {
@@ -194,34 +194,19 @@ view Autocomplete {
 
   $ = {
     position: `relative`,
-    padding: $unit 0,
-    &.focus {
-      .label {
-        color: autocompleteColorPrimary,
-      }
-      .suggestions {
-        maxHeight: autocompleteOverflowMaxHeight,
-        visibility: `visible`,
-        boxShadow: zdepthShadow-1,
-      }
-    }
-    &.errored {
-      .suggestions {
-        marginTop: - inputUnderlineHeight,
-      }
-    }
+    padding: [unit(1), 0],
   }
 
   $label = {
     fontSize: fontSizeTiny,
-    color: colorTextSecondary,
-    transition: color animationDuration animationCurveDefault,
+    color: focus ? autocompleteColorPrimary : colorTextSecondary,
+    transition: `color animationDuration animationCurveDefault`,
   }
 
   $values = {
     flexDirection: row,
     flexWrap: `wrap`,
-    padding-bottom: $unit / 2,
+    paddingBottom: $unit / 2,
   }
 
   $value = {
@@ -235,37 +220,39 @@ view Autocomplete {
     borderRadius: autocompleteValueBorderRadius,
   }
 
-  $suggestions = {
-    @include no-webkit-scrollbar,
-    position: `absolute`,
-    zIndex: zIndexHigh,
-    width: percent(100),
-    maxHeight: 0,
-    overflowX: `hidden`,
-    overflowY: `auto`,
-    visibility: `hidden`,
-    backgroundColor: autocompleteSuggestionsBackground,
-    transitionTimingFunction: animationCurveDefault,
-    transitionDuration: animationDuration,
-    transitionProperty: maxHeight, boxShadow,
-    &:not(.up) {
-      bottom: `auto`,
+  $suggestions = [
+    {
+      // @include no-webkit-scrollbar,
+      position: `absolute`,
+      zIndex: zIndexHigh,
+      width: percent(100),
+      maxHeight: 0,
+      marginTop: errored ? -inputUnderlineHeight : 0,
+      overflowX: `hidden`,
+      overflowY: `auto`,
+      visibility: `hidden`,
+      backgroundColor: autocompleteSuggestionsBackground,
+      transitionTimingFunction: animationCurveDefault,
+      transitionDuration: animationDuration,
+      transitionProperty: maxHeight, boxShadow,
+      bottom: up ? 0 : `auto`
+    },
+
+    focus && {
+      maxHeight: autocompleteOverflowMaxHeight,
+      visibility: `visible`,
+      boxShadow: zdepthShadow-1,
     }
-    &.up {
-      bottom: 0,
-    }
-  }
+  ]
 
   $suggestion = {
     padding: autocompleteSuggestionPadding,
     cursor: `pointer`,
-    &.active {
-      backgroundColor: autocompleteSuggestionActiveBackground,
-    }
+    backgroundColor: active ? autocompleteSuggestionActiveBackground : `auto`,
   }
 
   $input = {
-    padding-top: 0,
-    padding-bottom: 0,
+    paddingTop: 0,
+    paddingBottom: 0,
   }
 }
