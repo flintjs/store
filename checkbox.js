@@ -1,22 +1,23 @@
+let size = unit(1.8)
+
 const styles = {
-  checkboxColor: colorPrimary,
-  checkboxDisabledColor: rgba(colorBlack, 0.26),
-  checkboxFieldMarginBottom: 1.5)unit,
-  checkboxFocusCheckedColor: rgba(colorPrimary, 0.26),
-  checkboxRippleDuration: milliseconds(650),
-  checkboxSize: 1.8)unit,
-  checkboxFocusColor: rgba(colorBlack, 0.1),
-  checkboxFocusSize: checkboxSize * 2.3,
-  checkboxTextColor: colorBlack,
-  checkboxTextFontSize: fontSizeSmall,
-  checkboxTotalHeight: 1.8)unit,
-  checkboxTransitionDuration: seconds(.2),
+  color: colors.primary,
+  disabledColor: rgba(colors.black, 0.26),
+  fieldMarginBottom: unit(1.5),
+  focusCheckedColor: rgba(colors.primary, 0.26),
+  rippleDuration: milliseconds(650),
+  size,
+  focusColor: rgba(colors.black, 0.1),
+  focusSize: size * 2.3,
+  textColor: colors.black,
+  textFontSize: fontSizeSmall,
+  totalHeight: unit(1.8),
+  transitionDuration: seconds(.2),
 }
 
 view Checkbox {
   prop checked:? bool = false
   prop disabled:? bool = false
-
   prop label:? any
   prop name:? string
   prop onBlur:? func
@@ -45,49 +46,65 @@ view Checkbox {
     <text if={label} data-role='label'>{label}</text>
   </label>
 
-  .field {
+  $field = {
     position: `relative`,
     display: `block`,
-    height: checkboxSize,
-    marginBottom: checkboxFieldMarginBottom,
+    height: styles.size,
+    marginBottom: styles.fieldMarginBottom,
     whiteSpace: `nowrap`,
     verticalAlign: middle,
   }
 
-  .text {
+  $text = {
     display: `inline-block`,
     paddingLeft: $unit,
-    fontSize: checkboxTextFontSize,
-    lineHeight: checkboxSize,
-    color: checkboxTextColor,
+    fontSize: styles.textFontSize,
+    lineHeight: styles.size,
+    color: styles.textColor,
     whiteSpace: `nowrap`,
     verticalAlign: `top`,
   }
 
-  .input {
+  $input = {
     width: 0,
     height: 0,
     overflow: `hidden`,
     opacity: 0,
-    &:focus ~ .check {
-      &:before {
-        position: `absolute`,
-        top: percent(50),
-        left: percent(50),
-        width: checkboxFocusSize,
-        height: checkboxFocusSize,
-        marginTop: - checkboxFocusSize / 2,
-        marginLeft: - checkboxFocusSize / 2,
-        pointerEvents: `none`,
-        content: "",
-        backgroundColor: checkboxFocusColor,
-        borderRadius: percent(50),
-      }
-      &.checked:before {
-        backgroundColor: checkboxFocusCheckedColor,
-      }
-    }
   }
+
+  // $disabled = {
+  //   > .text {
+  //     color: styles.disabledColor,
+  //   }
+  //   > .check {
+  //     cursor: `auto`,
+  //     borderColor: styles.disabledColor,
+  //     &.checked {
+  //       cursor: `auto`,
+  //       backgroundColor: styles.disabledColor,
+  //       borderColor: `transparent`,
+  //     }
+  //   }
+  // }
+
+  // &:focus ~ .check {
+  //   &:before {
+  //     position: `absolute`,
+  //     top: percent(50),
+  //     left: percent(50),
+  //     width: styles.focusSize,
+  //     height: styles.focusSize,
+  //     marginTop: - styles.focusSize / 2,
+  //     marginLeft: - styles.focusSize / 2,
+  //     pointerEvents: `none`,
+  //     content: "",
+  //     backgroundColor: styles.focusColor,
+  //     borderRadius: percent(50),
+  //   }
+  //   &.checked:before {
+  //     backgroundColor: styles.focusCheckedColor,
+  //   }
+  // }
 }
 
 view Check {
@@ -96,6 +113,7 @@ view Check {
   prop onMouseDown:? func = Flint.noop
 
   <check
+    class={{ checked }}
     data-role='checkbox'
     onMouseDown={onMouseDown}>
     {children}
@@ -105,76 +123,63 @@ view Check {
   // spread: 2.6,
   // centered: true
 
-  .check {
+  $check = {
     position: `relative`,
     display: `inline-block`,
-    width: checkboxSize,
-    height: checkboxSize,
+    width: styles.size,
+    height: styles.size,
     verticalAlign: `top`,
     cursor: `pointer`,
-    borderColor: checkboxTextColor,
+    borderColor: styles.textColor,
     borderStyle: `solid`,
     borderWidth: 2,
     borderRadius: 2,
     transitionTimingFunction: animationCurveDefault,
-    transitionDuration: checkboxTransitionDuration,
+    transitionDuration: styles.transitionDuration,
     transitionProperty: backgroundColor,
-    &.checked {
-      backgroundColor: checkboxColor,
-      borderColor: checkboxColor,
-      &:after {
-        position: `absolute`,
-        top: -.1)unit,
-        left: .4)unit,
-        width: .7)unit,
-        height: 1.2)unit,
-        content: "",
-        borderColor: colorBackground,
-        borderStyle: `solid`,
-        borderTop: 0,
-        borderRight-width: 2,
-        borderBottom-width: 2,
-        borderLeft: 0,
-        transform: rotate(degrees(45)),
-        animation: `checkmark-expand milliseconds(140) ease-out forwards`,
-      }
+  }
+
+  $checked = {
+    backgroundColor: styles.color,
+    borderColor: styles.color,
+
+    after: {
+      position: `absolute`,
+      top: unit(-.1),
+      left: unit(.4),
+      width: unit(.7),
+      height: unit(1.2),
+      content: "",
+      borderColor: colors.background,
+      borderStyle: `solid`,
+      borderTop: 0,
+      borderRightwidth: 2,
+      borderBottomwidth: 2,
+      borderLeft: 0,
+      transform: rotate(degrees(45)),
+      animation: `checkmark-expand milliseconds(140) ease-out forwards`,
     }
   }
 
-  .ripple {
-    backgroundColor: checkboxColor,
+  $ripple = {
+    backgroundColor: styles.color,
     opacity: .3,
-    transitionDuration: checkboxRippleDuration,
+    transitionDuration: styles.rippleDuration,
   }
 
-  .disabled {
-    > .text {
-      color: checkboxDisabledColor,
-    }
-    > .check {
-      cursor: `auto`,
-      borderColor: checkboxDisabledColor,
-      &.checked {
-        cursor: `auto`,
-        backgroundColor: checkboxDisabledColor,
-        borderColor: `transparent`,
-      }
-    }
-  }
-
-  @keyframes checkmark-expand {
-    percent(0) {
-      top: .9)unit,
-      left: .6)unit,
-      width: 0,
-      height: 0,
-    }
-
-    percent(100) {
-      top: -.1)unit,
-      left: .4)unit,
-      width: .7)unit,
-      height: 1.2)unit,
-    }
-  }
+//   @keyframes checkmark-expand {
+//     percent(0) {
+//       top: unit(.9),
+//       left: unit(.6),
+//       width: 0,
+//       height: 0,
+//     }
+//
+//     percent(100) {
+//       top: unit(-.1),
+//       left: unit(.4),
+//       width: unit(.7),
+//       height: unit(1.2),
+//     }
+//   }
 }

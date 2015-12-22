@@ -43,7 +43,6 @@ const styles = {
 view Calendar {
   prop display:? string = 'months'//oneOf(['months', 'years'])
   prop selectedDate:? object = new Date()
-
   prop maxDate:? object
   prop minDate:? object
   prop onChange:? func = Flint.noop
