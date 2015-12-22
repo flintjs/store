@@ -1,5 +1,3 @@
-
-
 const POSITION = {
   AUTO: 'auto',
   STATIC: 'static',
@@ -10,30 +8,20 @@ const POSITION = {
 }
 
 view Menu {
-  prop active:? bool
+  prop active:? bool = false
   prop children:? node
   prop className:? string
   prop onHide:? func
   prop onSelect:? func
   prop onShow:? func
-  prop outline:? bool
-  prop position:? string
-  prop ripple:? bool
-  prop selectable:? bool
+  prop outline:? bool = true
+  prop position:? string = POSITION.STATIC
+  prop ripple:? bool = true
+  prop selectable:? bool = true
   prop selected: any
 
-  static defaultProps = {
-    active: false,
-    outline: true,
-    position: POSITION.STATIC,
-    ripple: true,
-    selectable: true
-  }
-
-  state = {
-    active: props.active,
-    rippled: false
-  }
+  let _active = active
+  let rippled = false
 
   componentDidMount () {
     const { width, height } = view.refs.menu.getBoundingClientRect()
@@ -49,7 +37,7 @@ view Menu {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
-    if (!state.active && nextState.active && props.position === POSITION.AUTO) {
+    if (!_active && nextState.active && props.position === POSITION.AUTO) {
       const position = calculatePosition()
       if (state.position !== position) {
         setState({ position, active: false }, () => {
@@ -68,16 +56,16 @@ view Menu {
   }
 
   componentDidUpdate (prevProps, prevState) {
-    if (prevState.active && !state.active) {
+    if (prevState.active && !_active) {
       if (props.onHide) props.onHide()
       events.removeEventsFromDocument({click: handleDocumentClick})
-    } else if (!prevState.active && state.active && props.onShow) {
+    } else if (!prevState.active && _active && props.onShow) {
       props.onShow()
     }
   }
 
   handleDocumentClick = (event) => {
-    if (state.active && !events.targetIsDescendant(event, ReactDOM.findDOMNode()) {
+    if (_active && !events.targetIsDescendant(event, ReactDOM.findDOMNode()) {
       let active = false, rippled: false
     }
   }
@@ -101,7 +89,7 @@ view Menu {
   getMenuStyle () {
     const { width, height, position } = state
     if (position !== POSITION.STATIC) {
-      if (state.active) {
+      if (_active) {
         return { clip: `rect(0 ${width}px ${height}px 0)` }
       } else if (position === POSITION.TOP_RIGHT) {
         return { clip: `rect(0 ${width}px 0 ${width}px)` }
@@ -146,8 +134,8 @@ view Menu {
   render () {
     const outlineStyle = { width: state.width, height: state.height }
     const className = ClassNames([style.root, style[state.position]], {
-      [style.active]: state.active,
-      [style.rippled]: state.rippled
+      [style.active]: _active,
+      [style.rippled]: rippled
     }, props.className)
 
     return (
@@ -187,7 +175,7 @@ view MenuItem {
 
   handleClick = (event) => {
     if (props.onClick && !props.disabled) {
-      props.onClick(event, 
+      props.onClick(event,
     }
   }
 

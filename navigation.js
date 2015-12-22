@@ -1,37 +1,12 @@
+view Navigation {
+  prop actions:? array = []
+  prop children:? node
+  prop routes:? array = []
+  prop type:? string = 'horizontal'//oneOf(['vertical' 'horizontal'])
 
-const Navigation = props => {
-  let className = `${style[props.type]}`
-  if (props.className) className += ` ${props.className}`
-
-  const buttons = props.actions.map((action, index) => {
-    return <Button className={style.button} key={index} {...action} />
-  })
-
-  const links = props.routes.map((route, index) => {
-    return <Link className={style.link} key={index} {...route} />
-  })
-
-  return (
-    <nav data-react-toolbox='navigation' className={className}>
-      {links}
-      {buttons}
-      {props.children}
-    </nav>
-  )
+  <navigation-nav>
+    <Link repeat={routes} {..._} />
+    <Button repeat={actions} {..._} />
+    {children}
+  </navigation-nav>
 }
-
-Navigation.propTypes = {
-  actions:? array
-  children:? node
-  className:? string
-  routes:? array
-  type:? string//oneOf(['vertical' 'horizontal'])
-}
-
-Navigation.defaultProps = {
-  actions: [],
-  className: '',
-  type: 'horizontal',
-  routes: []
-}
-
