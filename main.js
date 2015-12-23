@@ -3,8 +3,12 @@ let isActive = s =>
 
 view Main {
   let examples = [
-    'Button', 'Modal', 'Slider',
-    'Avatar', 'Card',
+    'Button',
+    'Card',
+    'Dropdown',
+    'List',
+    'Modal',
+    'Slider',
   ]
 
   let route = x => `/${x.toLowerCase()}`
@@ -61,11 +65,11 @@ view SliderExample {
   let slider3 = 1
 
   <p>Normal slider</p>
-  <Slider sync={slider1} />
+  <Slider value={slider1} onChange={_ => slider1 = _} />
   <p>With steps, initial value and editable</p>
-  <Slider min={0} max={10} editable sync={slider2} />
+  <Slider min={0} max={10} editable value={slider2} onChange={_ => slider2 = _} />
   <p>Pinned and with snaps</p>
-  <Slider pinned snaps min={0} max={10} step={1} editable sync={slider3} />
+  <Slider pinned snaps min={0} max={10} step={1} editable value={slider3} onChange={_ => slider3 = _} />
 }
 
 view ModalExample {
@@ -157,4 +161,100 @@ view ButtonExample {
   <IconButton primary><GithubIcon /></IconButton>
   <Button icon='add' label='Add flat primary' />
   <Button icon='add' label='Add flat disabled' />
+}
+
+
+view ListExample {
+  let checkbox = false
+
+  let handleCheckboxChange = () => {
+    checkbox = !checkbox
+  }
+
+  <List selectable ripple>
+    <List.SubHeader caption='Explore characters' />
+    <List.Item
+      avatar='https://dl.dropboxusercontent.com/u/2247264/assets/m.jpg'
+      caption='Dr. Manhattan'
+      legend="Jonathan 'Jon' Osterman"
+      rightIcon='star'
+    />
+    <List.Item
+      avatar='https://dl.dropboxusercontent.com/u/2247264/assets/o.jpg'
+      caption='Ozymandias'
+      legend='Adrian Veidt'
+      rightIcon='star'
+    />
+    <List.Item
+      avatar='https://dl.dropboxusercontent.com/u/2247264/assets/r.jpg'
+      caption='Rorschach'
+      legend='Walter Joseph Kovacs'
+      rightIcon='star'
+    />
+    <List.SubHeader caption='Configuration' />
+    <List.Checkbox
+      caption='Notify new comics'
+      checked={checkbox}
+      legend='You will receive a notification when a new one is published'
+      onChange={handleCheckboxChange}
+    />
+    <List.Item caption='Contact the publisher' leftIcon='send' />
+    <List.Item caption='Remove this publication' leftIcon='delete' />
+  </List>
+}
+
+view DropdownExample {
+  let selected = 3
+
+  const albums = [
+    { value: 1, artist: 'Radiohead', album: 'In Rainbows', img: 'http://www.clasesdeperiodismo.com/wp-content/uploads/2012/02/radiohead-in-rainbows.png' },
+    { value: 2, artist: 'QOTSA', album: 'Sons for the Deaf', img: 'http://static.musictoday.com/store/bands/93/product_large/MUDD6669.JPG' },
+    { value: 3, artist: 'Kendrick Lamar', album: 'Good Kid Maad City', img: 'https://cdn.shopify.com/s/files/1/0131/9332/products/0bd4b1846ba3890f574810dbeddddf8c.500x500x1_grande.png?v=1425070323' },
+    { value: 4, artist: 'Pixies', album: 'Doolittle', img: 'http://www.resident-music.com/image/cache/data/Emilys_Packshots/Pixies/Pixies_Doolittlke-500x500.jpg' }
+  ]
+
+  let handleChange = (value) => {
+    selected = value
+  }
+
+  let customItem = (item) => {
+    const containerStyle = {
+      display: 'flex',
+      flexDirection: 'row'
+    }
+
+    const imageStyle = {
+      display: 'flex',
+      width: '32px',
+      height: '32px',
+      flexGrow: 0,
+      marginRight: '8px',
+      backgroundColor: '#ccc'
+    }
+
+    const contentStyle = {
+      display: 'flex',
+      flexDirection: 'column',
+      flexGrow: 2
+    }
+
+    return (
+      <div style={containerStyle}>
+        <img src={item.img} style={imageStyle}/>
+        <div style={contentStyle}>
+          <strong>{item.artist}</strong>
+          <small>{item.album}</small>
+        </div>
+      </div>
+    )
+  }
+
+  <Dropdown
+    auto={false}
+    source={albums}
+    onChange={handleChange}
+    label='Select your favorite album'
+    template={customItem}
+    value={selected}
+  />
 }

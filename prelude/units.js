@@ -7,6 +7,7 @@ let ms = x => `${x}ms`
 let em = x => `${x}em`
 let percent = x => `${x}%`
 let seconds = x => `${x}sec`
+let deg = x => `${x}deg`
 
 let fontSize = 1.6 * unit
 let ad = .35
@@ -19,6 +20,7 @@ let units = {
   em,
   percent,
   seconds,
+  deg,
 
   //  Fonts
   preferredFont: `"Roboto", "Helvetica", "Arial", sansSerif`,

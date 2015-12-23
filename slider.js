@@ -1,8 +1,8 @@
 import { fns, palette } from './prelude'
 
-let { calc, rgba, translateX, translateY, translateZ } = fns
+let { attr, translate, rotate, scale, calc, rgba, translateX, translateY, translateZ } = fns
 let { colors, units, effects } = palette()
-let { unit, percent, seconds } = units
+let { deg, unit, percent, seconds } = units
 
 let styles = {
   mainColor: colors.primary,
@@ -66,7 +66,7 @@ view Slider {
 
   let handleMouseDown = (event) => {
     if (inputFocused) view.refs.input.blur()
-    start(getMousePosition(event))
+    start(fns.getMousePosition(event))
     // pause event?
   }
 
@@ -96,8 +96,8 @@ view Slider {
   }
 
   let handleSliderBlur
-  let handleSliderFocus = () => {
-    handleSliderBlur = handleKeyDown()
+  let handleSliderFocus = (event) => {
+    handleSliderBlur = handleKeyDown(event)
   }
 
   let handleResize = (event, cb) => {
@@ -168,7 +168,7 @@ view Slider {
       </knob>
       <progress>
         <ProgressBar
-          // ref='progressbar'
+          ref='progressbar'
           max={max}
           min={min}
           mode='determinate'
@@ -190,9 +190,25 @@ view Slider {
     />
   </slider>
 
+  $ = [
+    editable && {
+      display: `flex`,
+      flexDirection: `row`,
+      alignItems: `center`,
+    }
+  ]
+
   $innerKnob = [
     {
-      backgroundColor: `transparent`,
+      zIndex: units.zIndexHigh,
+      width: styles.innerKnobSize,
+      height: styles.innerKnobSize,
+      backgroundColor: styles.mainColor,
+      borderRadius: percent(50),
+      transitionTimingFunction: units.animationCurveDefault,
+      transitionDuration: seconds(.1),
+      transitionProperty: `height, width, backgroundColor, border`,
+      // backgroundColor: `transparent`,
       border: [styles.emptyKnobBorder, `solid`, colors.divider],
 
       before: {
@@ -201,8 +217,11 @@ view Slider {
     },
 
     pinned && {
+      // from ring
+      backgroundColor: colors.Background,
+
       before: {
-        position: absolute,
+        position: `absolute`,
         top: 0,
         left: 0,
         width: styles.pinSize,
@@ -224,7 +243,7 @@ view Slider {
         fontSize: 10,
         color: colors.Background,
         textAlign: `center`,
-        content: attr(dataValue),
+        content: attr(inputValue),
         transition: `transform .2s ease, backgroundColor .18s ease`,
         transform: [scale(0), translate(0)],
       }
@@ -246,14 +265,6 @@ view Slider {
       width: percent(100),
       height: percent(100),
       transform: translateZ(0),
-    }
-  ]
-
-  $ = [
-    editable && {
-      display: `flex`,
-      flexDirection: `row`,
-      alignItems: `center`,
     }
   ]
 
@@ -319,24 +330,6 @@ view Slider {
       }
     }
   }
-
-  $innerKnob = [
-    {
-      zIndex: units.zIndexHigh,
-      width: styles.innerKnobSize,
-      height: styles.innerKnobSize,
-      backgroundColor: styles.mainColor,
-      borderRadius: percent(50),
-      transitionTimingFunction: units.animationCurveDefault,
-      transitionDuration: seconds(.1),
-      transitionProperty: `height, width, backgroundColor, border`,
-    },
-
-    // from ring
-    pinned && {
-      backgroundColor: colors.Background,
-    }
-  ]
 
   $snaps = {
     position: `absolute`,

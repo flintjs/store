@@ -61,7 +61,7 @@ view Checkbox {
 
   $text = {
     display: `inline-block`,
-    paddingLeft: $unit,
+    paddingLeft: unit(1),
     fontSize: styles.textFontSize,
     lineHeight: styles.size,
     color: styles.textColor,
@@ -138,9 +138,9 @@ view Check {
     borderStyle: `solid`,
     borderWidth: 2,
     borderRadius: 2,
-    transitionTimingFunction: animationCurveDefault,
+    transitionTimingFunction: units.animationCurveDefault,
     transitionDuration: styles.transitionDuration,
-    transitionProperty: backgroundColor,
+    transitionProperty: `backgroundColor`,
   }
 
   $checked = {

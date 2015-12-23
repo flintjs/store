@@ -17,10 +17,13 @@ export function cubicBezier(a: Num, b: Num, c: Num, d: Num) {
   return `cubic-bezier(${a}, ${b}, ${c}, ${d})`
 }
 
+export let translate = (x: Num, y: Num, z: Num) => ({ x, y, z })
 export let translateX = (x: Num) => ({ x })
 export let translateY = (y: Num) => ({ y })
 export let translateZ = (z: Num) => ({ z })
 export let scale = (scale: Num) => ({ scale })
+export let rotate = (rotate: Num) => ({ rotate })
+export let attr = (x: string) => `attr(${x})`
 
 export default {
   rgba,
@@ -30,6 +33,9 @@ export default {
   translateX,
   translateZ,
   scale,
+  rotate,
+  translate,
+  attr,
 
   calc(a: string) {
     return `calc(${a})`
@@ -92,5 +98,47 @@ export default {
       return value ? 'on' : null
     }
     return value
+  },
+
+  getMousePosition (event) {
+    return {
+      x: event.pageX,
+      y: event.pageY
+    };
+  },
+
+  getTouchPosition (event) {
+    return {
+      x: event.touches[0].pageX,
+      y: event.touches[0].pageY
+    };
+  },
+
+  pauseEvent (event) {
+    event.stopPropagation();
+    event.preventDefault();
+    event.returnValue = false;
+    event.cancelBubble = true;
+  },
+
+  addEventsToDocument (eventMap) {
+    for (const key in eventMap) {
+      document.addEventListener(key, eventMap[key], false);
+    }
+  },
+
+  removeEventsFromDocument (eventMap) {
+    for (const key in eventMap) {
+      document.removeEventListener(key, eventMap[key], false);
+    }
+  },
+
+  targetIsDescendant (event, parent) {
+    let node = event.target;
+    while (node !== null) {
+      if (node === parent) return true;
+      node = node.parentNode;
+    }
+    return false;
   }
 }
