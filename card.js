@@ -1,30 +1,25 @@
 import { fns, palette } from './prelude'
-let { rgba } = fns
-let { colors, units, styles, effects } = palette()
 
-const shadow2dp = {
-  boxShadow: `0 2px 2px 0 rgba(0, 0, 0, 0.1), 0 3px 1px -2px rgba(0, 0, 0, 0.1), 0 1px 5px 0 rgba(0, 0, 0, 0.2)`
+let { calc, rgb, rgba, translateX, translateY, translateZ } = fns
+let { colors, units, effects } = palette()
+let { em, unit, percent, seconds } = units
+
+const colorWhite = '#fff'
+
+const styles = {
+  colorWhite,
+  textOverlay: rgba([0,0,0], 0.35),
+  backgroundColor: colorWhite,
+  paddingSm: unit(.8),
+  padding: unit(1.6),
+  paddingLg: unit(2),
+  fontSize: em(1.2),
 }
 
-const UNIT = 1
-const cardColorWhite = '#fff'
-const cardTextOverlay = '#000'//rgba('#000', 0.35),
-const cardBackgroundColor = cardColorWhite
-const cardPaddingSm = .8 * UNIT
-const cardPadding = 1.6 * UNIT
-const cardPaddingLg = 2 * UNIT
-const cardFontSize = '1.2em'
-
 const cardFont = {
-  padding: '($cardPadding  .2 * UNIT) $cardPadding',
-
-  lastChild: {
-    paddingBottom: '$cardPaddingLg',
-  },
-
-  text: {
-    paddingTop: '0',
-  }
+  padding: [unit(styles.padding * .2), styles.cardPadding],
+  lastChild: { paddingBottom: styles.cardPaddingLg },
+  text: { paddingTop: 0 }
 }
 
 view Card {
@@ -33,41 +28,51 @@ view Card {
 
   <card class={{ raised }} yield />
 
-  $ = [shadow2dp, {
-    display: 'flex',
-    width: '100%',
-    flexDirection: 'column',
-    overflow: 'hidden',
-    fontSize: cardFontSize,
-    background: cardBackgroundColor,
-    borderRadius: .2 * UNIT,
-  }]
+  $ = [
+    effects.shadow2dp,
 
-  $raised = [shadow2dp]
+    {
+      display: 'flex',
+      width: '100%',
+      flexDirection: 'column',
+      overflow: 'hidden',
+      fontSize: styles.fontSize,
+      background: styles.backgroundColor,
+      borderRadius: unit(.2),
+    }
+  ]
+
+  $raised = [effects.shadow2dp]
 }
 
 view Card.Actions {
-  prop children:? any
+  prop children: any
 
-  $ = [{
+  view.render(() =>
+    view.clone(children, {
+      // pass styles to child buttons
+      style: {
+        minWidth: 0,
+        padding: [0, styles.paddingSm],
+        margin: [0, styles.paddingSm / 2],
+
+        firstChild: {
+          marginLeft: '0',
+        },
+
+        lastChild: {
+          marginRight: '0',
+        }
+      }
+    })
+  )
+
+  $ = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flexStart',
-    padding: cardPaddingSm
-  },
-  false && { // data-react-toolbox-button?
-    minWidth: 0,
-    padding: [0, cardPaddingSm],
-    margin: [0, cardPaddingSm / 2],
-
-    firstChild: {
-      marginLeft: '0',
-    },
-
-    lastChild: {
-      marginRight: '0',
-    }
-  }]
+    padding: styles.paddingSm
+  }
 }
 
 view Card.Media {
@@ -133,7 +138,7 @@ view Card.Media {
 view Card.Text {
   prop children:? any
 
-  view.style = cardFont
+  view.style = styles.font
 }
 
 view Card.Title {
@@ -155,14 +160,18 @@ view Card.Title {
   <Title class="subtitle" subtitle if={subtitle}>{subtitle}</Title>
   <p class="children" if={children && typeof children != 'string'}>{children}</p>
 
-  $ = [cardFont, {
-    padding: small ? 'xyz' : `${cardPaddingLg} ${cardPadding} (${cardPadding + .2 * UNIT} )`,
-    display: 'flex',
-    alignItems: 'center'
-  }]
+  $ = [
+    cardFont,
+
+    {
+      padding: small ? `auto` : [styles.paddingLg, styles.padding, unit(styles.padding + .2)],
+      display: 'flex',
+      alignItems: 'center'
+    }
+  ]
 
   $avatar = {
-    marginRight: 1.3 * UNIT,
+    marginRight: unit(1.3),
   }
 
   $title = {
