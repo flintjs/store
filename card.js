@@ -29,7 +29,7 @@ view Card {
   <card class={{ raised }} yield />
 
   $ = [
-    effects.shadow2dp,
+    effects.shadow2dp(),
 
     {
       display: 'flex',
@@ -42,7 +42,7 @@ view Card {
     }
   ]
 
-  $raised = [effects.shadow2dp]
+  $raised = effects.shadow2dp()
 }
 
 view Card.Actions {
@@ -88,7 +88,7 @@ view Card.Media {
 
   $ = {
     position: 'relative',
-    backgroundRepeat: 'noRepeat',
+    backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center center',
     backgroundSize: 'cover',
     backgroundColor: color,

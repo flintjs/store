@@ -172,10 +172,10 @@ view Button {
       backgroundColor: styles.disabledBackgroundColor
     }),
 
-    effects.shadow2p,
+    effects.shadow2dp(),
 
     {
-      active: effects.shadow4dp
+      active: effects.shadow4dp()
     },
 
     focus && effects.focusShadow
