@@ -74,13 +74,13 @@ view Dropdown {
       type={template ? 'hidden' : null}
       value={selected.label}
     />
-    <div if={template} class={{ errored: error, disabled }} onMouseDown={handleMouseDown}>
+    <template if={template} class={{ errored: error, disabled }} onMouseDown={handleMouseDown}>
       <value className="templateValue">
         {template(selected)}
       </value>
       <label if={label}>{label}</label>
       <error if={error}>{error}</error>
-    </div>
+    </template>
     <ul class="values" ref='values'>
       <li repeat={source} class={_.value === value ? 'selected' : null} onMouseDown={handleSelect.bind(_.value)}>
         {template ? template(_) : _.label}
@@ -107,6 +107,7 @@ view Dropdown {
   $values = [
     {
       position: `absolute`,
+      padding: 0,
       zIndex: 2,
       width: percent(100),
       overflowX: `hidden`,
@@ -197,6 +198,17 @@ view Dropdown {
     //   margin: (styles.offset / 2) 0,
     // }
   ]
+
+  $li = {
+    position: `relative`,
+    padding: unit(1),
+    overflow: `hidden`,
+    cursor: `pointer`,
+
+    hover: {
+      backgroundColor: styles.valueHoverBackground
+    }
+  }
 
   $label = {
     fontSize: units.fontSizeTiny,
