@@ -213,7 +213,9 @@ view DropdownExample {
     { value: 4, artist: 'Pixies', album: 'Doolittle', img: 'http://www.resident-music.com/image/cache/data/Emilys_Packshots/Pixies/Pixies_Doolittlke-500x500.jpg' }
   ]
 
-  let handleChange = _ => selected = _
+  let handleChange = val => {
+    selected = val
+  }
 
   let customItem = (item) => {
     const containerStyle = {

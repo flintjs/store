@@ -32,9 +32,9 @@ view Dropdown {
 
   let active = false
   let up = false
-  let selected = {}
+  let selected = source[0]
 
-  on.render(() => {
+  on.props(() => {
     selected = getSelectedItem()
   })
 
@@ -60,9 +60,8 @@ view Dropdown {
           return item
       }
     }
-    else {
-      return source[0]
-    }
+
+    return selected
   }
 
   <dropdown class={{ up, active, disabled }}>
@@ -74,7 +73,7 @@ view Dropdown {
       type={template ? 'hidden' : null}
       value={selected.label}
     />
-    <template if={template} class={{ errored: error, disabled }} onMouseDown={handleMouseDown}>
+    <template if={template} class={{ error, disabled }} onMouseDown={handleMouseDown}>
       <value className="templateValue">
         {template(selected)}
       </value>
@@ -82,7 +81,7 @@ view Dropdown {
       <error if={error}>{error}</error>
     </template>
     <ul class="values" ref='values'>
-      <li repeat={source} class={_.value === value ? 'selected' : null} onMouseDown={handleSelect.bind(_.value)}>
+      <li repeat={source} class={_.value === value ? 'selected' : null} onMouseDown={e => handleSelect(_.value, e)}>
         {template ? template(_) : _.label}
       </li>
     </ul>
