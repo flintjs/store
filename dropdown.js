@@ -4,6 +4,8 @@ let { calc, rgb, rgba, translateX, translateY, translateZ } = fns
 let { colors, units, effects } = palette()
 let { vh, unit, percent, seconds } = units
 
+const inputTextBorderBottomColor = rgba(colors.black, 0.12)
+
 const styles = {
   offset: unit(1.6),
   colorWhite: colors.white,
@@ -37,7 +39,6 @@ view Dropdown {
   })
 
   let handleMouseDown = (event) => {
-    events.pauseEvent(event)
     const client = event.target.getBoundingClientRect()
     const screen_height = window.innerHeight || document.documentElement.offsetHeight
     up = auto ? client.top > ((screen_height / 2) + client.height) : false
@@ -46,19 +47,20 @@ view Dropdown {
   }
 
   let handleSelect = (item, event) => {
-    if (onBlur) onBlur()
-    if (!disabled) {
-      onChange(item, event)
-      let active = false
-    }
+    onBlur()
+    if (disabled) return
+    onChange(item, event)
+    active = false
   }
 
   let getSelectedItem = () => {
     if (value) {
       for (const item of source) {
-        if (item.value === value) return item
+        if (item.value === value)
+          return item
       }
-    } else {
+    }
+    else {
       return source[0]
     }
   }
@@ -86,106 +88,121 @@ view Dropdown {
     </ul>
   </dropdown>
 
-  // $ = {
-  //   position: `relative`,
-  //   width: inherit,
-  //   marginBottom: dropdownOffset,
-  //   color: colorText,
-  //   cursor: `pointer`,
-  //   borderBottom: [1, `solid`, inputText-bottom-borderColor,
-  //   &:not(.active) {
-  //     > .values {
-  //       maxHeight: 0,
-  //       visibility: `hidden`,
-  //     }
-  //   }
-  //   &.active {
-  //     > .label, > .value {
-  //       opacity: .5,
-  //     }
-  //     > .values {
-  //       maxHeight: dropdownOverflowMaxHeight,
-  //       visibility: `visible`,
-  //       boxShadow: zdepthShadow-1,
-  //     }
-  //   }
-  //   &.disabled {
-  //     color: colorTextSecondary,
-  //     pointerEvents: `none`,
-  //     cursor: normal,
-  //     borderBottom-style: dotted,
-  //     > .value:after {
-  //       transform: scale(0),
-  //     }
-  //   }
-  //   &:not(.up) > .values {
-  //     top: 0,
-  //     bottom: `auto`,
-  //   }
-  //   &.up > .values {
-  //     top: `auto`,
-  //     bottom: 0,
-  //   }
-  // }
-  //
-  // .label {
-  //   fontSize: fontSizeTiny,
-  //   color: colorTextSecondary,
-  // }
-  //
-  // .values {
-  //   @include no-webkit-scrollbar,
-  //   position: `absolute`,
-  //   zIndex: 2,
-  //   width: percent(100),
-  //   overflowX: `hidden`,
-  //   overflowY: `auto`,
-  //   list-style: `none`,
-  //   backgroundColor: dropdownColorWhite,
-  //   borderRadius: dropdownValueBorderRadius,
-  //   transitionTimingFunction: animationCurveDefault,
-  //   transitionDuration: animationDuration,
-  //   transitionProperty: maxHeight, boxShadow,
-  //   > * {
-  //     position: `relative`,
-  //     padding: $unit,
-  //     overflow: `hidden`,
-  //     cursor: `pointer`,
-  //     &:hover {
-  //       backgroundColor: dropdownValueHoverBackground,
-  //     }
-  //     &.selected {
-  //       color: dropdownColorPrimary,
-  //     }
-  //   }
-  // }
-  //
-  // .value {
-  //   display: `block`,
-  //   > span {
-  //     display: `inline-block`,
-  //     height: inputFieldHeight,
-  //     fontSize: inputFieldFontSize,
-  //     lineHeight: inputFieldHeight,
-  //   }
-  //   > :not(span) {
-  //     margin: (dropdownOffset / 2) 0,
-  //   }
-  //   &:after {
-  //     $size: (inputFieldHeight / 7),
-  //     $border: $size solid `transparent`,
-  //     position: `absolute`,
-  //     right: (dropdownOffset / 2),
-  //     bottom: dropdownOffset,
-  //     width: 0,
-  //     height: 0,
-  //     content: "",
-  //     borderTop: $size solid inputText-bottom-borderColor,
-  //     borderRight: $border,
-  //     borderLeft: $border,
-  //     transition: transform animationDuration animationCurveDefault,
-  //   }
-  // }
+  $ = {
+    position: `relative`,
+    width: `inherit`,
+    marginBottom: styles.offset,
+    color: colors.text,
+    cursor: `pointer`,
+    borderBottom: [1, `solid`, inputTextBorderBottomColor],
+  }
+
+  $disabled = {
+    color: colors.textSecondary,
+    pointerEvents: `none`,
+    cursor: `normal`,
+    borderBottomStyle: `dotted`,
+  }
+
+  $values = [
+    {
+      position: `absolute`,
+      zIndex: 2,
+      width: percent(100),
+      overflowX: `hidden`,
+      overflowY: `auto`,
+      listStyle: `none`,
+      backgroundColor: styles.colorWhite,
+      borderRadius: styles.valueBorderRadius,
+      transitionTimingFunction: units.animationCurveDefault,
+      transitionDuration: `animationDuration`,
+      transitionProperty: `maxHeight, boxShadow`,
+    },
+
+    active && {
+      maxHeight: styles.overflowMaxHeight,
+      visibility: `visible`,
+      boxShadow: units.zdepthShadow1,
+    },
+
+    !active && {
+      maxHeight: 0,
+      visibility: `hidden`,
+    },
+
+    !up && {
+      top: 0,
+      bottom: `auto`,
+    },
+
+    up && {
+      top: `auto`,
+      bottom: 0,
+    },
+
+    //   > * {
+    //     position: `relative`,
+    //     padding: $unit,
+    //     overflow: `hidden`,
+    //     cursor: `pointer`,
+    //     &:hover {
+    //       backgroundColor: styles.valueHoverBackground,
+    //     }
+    //     &.selected {
+    //       color: styles.colorPrimary,
+    //     }
+    //   }
+  ]
+
+  const inputFieldHeight = 20
+  const valSize = (inputFieldHeight / 7)
+  const border = [valSize, `solid`, `transparent`]
+
+  $value = [
+    {
+      display: `block`,
+
+      after: {
+        position: `absolute`,
+        right: (styles.offset / 2),
+        bottom: styles.offset,
+        width: 0,
+        height: 0,
+        content: "",
+        borderTop: [valSize, `solid`, inputTextBorderBottomColor],
+        borderRight: border,
+        borderLeft: border,
+        transition: `transform animationDuration animationCurveDefault`,
+      }
+    },
+
+    active && {
+      opacity: .5
+    },
+
+    disabled && {
+      after: {
+        transform: scale(0),
+      }
+    }
+
+    // > span {
+    //   display: `inline-block`,
+    //   height: inputFieldHeight,
+    //   fontSize: inputFieldFontSize,
+    //   lineHeight: inputFieldHeight,
+    // }
+    //
+    // > :not(span) {
+    //   margin: (styles.offset / 2) 0,
+    // }
+  ]
+
+  $label = {
+    fontSize: units.fontSizeTiny,
+    color: colors.textSecondary,
+  }
+
   // root > :last-child = {
   //   marginBottom: 0,
   // }

@@ -41,7 +41,7 @@ view List {
           selectable: selectable
         })
       } else {
-        return React.cloneElement(item)
+        return item
       }
     })}
   </list-ul>
@@ -56,7 +56,7 @@ view List {
     listStyle: `none`,
   }
 
-  // .checkbox {
+  // $checkbox {
   //   display: flex,
   //   width: percent(100),
   //   minHeight: styles.itemMinHeight,
@@ -70,38 +70,12 @@ view List {
   //     paddingLeft: 0,
   //   }
   // }
-  //
+
   // .ripple {
   //   color: colorTextSecondary,
   // }
-  //
-  // .text {
-  //   flex-grow: 1,
-  // }
-  //
-  // .caption {
-  //   display: `block`,
-  //   fontSize: fontSizeNormal,
-  //   color: colorText,
-  // }
-  //
-  // .legend {
-  //   display: `block`,
-  //   paddingTop: styles.itemLegendMarginTop,
-  //   fontSize: units.fontSizeSmall,
-  //   color: colors.textSecondary,
-  //   whiteSpace: normal,
-  // }
-  //
-  // .avatar {
-  //   display: flex,
-  //   flex: 0 0 `auto`,
-  //   width: styles.itemAvatarHeight,
-  //   height: styles.itemAvatarHeight,
-  //   margin: styles.itemAvatarMargin styles.horizontalPadding styles.itemAvatarMargin 0,
-  //   overflow: `hidden`,
-  //   borderRadius: percent(50),
-  // }
+
+
   //
   // .right, .left {
   //   display: flex,
@@ -189,48 +163,68 @@ view List.Item {
   prop to: string
 
   let handleClick = event => !disabled && onClick(event)
+  let wrapProps = () => to ? { tagName: 'a', href: to } : {}
 
-  let renderContent = () =>
-      <span class={{ legend, disabled, selectable }}>
+  <listitem-li onClick={handleClick} onMouseDown={onMouseDown}>
+    <wrap {...wrapProps()}>
+      <inner>
         <FontIcon if={leftIcon} class="icon left" value={leftIcon} />
         <img if={avatar} class="avatar" src={avatar} />
         <List.ItemContent caption={caption} legend={legend} />
         <FontIcon if={rightIcon} class="icon right" value={rightIcon} />
-      </span>
-
-  <listitem-li onClick={handleClick} onMouseDown={onMouseDown}>
-    {to ? <a href={to}>{renderContent()}</a> : renderContent()}
-    {children}
+      </inner>
+      {children}
+    </wrap>
   </listitem-li>
 
   $ = {
     position: `relative`,
   }
 
-  $item = {
+  $listitem = {
     position: `relative`,
     display: `flex`,
     minHeight: styles.itemMinHeight,
     alignItems: `center`,
     padding: [0, styles.horizontalPadding],
     color: colors.text,
+  }
 
-    // &.selectable:not(.disabled):hover {
-    //   cursor: `pointer`,
-    //   backgroundColor: listItemHoverColor,
+  $inner = [
+    selectable && !disabled && {
+      hover: {
+        cursor: `pointer`,
+        backgroundColor: styles.itemHoverColor,
+      }
+    },
+
+    disabled && {
+      pointerEvents: `none`
+    }
+
+    // &:not(.checkboxItem) {
+    //   opacity: .5,
+    // }
+    // > .checkbox > [data-role='label'] {
+    //   opacity: .5,
     // }
     // &.withLegend {
     //   height: listItem-minHeight-legend,
     // }
-    // &.disabled {
-    //   pointerEvents: `none`,
-    //   &:not(.checkboxItem) {
-    //     opacity: .5,
-    //   }
-    //   > .checkbox > [data-role='label'] {
-    //     opacity: .5,
-    //   }
-    // }
+  ]
+
+  $text = {
+    flexGrow: 1,
+  }
+
+  $avatar = {
+    display: `flex`,
+    flex: `0 0 auto`,
+    width: styles.itemAvatarHeight,
+    height: styles.itemAvatarHeight,
+    margin: [styles.itemAvatarMargin, styles.horizontalPadding, styles.itemAvatarMargin, 0],
+    overflow: `hidden`,
+    borderRadius: percent(50),
   }
 }
 
@@ -240,6 +234,20 @@ view List.ItemContent {
 
   <caption>{caption}</caption>
   <legend>{legend}</legend>
+
+  $caption = {
+    display: `block`,
+    fontSize: units.fontSizeNormal,
+    color: colors.text,
+  }
+
+  $legend = {
+    display: `block`,
+    paddingTop: styles.itemLegendMarginTop,
+    fontSize: units.fontSizeSmall,
+    color: colors.textSecondary,
+    whiteSpace: `normal`,
+  }
 }
 
 view List.SubHeader {
