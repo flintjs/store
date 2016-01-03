@@ -1,40 +1,33 @@
 import { fns, palette } from './prelude'
-let { rgba } = fns
 
-let colors, units, styles, effects
+let { calc, rgb, rgba, translateX, translateY, translateZ } = fns
+let { colors, units, effects } = palette()
+let { em, unit, percent, seconds } = units
 
-// Flint.preload(() => {
-  // load palette
-  ({ colors, units, effects } = palette())
-  let { unit } = units
-
-  let floatingMiniHeight = unit(4)
-
-  // set style
-  styles = {
-    neutralColor: colors.white,
-    neutralColorContrast: colors.grey900,
-    neutralColorHover: rgba(colors.grey900, 0.20),
-    primaryColorContrast: colors.primaryContrast,
-    primaryColorHover: rgba(colors.primary, 0.20),
-    primaryColor: colors.primary,
-    accentColorContrast: colors.primaryContrast,
-    accentColorHover: rgba(colors.accent, 0.20),
-    accentColor: colors.accent,
-    disabledTextColor: rgba(colors.black, 0.26),
-    disabledBackgroundColor: rgba(colors.black, 0.12),
-    borderRadius: unit(0.2),
-    floatingFontSize: unit(2.4),
-    floatingHeight: unit(5.6),
-    floatingMiniHeight,
-    floatingMiniFontSize: floatingMiniHeight / 2.25,
-    height: unit(3.6),
-    squaredIconMargin: unit(.6),
-    squaredMinWidth: unit(9),
-    squaredPadding: [0, unit(1.2)],
-    toggleFontSize: unit(2),
-  }
-// })
+let floatingMiniHeight = unit(4)
+let styles = {
+  neutralColor: colors.white,
+  neutralColorContrast: colors.grey900,
+  neutralColorHover: rgba(colors.grey900, 0.20),
+  primaryColorContrast: colors.primaryContrast,
+  primaryColorHover: rgba(colors.primary, 0.20),
+  primaryColor: colors.primary,
+  accentColorContrast: colors.primaryContrast,
+  accentColorHover: rgba(colors.accent, 0.20),
+  accentColor: colors.accent,
+  disabledTextColor: rgba(colors.black, 0.26),
+  disabledBackgroundColor: rgba(colors.black, 0.12),
+  borderRadius: unit(0.2),
+  floatingFontSize: unit(2.4),
+  floatingHeight: unit(5.6),
+  floatingMiniHeight,
+  floatingMiniFontSize: floatingMiniHeight / 2.25,
+  height: unit(3.6),
+  squaredIconMargin: unit(.6),
+  squaredMinWidth: unit(9),
+  squaredPadding: [0, unit(1.2)],
+  toggleFontSize: unit(2),
+}
 
 let buttonStyles = () => ({
   fontSize: unit(1.2),
@@ -172,23 +165,20 @@ view Button {
     // }
   }
 
-  const solid = {
-    // &[disabled] {
-    //   @include shadow2dp(),
-    //   backgroundColor: styles.disabledBackgroundColor,
-    // }
-    // &:active {
-    //   @include shadow4dp(),
-    // }
-    // &:focus:not(:active) {
-    //   @include focusShadow(),
-    // }
-  }
-
   $raised = [
     squared$,
-    solid,
-    effects.shadow2p()
+
+    disabled && Object.assign(effects.shadow2dp, {
+      backgroundColor: styles.disabledBackgroundColor
+    }),
+
+    effects.shadow2dp(),
+
+    {
+      active: effects.shadow4dp()
+    },
+
+    focus && effects.focusShadow
   ]
 
   $flat = [

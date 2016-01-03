@@ -4,6 +4,7 @@ let unit = n => `${n}rem`
 let vw = x => `${x}vw`
 let vh = x => `${x}vh`
 let ms = x => `${x}ms`
+let em = x => `${x}em`
 let percent = x => `${x}%`
 let seconds = x => `${x}sec`
 let deg = x => `${x}deg`
@@ -16,6 +17,7 @@ let units = {
   vw,
   vh,
   ms,
+  em,
   percent,
   seconds,
   deg,
