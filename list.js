@@ -165,7 +165,7 @@ view List.Item {
   let handleClick = event => !disabled && onClick(event)
   let wrapProps = () => to ? { tagName: 'a', href: to } : {}
 
-  <li onClick={handleClick} onMouseDown={onMouseDown}>
+  <li root onClick={handleClick} onMouseDown={onMouseDown}>
     <wrap {...wrapProps()}>
       <inner>
         <FontIcon if={leftIcon} class="icon left" value={leftIcon} />
@@ -177,16 +177,30 @@ view List.Item {
     </wrap>
   </li>
 
-  $listitem = {
+  $ = {
     position: `relative`,
     display: `flex`,
     minHeight: styles.itemMinHeight,
     alignItems: `center`,
     padding: [0, styles.horizontalPadding],
     color: colors.text,
+
+    hover: selectable && !disabled && {
+      cursor: `pointer`,
+      backgroundColor: styles.itemHoverColor
+    }
+  }
+
+  $wrap = {
+    flexGrow: 1
   }
 
   $inner = [
+    {
+      flexFlow: `row`,
+      flexGrow: 1
+    },
+
     selectable && !disabled && {
       hover: {
         cursor: `pointer`,
@@ -231,10 +245,15 @@ view List.ItemContent {
   <caption>{caption}</caption>
   <legend>{legend}</legend>
 
+  $ = {
+    flexGrow: 1
+  }
+
   $caption = {
     display: `block`,
     fontSize: units.fontSizeNormal,
     color: colors.text,
+    textAlign: `left`
   }
 
   $legend = {
