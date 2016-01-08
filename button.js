@@ -32,8 +32,9 @@ let styles = {
 let buttonStyles = () => ({
   fontSize: unit(1.2),
   fontWeight: 500,
-  lineHeight: 1,
+  lineHeight: unit(1),
   letterSpacing: 0,
+  textTransform: `uppercase`
 })
 
 let buttonProps = ({ disabled, toggle, children, label, ...props }, { level, shape, doMouseUp, doMouseLeave }) => ({
@@ -88,7 +89,7 @@ view Button {
   prop flat:? bool = false
   prop floating:? bool = false
   prop href:? string
-  prop icon:? string
+  prop icon:? string | element
   prop inverse:? bool
   prop label:? string
   prop mini:? bool = false
@@ -119,31 +120,50 @@ view Button {
   }
 
   <button-div tagName={tagName} {...buttonProps(view.props, { level, shape, doMouseUp, doMouseLeave })}>
-    <FontIcon if={icon} value={icon} />
-    {label}
-    {children}
+    <FontIcon if={typeof icon == 'string'} value={icon} />
+    <icon if={typeof icon != 'string'}>{icon}</icon>
+    <text>
+      {label}
+      {children}
+    </text>
   </button-div>
 
-  $button = [buttonStyles(), {
-    position: 'relative',
-    display: 'inline-block',
-    minHeight: styles.height,
-    flexDirection: 'row',
-    alignContent: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    textDecoration: 'none',
-    whiteSpace: 'nowrap',
-    cursor: 'pointer',
-    border: 0,
-    outline: 'none',
-    transition: `
-      box-shadow .2s ${units.animationCurveFastOutLinearIn},
-      background-color .2s ${units.animationCurveDefault},
-      color .2s ${units.animationCurveDefault}
-    `,
-  }]
+  $button = [
+    buttonStyles(),
+
+    {
+      display: `flex`,
+      position: `relative`,
+      minHeight: styles.height,
+      flexDirection: `row`,
+      alignContent: `center`,
+      alignItems: `center`,
+      justifyContent: `center`,
+      textAlign: `center`,
+      textDecoration: `none`,
+      whiteSpace: `nowrap`,
+      cursor: `pointer`,
+      border: 0,
+      outline: `none`,
+      transition: `
+        box-shadow .2s ${units.animationCurveFastOutLinearIn},
+        background-color .2s ${units.animationCurveDefault},
+        color .2s ${units.animationCurveDefault}
+      `,
+    }
+  ]
+
+  $icon = {
+    width: em(1),
+    height: em(1),
+    fontSize: percent(120),
+    verticalAlign: `middle`,
+    fill: `currentColor`,
+    marginRight: unit(.5)
+  }
+
+  $text = {
+  }
 
   $disabled = {
     color: styles.disabledTextColor,
@@ -151,7 +171,7 @@ view Button {
     cursor: 'auto',
   }
 
-  const squared$ = {
+  const square = {
     minWidth: styles.squaredMinWidth,
     padding: styles.squaredPadding,
     borderRadius: styles.borderRadius,
@@ -166,25 +186,17 @@ view Button {
   }
 
   $raised = [
-    squared$,
-
-    disabled && Object.assign(effects.shadow2dp, {
-      backgroundColor: styles.disabledBackgroundColor
-    }),
-
+    square,
     effects.shadow2dp(),
-
-    {
-      active: effects.shadow4dp()
-    },
-
+    { active: effects.shadow4dp() },
+    disabled && { backgroundColor: styles.disabledBackgroundColor },
     focus && effects.focusShadow
   ]
 
   $flat = [
-    squared$, {
-    background: 'transparent',
-  }]
+    square,
+    { background: 'transparent' }
+  ]
 
   $floating = {
     width: styles.floatingHeight,

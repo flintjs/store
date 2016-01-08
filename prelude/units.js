@@ -35,9 +35,9 @@ let units = {
   fontWeightBold: 700,
 
   // Shadows
-  shadowKeyUmbraOpacity: 0.2,
-  shadowKeyPenumbraOpacity: 0.14,
-  shadowAmbientShadowOpacity: 0.12,
+  shadowKeyUmbraOpacity: `0.2`,
+  shadowKeyPenumbraOpacity: `0.14`,
+  shadowAmbientShadowOpacity: `0.12`,
 
   // Depth Shadows
   zdepthShadow1: `0 1px 6px rgba(${rgba(0,0,0,0.12)}), 0 1px 4px rgba(${rgba(0,0,0,0.24)})`,
