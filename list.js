@@ -165,7 +165,7 @@ view List.Item {
   let handleClick = event => !disabled && onClick(event)
   let wrapProps = () => to ? { tagName: 'a', href: to } : {}
 
-  <listitem-li onClick={handleClick} onMouseDown={onMouseDown}>
+  <li onClick={handleClick} onMouseDown={onMouseDown}>
     <wrap {...wrapProps()}>
       <inner>
         <FontIcon if={leftIcon} class="icon left" value={leftIcon} />
@@ -175,11 +175,7 @@ view List.Item {
       </inner>
       {children}
     </wrap>
-  </listitem-li>
-
-  $ = {
-    position: `relative`,
-  }
+  </li>
 
   $listitem = {
     position: `relative`,

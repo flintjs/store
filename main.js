@@ -1,8 +1,10 @@
-let isActive = s =>
-  location.pathname.toLowerCase().substr(1) == s.toLowerCase()
+let route = x => `/${x.toLowerCase()}`
+let isActive = s => Flint.router.isActive(route(s))
 
 view Main {
   let examples = [
+    'All',
+    'Layout',
     'Button',
     'Card',
     'Dropdown',
@@ -11,34 +13,36 @@ view Main {
     'Slider',
   ]
 
-  let route = x => `/${x.toLowerCase()}`
-
   <nav>
     <a repeat={examples}
        class={{active: isActive(_) }}
        onClick={Flint.router.link(_.toLowerCase())}>{_}</a>
   </nav>
-  <examples repeat={examples}>
-    <example route={route(_)}>
-      {view.el([`${_}Example`, 0], null)}
+  <body>
+    <examples if={!isActive('all')} repeat={examples}>
+      <example route={route(_)}>
+        {view.el(`${_}Example`)}
+      </example>
+    </examples>
+    <example route="/all">
+      <examples repeat={examples}>
+        <example if={_ !== 'all'}>
+          {view.el(`${_}Example`)}
+        </example>
+      </examples>
     </example>
-  </examples>
-  <example route="/">
-    <Card>
-      <Card.Title
-        title="Welcome to Kit"
-        subtitle="A beautiful UI Kit by Flint"
-      />
-    </Card>
-  </example>
+  </body>
 
   $ = {
     flexFlow: 'row'
   }
 
+  $body = {
+    flexGrow: 1
+  }
 
   $example = {
-    margin: 30,
+    margin: 30
   }
 
   $Card = { width: 300, }
@@ -56,6 +60,31 @@ view Main {
     fontSize: 30,
     textDecoration: 'none',
     color: '#333',
+  }
+}
+
+view LayoutExample {
+  <Row>
+    <Col>1</Col>
+    <Col>2</Col>
+    <Col>3</Col>
+  </Row>
+  <Row>
+    <Col>1</Col>
+    <Col>2</Col>
+    <Col>3</Col>
+    <Col>4</Col>
+    <Col>5</Col>
+    <Col>6</Col>
+  </Row>
+  <Row>
+    <Col repeat={12}>{_}</Col>
+  </Row>
+
+  $Col = {
+    background: '#eee',
+    padding: 10,
+    margin: 10
   }
 }
 

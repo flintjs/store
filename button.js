@@ -119,14 +119,14 @@ view Button {
     onMouseLeave && onMouseLeave()
   }
 
-  <button-div tagName={tagName} {...buttonProps(view.props, { level, shape, doMouseUp, doMouseLeave })}>
+  <button tagName={tagName} {...buttonProps(view.props, { level, shape, doMouseUp, doMouseLeave })}>
     <FontIcon if={typeof icon == 'string'} value={icon} />
     <icon if={typeof icon != 'string'}>{icon}</icon>
     <text>
       {label}
       {children}
     </text>
-  </button-div>
+  </button>
 
   $button = [
     buttonStyles(),
