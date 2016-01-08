@@ -1,7 +1,7 @@
 import { fns, palette } from './prelude'
 
 let { calc, rgb, rgba, translateX, translateY, translateZ } = fns
-let { colors, units, effects } = palette()
+let { colors, units, effects, type } = palette()
 let { em, unit, percent, seconds } = units
 
 const colorWhite = '#fff'
@@ -154,19 +154,28 @@ view Card.Title {
     titleContent = title || children
   })
 
-  <Avatar if={typeof avatar == 'string'} image={avatar} />
+  <Avatar class="avatar" if={typeof avatar == 'string'} image={avatar} />
   <avatar if={typeof avatar == 'object'}>{avatar}</avatar>
-  <Title class="title" if={titleContent && typeof titleContent == 'string'}>{titleContent}</Title>
-  <Title class="subtitle" subtitle if={subtitle}>{subtitle}</Title>
-  <p class="children" if={children && typeof children != 'string'}>{children}</p>
+  <text>
+    <Title class="title" if={titleContent && typeof titleContent == 'string'}>{titleContent}</Title>
+    <Title class="subtitle" subtitle if={subtitle}>{subtitle}</Title>
+    <p class="children" if={children && typeof children != 'string'}>{children}</p>
+  </text>
 
   $ = [
     cardFont,
 
     {
-      padding: small ? `auto` : [styles.paddingLg, styles.padding, unit(styles.padding + .2)],
-      display: 'flex',
+      flexFlow: `row`,
       alignItems: 'center'
+    },
+
+    small && {
+      padding: styles.padding,
+    },
+
+    !small && {
+      padding: [styles.paddingLg, styles.padding, unit(styles.padding + .2)]
     }
   ]
 
@@ -174,13 +183,18 @@ view Card.Title {
     marginRight: unit(1.3),
   }
 
-  $title = {
-    padding: '',
-    lineHeight: small ? 1.5 : 1.25
-  }
+  $title = [
+    {
+      padding: '',
+      lineHeight: small ? 1.5 : 1.25
+    },
 
-  $subtitle = [{
-      color: colors.secondary
+    !small && type.headline()
+  ]
+
+  $subtitle = [
+    {
+      color: colors.textSecondary
     },
 
     small && {

@@ -287,7 +287,7 @@ view Slider {
     }
   ]
 
-  $container = {
+  $bar = {
     position: `relative`,
     width: calc(100%  styles.knobSize),
     height: styles.knobSize,

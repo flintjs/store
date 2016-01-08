@@ -13,6 +13,10 @@ view Main {
     'Slider',
   ]
 
+  on.mount(() => {
+    Flint.router.go('/all')
+  })
+
   <nav>
     <a repeat={examples}
        class={{active: isActive(_) }}
