@@ -34,15 +34,10 @@ view List {
   prop selectable: bool = false
 
   <list-ul>
-    {React.Children.map(children, (item) => {
-      if (item.type === 'List.Item') {
-        return React.cloneElement(item, {
-          ripple: ripple,
-          selectable: selectable
-        })
-      } else {
-        return item
-      }
+    {React.Children.map(children, el => {
+      return el.props.__flint.tagName == 'List.Item'
+        ? React.cloneElement(el, { ripple, selectable })
+        : el
     })}
   </list-ul>
 
@@ -192,7 +187,7 @@ view List.Item {
   }
 
   $wrap = {
-    flexGrow: 1
+    width: percent(100)
   }
 
   $inner = [
