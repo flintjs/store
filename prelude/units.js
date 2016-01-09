@@ -1,6 +1,10 @@
 import { rgba, cubicBezier } from './fns'
 
-let unit = n => `${n}rem`
+// hacky, allows you to do let x = unit(1); let x = unit(x + 1)
+let handleMath = (val, type) => typeof val == 'string' ? eval(val.replace(type, '+')) : val
+let unitCombinator = type => val => `${handleMath(val, type)}${type}`
+
+let unit = unitCombinator('rem')
 let vw = x => `${x}vw`
 let vh = x => `${x}vh`
 let ms = x => `${x}ms`

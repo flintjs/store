@@ -189,7 +189,8 @@ view Card.Title {
       lineHeight: small ? 1.5 : 1.25
     },
 
-    !small && type.headline()
+    !small && type.headline(),
+    small && type.body2()
   ]
 
   $subtitle = [

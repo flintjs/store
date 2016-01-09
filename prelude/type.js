@@ -114,20 +114,14 @@ const type = {
   },
 
   body2({ contrast = false, preferred = false } = {}) {
-    // @include typoPreferredFont($usePreferred),
-    // fontSize: 1.4rem,
-    // lineHeight: unit(2.4),
-    // letterSpacing: 0,
-    //
-    // @if $usePreferred {
-    //   fontWeight: 500,
-    // } @else {
-    //   fontWeight: bold,
-    // }
-    //
-    // @if $colorContrast {
-    //   opacity: .87,
-    // }
+    return {
+      ...type.preferredFont(),
+      fontSize: unit(1.4),
+      lineHeight: unit(2.4),
+      letterSpacing: 0,
+      fontWeight: preferred ? 500 : `bold`,
+      opacity: contrast ? .87 : 1,
+    }
   },
 
   body1({ contrast = false, preferred = false } = {}) {
