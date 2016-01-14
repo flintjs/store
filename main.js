@@ -13,29 +13,29 @@ view Main {
     'Slider',
   ]
 
-  on.mount(() => {
-    Flint.router.go('/all')
-  })
+  <Toolbox route='/toolbox' />
 
-  <nav>
-    <a repeat={examples}
-       class={{active: isActive(_) }}
-       onClick={Flint.router.link(_.toLowerCase())}>{_}</a>
-  </nav>
-  <body>
-    <examples if={!isActive('all')} repeat={examples}>
-      <example route={route(_)}>
-        {view.el(`${_}Example`)}
-      </example>
-    </examples>
-    <example route="/all">
-      <examples repeat={examples}>
-        <example if={_ !== 'all'}>
+  <div if={!isActive('toolbox')}>
+    <nav>
+      <a repeat={examples}
+         class={{active: isActive(_) }}
+         onClick={Flint.router.link(_.toLowerCase())}>{_}</a>
+    </nav>
+    <body>
+      <examples if={!isActive('all')} repeat={examples}>
+        <example route={route(_)}>
           {view.el(`${_}Example`)}
         </example>
       </examples>
-    </example>
-  </body>
+      <example route="/all">
+        <examples repeat={examples}>
+          <example if={_ !== 'all'}>
+            {view.el(`${_}Example`)}
+          </example>
+        </examples>
+      </example>
+    </body>
+  </div>
 
   $ = {
     flexFlow: 'row'
