@@ -13,9 +13,9 @@ view Main {
     'Slider',
   ]
 
-  on.mount(() => {
-    Flint.router.go('/all')
-  })
+  // on.mount(() => {
+  //   Flint.router.go('/all')
+  // })
 
   <nav>
     <a repeat={examples}
@@ -160,18 +160,36 @@ view ModalExample.DeleteFile {
 view CardExample {
   <Card>
     <Card.Title
-      title="Hello World"
-      subtitle="Flint is good, Flint is great."
+      title="Avatar style title"
+      subtitle="Subtitle here"
       avatar="https://placeimg.com/80/80/animals"
     />
     <Card.Media
       aspectRatio="wide"
       image="https://placeimg.com/800/450/nature"
     />
+    <Card.Actions style={{ justifyContent: 'flex-end' }}>
+      <Button icon="report_problem" label="Test" raised primary />
+      <Button icon="share" label="Test" />
+    </Card.Actions>
+  </Card>
+
+  <Card>
+    <Card.Title
+      title="Avatar style title"
+      subtitle="Subtitle here"
+      avatar="https://placeimg.com/80/80/animals"
+    />
+    <Card.Media aspectRatio="wide">
+      <iframe width="1280" height="720" src="https://www.youtube.com/watch?v=g6tR78d0cmA?rel=0&amp;showinfo=0" frameBorder="0" allowFullScreen></iframe>
+    </Card.Media>
+  </Card>
+
+  <Card>
     <Card.Title
       title="Hello World"
       subtitle="Subtitle here"
-    />
+      />
     <Card.Text>
       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </Card.Text>
