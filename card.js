@@ -9,8 +9,8 @@ const styles = {
   colorWhite: '#fff',
   fontSize: unit(1.4),
   padding: unit(1.6),
-  paddingLarge: unit(2),
-  paddingSmall: unit(.8),
+  paddingLarge: unit(2.0),
+  paddingSmall: unit(0.8),
   textOverlay: rgba([0,0,0], 0.35)
 }
 
@@ -18,7 +18,21 @@ view Card {
   prop children:? any
   prop raised:? bool
 
-  <card class={{ raised }} yield />
+  <card class={{ raised }}>
+    {view.mapElements(children, child => {
+      const index = children.indexOf(child)
+      const prevName = index !== 0 ? view.getName(children[index - 1]) : null
+      const currName = view.getName(child)
+
+      if (index !== 0 &&
+        [ 'Card.Title', 'Card.Text' ].includes(currName) &&
+        [ 'Card.Title', 'Card.Text' ].includes(prevName)) {
+        return view.clone(child, { style: { paddingTop: 0 } })
+      }
+
+      return child
+    })}
+  </card>
 
   $ = [
     {
@@ -32,6 +46,7 @@ view Card {
     },
     effects.shadow2dp()
   ]
+
   $raised = effects.shadow8dp()
 }
 
@@ -137,13 +152,18 @@ view Card.Media {
   $inner = {
     height: '100%',
     position: 'absolute',
-    top: 0
+    top: 0,
+    left: 0,
+    display: 'flex',
+    width: '100%',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    overflow: 'hidden'
   }
 
-  const mediaContentItem = { maxWidth: '100%', maxHeight: '100%' }
-  $iframe = mediaContentItem
-  $video  = mediaContentItem
-  $image  = mediaContentItem
+  $iframe = { maxWidth: '100%' }
+  $video = { maxWidth: '100%' }
+  $image = { maxWidth: '100%' }
 }
 
 view Card.Actions {
@@ -152,20 +172,31 @@ view Card.Actions {
   view.render(() =>
     view.mapElements(children, child => {
       if (view.getName(child) === 'Button')
-        return view.clone(child, { class: 'actionbutton' })
+        return view.clone(child, {
+          class: 'actionbutton',
+          style: {
+            minWidth: 0,
+            padding: [0, styles.paddingSmall],
+            margin: [0, styles.paddingSmall / 2],
+          }
+        })
       return child
     })
   )
 
   $actionbutton = {
-    minWidth: 0,
-    padding: [0, styles.paddingSmall],
     margin: [0, styles.paddingSmall / 2],
+    fistChild: {
+      marginLeft: 0
+    },
+    lastChild: {
+      marginRight: 0
+    }
   }
 
   $ = {
-    display: 'flex',
     alignItems: 'center',
+    display: 'flex',
     justifyContent: 'flex-start',
     padding: styles.paddingSmall
   }
@@ -174,21 +205,17 @@ view Card.Actions {
 view Card.Text {
   prop children:? any
 
-  <p>{children}</p>
+  <p root>{children}</p>
 
-  $p = {
-    position: 'relative',
-    top: 0,
-    left: 0,
+  $ = {
     display: 'flex',
-    width: '100%',
     flexDirection: 'column',
     justifyContent: 'flex-end',
+    left: 0,
     overflow: 'hidden',
     padding: [ styles.padding, styles.padding ],
-
-    lastChild: {
-      paddingBottom: styles.paddingLarge
-    }
+    position: 'relative',
+    top: 0,
+    width: '100%'
   }
 }

@@ -13,9 +13,9 @@ view Main {
     'Slider',
   ]
 
-  // on.mount(() => {
-  //   Flint.router.go('/all')
-  // })
+  on.mount(() => {
+    Flint.router.go('/all')
+  })
 
   <nav>
     <a repeat={examples}
@@ -169,8 +169,8 @@ view CardExample {
       image="https://placeimg.com/800/450/nature"
     />
     <Card.Actions style={{ justifyContent: 'flex-end' }}>
-      <Button icon="report_problem" label="Test" raised primary />
-      <Button icon="share" label="Test" />
+      <Button icon="report_problem" label="Warning" primary />
+      <Button icon="share" label="Share" />
     </Card.Actions>
   </Card>
 
@@ -180,22 +180,53 @@ view CardExample {
       subtitle="Subtitle here"
       avatar="https://placeimg.com/80/80/animals"
     />
-    <Card.Media aspectRatio="wide">
-      <iframe width="1280" height="720" src="https://www.youtube.com/watch?v=g6tR78d0cmA?rel=0&amp;showinfo=0" frameBorder="0" allowFullScreen></iframe>
-    </Card.Media>
+    <Card.Media
+      aspectRatio="wide"
+      image="https://placeimg.com/800/450/nature"
+    />
+    <Card.Title
+      title="Simple title"
+      subtitle="Subtitle here"
+    />
+    <Card.Text>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </Card.Text>
+    <Card.Actions>
+      <IconButton icon="report_problem" primary />
+      <IconButton icon="share" accent />
+    </Card.Actions>
   </Card>
 
   <Card>
     <Card.Title
-      title="Hello World"
+      title="Video card"
       subtitle="Subtitle here"
-      />
+      avatar="https://placeimg.com/80/80/animals"
+    />
+    <Card.Media aspectRatio="wide">
+      <iframe width="1280" height="720" src="https://www.youtube.com/embed/mb6Jc4juSF8?rel=0&amp;showinfo=0" frameBorder="0" allowFullScreen></iframe>
+    </Card.Media>
     <Card.Text>
       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </Card.Text>
   </Card>
 
+  <Card raised>
+    <Card.Title
+      title="Hello World"
+      subtitle="Subtitle here"
+    />
+    <Card.Text>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </Card.Text>
+    <Card.Text>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Testing more.
+    </Card.Text>
+  </Card>
+
   $Card = {
+    marginTop: 20,
+    marginRight: 20,
     width: 350
   }
 }
