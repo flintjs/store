@@ -18,7 +18,7 @@ view Avatar {
 
   <avatar>
     {children}
-    <img src={image} title={title} />
+    <img class='image' src={image} title={title} />
     <FontIcon if={typeof icon == 'string'} value={icon} />
   </avatar>
 
@@ -33,16 +33,6 @@ view Avatar {
     textAlign: `center`,
     backgroundColor: avatar.background,
     borderRadius: `50%`,
-
-    // > svg {
-    //   width: 1em,
-    //   height: avatar.size,
-    //   fill: currentColor,
-    // }
-    // > img {
-    //   maxWidth: 100%,
-    //   height: auto,
-    // }
   }
 
   $image = {
