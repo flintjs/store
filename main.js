@@ -64,13 +64,6 @@ view Main {
   $body = {
     flexGrow: 1
   }
-
-  $example = {
-    display: 'block',
-    margin: 30
-  }
-
-  $Card = { width: 300, }
 }
 
 view LayoutExample {
@@ -157,23 +150,89 @@ view ModalExample.DeleteFile {
 }
 
 view CardExample {
-  <Card>
+  const lorem = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+  const widerCard = { width: 345 }
+
+  // Basic card with color header and subtitle headline
+  <Card style={widerCard}>
+    <Card.Media aspectRatio="wide" style={{backgroundColor: '#3f51b5'}}>
+      <Card.Title>Basic Card</Card.Title>
+    </Card.Media>
+    <Card.Title subtitle="You can also use a subtitle like this" />
+    <Card.Text>{lorem}</Card.Text>
+  </Card>
+
+  // Card with background image and overlayed content
+  <Card style={widerCard}>
+    <Card.Media
+      contentOverlay
+      aspectRatio="square"
+      image="https://placeimg.com/700/700/nature"
+    >
+      <Card.Title
+        title="Title goes here"
+        subtitle="Subtitle here"
+      />
+      <Card.Actions>
+        <Button inverse label="Action 1" />
+        <Button inverse label="Action 2" />
+      </Card.Actions>
+    </Card.Media>
+  </Card>
+
+  // Video card with avatar header, media video and buttons
+  <Card style={widerCard}>
     <Card.Title
-      title="Avatar style title"
+      title="Video card"
       subtitle="Subtitle here"
       avatar="https://placeimg.com/80/80/animals"
     />
-    <Card.Media
-      aspectRatio="wide"
-      image="https://placeimg.com/800/450/nature"
-    />
-    <Card.Actions style={{ justifyContent: 'flex-end' }}>
-      <Button icon="report_problem" label="Warning" primary />
-      <Button icon="share" label="Share" />
+    <Card.Media aspectRatio="wide">
+      <iframe
+        allowFullScreen
+        frameBorder="0"
+        height="720"
+        src="https://www.youtube.com/embed/mb6Jc4juSF8?rel=0&amp;showinfo=0"
+        width="1280"
+      />
+    </Card.Media>
+    <Card.Text>
+      {lorem}
+    </Card.Text>
+    <Card.Actions>
+      <IconButton icon="share" />
     </Card.Actions>
   </Card>
 
+  // Small card with image and controls
   <Card>
+    <Card.Media aspectRatio="square" image="https://placeimg.com/400/400/nature">
+      <Card.Title>Test</Card.Title>
+    </Card.Media>
+    <Card.Actions style={{justifyContent: 'center'}}>
+      <IconButton icon="thumb_down" />
+      <IconButton icon="thumb_up" />
+      <IconButton icon="turned_in_not" />
+    </Card.Actions>
+  </Card>
+
+  // Music cover example with controls and squared image
+  <Card style={{width: 140}}>
+    <Card.Media
+      contentOverlay
+      aspectRatio="square"
+      image="https://placeimg.com/280/280/people"
+    >
+      <Card.Actions style={{justifyContent: 'center'}}>
+        <IconButton inverse icon="fast_rewind" />
+        <IconButton inverse icon="play_arrow" />
+        <IconButton inverse icon="fast_forward" />
+      </Card.Actions>
+    </Card.Media>
+  </Card>
+
+  // Complete example with avatar header, media, title and text body
+  <Card style={widerCard}>
     <Card.Title
       title="Avatar style title"
       subtitle="Subtitle here"
@@ -188,45 +247,79 @@ view CardExample {
       subtitle="Subtitle here"
     />
     <Card.Text>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      {lorem}
     </Card.Text>
-    <Card.Actions>
-      <IconButton icon="report_problem" primary />
-      <IconButton icon="share" accent />
+  </Card>
+
+  // Smaller example with media image, avatar header and action buttons
+  <Card>
+    <Card.Title
+      avatar="https://placeimg.com/80/80/animals"
+      title="Avatar Card"
+      subtitle="An awesome basic card"
+    />
+    <Card.Media
+      aspectRatio="wide"
+      image="https://placeimg.com/800/450/nature"
+    />
+    <Card.Actions style={{ justifyContent: 'flex-end' }}>
+      <IconButton icon="share" />
+      <IconButton icon="favorite" />
     </Card.Actions>
   </Card>
 
+  // Alternative layout with small image, title, subtitle and actions
   <Card>
-    <Card.Title
-      title="Video card"
-      subtitle="Subtitle here"
-      avatar="https://placeimg.com/80/80/animals"
-    />
-    <Card.Media aspectRatio="wide">
-      <iframe width="1280" height="720" src="https://www.youtube.com/embed/mb6Jc4juSF8?rel=0&amp;showinfo=0" frameBorder="0" allowFullScreen></iframe>
-    </Card.Media>
-    <Card.Text>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    </Card.Text>
+    <div style={{display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between'}}>
+      <Card.Title
+        title="Title goes here"
+        subtitle="Subtitle here"
+      />
+      <Card.Media
+        style={{width: 80, height: 80, margin: [16, 16, 0, 0]}}
+        image="https://placeimg.com/400/400/nature"
+      />
+    </div>
+    <Card.Actions>
+      <Button label="Action 1" />
+      <Button label="Action 2" />
+    </Card.Actions>
   </Card>
 
-  <Card raised>
-    <Card.Title
-      title="Hello World"
-      subtitle="Subtitle here"
-    />
-    <Card.Text>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    </Card.Text>
-    <Card.Text>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Testing more.
-    </Card.Text>
+  // Another alternative layout with a bigger image and without actions
+  <Card>
+    <div style={{display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between'}}>
+      <Card.Title
+        title="Title goes here"
+        subtitle="Subtitle here"
+      />
+      <Card.Media
+        style={{width: 140, height: 140, margin: 16}}
+        image="https://placeimg.com/400/400/nature"
+      />
+    </div>
   </Card>
+
+  // Text card with title, subtitle and a couple of paragraphs
+  <Card style={widerCard}>
+    <Card.Title title="Hello World" subtitle="Subtitle here" />
+    <Card.Text>{lorem}</Card.Text>
+    <Card.Text>{lorem}</Card.Text>
+  </Card>
+
+  $ = {
+    alignContent: 'flex-start',
+    alignItems: 'flex-start',
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    height: '100vw',
+    width: '100%'
+  }
 
   $Card = {
-    marginTop: 20,
-    marginRight: 20,
-    width: 350
+    display: 'flex',
+    margin: 10,
   }
 }
 

@@ -20,8 +20,9 @@ view Card {
 
   <card class={{ raised }}>
     {view.mapElements(children, child => {
-      const index = children.indexOf(child)
-      const prevName = index !== 0 ? view.getName(children[index - 1]) : null
+      const arrayChildren = Array.isArray(children) ? children : [ children ]
+      const index = arrayChildren.indexOf(child)
+      const prevName = index !== 0 ? view.getName(arrayChildren[index - 1]) : null
       const currName = view.getName(child)
 
       if (index !== 0 &&
@@ -36,13 +37,12 @@ view Card {
 
   $ = [
     {
-      display: 'flex',
-      width: '100%',
-      flexDirection: 'column',
-      overflow: 'hidden',
-      fontSize: styles.fontSize,
       background: styles.backgroundColor,
       borderRadius: unit(.2),
+      display: 'flex',
+      flexDirection: 'column',
+      fontSize: styles.fontSize,
+      overflow: 'hidden',
     },
     effects.shadow2dp()
   ]
@@ -55,6 +55,8 @@ view Card.Title {
   prop children:? string | object | array
   prop title:? string
   prop subtitle:? string
+  prop overlay:? bool
+  prop contrast:? bool
 
   let titleContent, subtitleContent, small, large
 
@@ -74,8 +76,8 @@ view Card.Title {
 
   $ = [
     {
-      display: `flex`,
-      alignItems: 'center'
+      alignItems: 'center',
+      display: `flex`
     },
     small && {
       padding: styles.padding
@@ -86,7 +88,9 @@ view Card.Title {
         styles.padding,
         unit(styles.padding + .2)
       ]
-    }
+    },
+    overlay && { background: styles.textOverlay },
+    contrast && { color: styles.colorWhite }
   ]
 
   $avatar = {
@@ -106,6 +110,7 @@ view Card.Title {
 
   $subtitle = [
     { color: colors.textSecondary },
+    overlay && { color: styles.colorWhite },
     small && {
       fontWeight: 500,
       lineHeight: 1.4
@@ -127,7 +132,20 @@ view Card.Media {
   })
 
   <cardmedia root class={{ [aspectRatio]: true }}>
-    <inner yield />
+    <inner>
+      {view.mapElements(children, child => {
+        const arrayChildren = Array.isArray(children) ? children : [ children ]
+        const name = view.getName(child)
+        let childProps = {}
+
+        if ([ 'Card.Title', 'Card.Actions', 'Card.Text' ].includes(name)) {
+          childProps.contrast = true
+          childProps.overlay = contentOverlay
+        }
+
+        return view.clone(child, childProps)
+      })}
+    </inner>
   </cardmedia>
 
   $cardmedia = {
@@ -162,12 +180,14 @@ view Card.Media {
   }
 
   $iframe = { maxWidth: '100%' }
-  $video = { maxWidth: '100%' }
-  $image = { maxWidth: '100%' }
+  $video  = { maxWidth: '100%' }
+  $image  = { maxWidth: '100%' }
 }
 
 view Card.Actions {
   prop children: any
+  prop contrast:? bool
+  prop overlay:? bool
 
   view.render(() =>
     view.mapElements(children, child => {
@@ -186,20 +206,20 @@ view Card.Actions {
 
   $actionbutton = {
     margin: [0, styles.paddingSmall / 2],
-    fistChild: {
-      marginLeft: 0
-    },
-    lastChild: {
-      marginRight: 0
-    }
+    fistChild: { marginLeft: 0 },
+    lastChild: { marginRight: 0 }
   }
 
-  $ = {
-    alignItems: 'center',
-    display: 'flex',
-    justifyContent: 'flex-start',
-    padding: styles.paddingSmall
-  }
+  $ = [
+    {
+      alignItems: 'center',
+      display: 'flex',
+      justifyContent: 'flex-start',
+      padding: styles.paddingSmall,
+    },
+    overlay && { background: styles.textOverlay },
+    contrast && { color: styles.colorWhite }
+  ]
 }
 
 view Card.Text {
