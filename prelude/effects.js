@@ -43,22 +43,22 @@ export default {
 
   // Animations
   materialAnimationFastOutSlowIn: (duration = .2) => ({
-    transitionTimingFunction: animationCurveFastOutSlowIn,
+    transitionTimingFunction: units.animationCurveFastOutSlowIn,
     transitionDuration: duration,
   }),
 
   materialAnimationLinearOutSlowIn: (duration = .2) => ({
-    transitionTimingFunction: animationCurveLinearOutSlowIn,
+    transitionTimingFunction: units.animationCurveLinearOutSlowIn,
     transitionDuration: duration,
   }),
 
   materialAnimationFastOutLinearIn: (duration = .2) => ({
-    transitionTimingFunction: animationCurveFastOutLinearIn,
+    transitionTimingFunction: units.animationCurveFastOutLinearIn,
     transitionDuration: duration,
   }),
 
-  materialAnimationDefault: (duration = .2) => ({
-    transitionTimingFunction: animationCurveDefault,
+  materialAnimationDefault: (duration = '0.2s') => ({
+    transitionTimingFunction: units.animationCurveDefault,
     transitionDuration: duration,
   }),
 

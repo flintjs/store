@@ -4,6 +4,8 @@ let isActive = s => Flint.router.isActive(route(s))
 view Main {
   let examples = [
     'All',
+    'Input',
+    'Autocomplete',
     'Layout',
     'Button',
     'Card',
@@ -15,7 +17,7 @@ view Main {
 
   <Toolbox route='/toolbox' />
 
-  <div if={!isActive('toolbox')}>
+  <layout>
     <nav>
       <a repeat={examples}
          class={{active: isActive(_) }}
@@ -35,9 +37,9 @@ view Main {
         </examples>
       </example>
     </body>
-  </div>
+  </layout>
 
-  $ = {
+  $layout = {
     display: 'flex',
     flexFlow: 'row'
   }
@@ -52,7 +54,7 @@ view Main {
     color: '#333',
     cursor: 'pointer',
     display: 'block',
-    fontSize: 30,
+    fontSize: 20,
     marginTop: 20,
     textDecoration: 'none'
   }
@@ -64,6 +66,48 @@ view Main {
   $body = {
     flexGrow: 1
   }
+}
+
+view InputExample {
+  let values = { normal: 'Javier Velasco Arjona' }
+  const handleChange = (name, value) => { values[name] = value }
+
+  <inputlist>
+    <Input error='Use a Twitter username' type='text' value={values.normal} label='Twitter username' onChange={handleChange.bind(this, 'normal')} maxLength={12} />
+    <Input type='tel' icon='phone' value={values.withIcon} label='With icon' onChange={handleChange.bind(this, 'withIcon')} />
+    <Input type='email' value={values.fixedLabel} label='Label fixed' floating={false} onChange={handleChange.bind(this, 'fixedLabel')} />
+    <Input type='text' value='Read only' readOnly label='Phone Number' />
+    <Input type='text' label='Disabled field' disabled />
+  </inputlist>
+
+  $inputlist = {
+    display: `block`,
+    paddingTop: 30,
+    paddingRight: 40,
+  }
+}
+
+view AutocompleteExample {
+  let value
+
+  const source = {
+    'ES-es': 'Spain',
+    'TH-th': 'Thailand',
+    'EN-gb': 'England',
+    'EN-en': 'USA'
+  }
+
+  const handleChange = (v) => {
+    value = v
+  }
+
+  <Autocomplete
+    label='Favorite artist'
+    multiple
+    onChange={handleChange}
+    source={source}
+    value={value}
+  />
 }
 
 view LayoutExample {
