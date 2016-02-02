@@ -73,39 +73,45 @@ view Button {
   prop inverse:? bool
   prop label:? string
   prop mini:? bool = false
-  prop onMouseLeave:? func
-  prop onMouseUp:? func
+  prop onMouseLeave:? func = Flint.noop
+  prop onMouseUp:? func = Flint.noop
   prop primary:? bool = false
   prop raised:? bool = false
   prop toggle:? bool = false
   prop type:? string
 
-  const level = primary ? 'primary' : accent ? 'accent' : 'neutral'
-  const shape = flat ? 'flat' : raised ? 'raised' : floating ? 'floating' : 'flat'
-  const isFloating = shape === 'floating'
-  const isRaised = shape === 'raised'
-  const isFlat = shape === 'flat'
+  let level, shape, isFloating, isRaised, isFlat
+
+  on.props(() => {
+    level = primary ? 'primary' : accent ? 'accent' : 'neutral'
+    shape = flat ? 'flat' : raised ? 'raised' : floating ? 'floating' : 'flat'
+    isFloating = shape === 'floating'
+    isRaised = shape === 'raised'
+    isFlat = shape === 'flat'
+  })
 
   const handleMouseUp = () => {
     view.refs.button.blur()
-    onMouseUp && onMouseUp()
+    onMouseUp()
   }
 
   const handleMouseLeave = () => {
     view.refs.button.blur()
-    onMouseLeave && onMouseLeave()
+    onMouseLeave()
   }
 
-  const buttonClasses = {
-    button: true,
-    disabled,
-    [level]: true,
-    [shape]: true
-  }
-
-  <button class={buttonClasses} {...getButtonProps(view.props, { handleMouseUp, handleMouseLeave })}>
-    { icon && typeof icon !== 'string' && view.clone(icon, { className: 'svg' }) }
-    <FontIcon if={icon && typeof icon === 'string'} value={icon} />
+  <button class={{
+      button: true,
+      disabled,
+      [level]: true,
+      [shape]: true
+    }}
+    {...getButtonProps(view.props, { handleMouseUp, handleMouseLeave })}
+  >
+    <icon if={typeof icon != 'string'}>
+      {view.clone(icon, { class: 'svg' })}
+    </icon>
+    <FontIcon if={typeof icon == 'string'} value={icon} />
     <text>
       {label}
       {children}
@@ -152,11 +158,11 @@ view Button {
   }
 
   $svg = {
-    fill: `currentColor`,
+    fill: 'currentColor',
     fontSize: percent(120),
     height: em(1),
     marginRight: unit(.5),
-    verticalAlign: `middle`,
+    verticalAlign: 'middle',
     width: em(1)
   }
 
