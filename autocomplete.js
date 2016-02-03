@@ -44,6 +44,34 @@ view Autocomplete {
     // if (!multiple)
     //   query = value
   })
+
+  // let getSource = () => {
+  //   if (source.hasOwnProperty('length')) {
+  //     return new Map(source.map((item) => [item, item]))
+  //   } else {
+  //     return new Map(Object.keys(source).map((key) => [key, source[key]]))
+  //   }
+  // }
+  //
+  // let getQuery = (key) => {
+  //   return !multiple && value ? getSource().get(key) : ''
+  // }
+
+  let suggestions = () => {
+    console.log('Query should be empty string but...')
+    console.log(query)
+    const suggestions = new Map()
+    const query = query.toLowerCase().trim() || ''
+    const values = values()
+
+    for (const [key, value] of getSource()) {
+      if (!values.has(key) && value.toLowerCase().trim().startsWith(query)) {
+        suggestions.set(key, value)
+      }
+    }
+    return suggestions
+  }
+
   //
   // view.shouldUpdate((nextProps, nextState) => {
   //   if (!focus && nextState.focus && direction === POSITION.AUTO) {
@@ -106,30 +134,6 @@ view Autocomplete {
   //   }
   // }
 
-  // let getQuery = (key) => {
-  //   return !multiple && value ? getSource().get(key) : ''
-  // }
-  //
-  // let suggestions = () => {
-  //   const suggestions = new Map()
-  //   const query = query.toLowerCase().trim() || ''
-  //   const values = values()
-  //   for (const [key, value] of getSource()) {
-  //     if (!values.has(key) && value.toLowerCase().trim().startsWith(query)) {
-  //       suggestions.set(key, value)
-  //     }
-  //   }
-  //   return suggestions
-  // }
-  //
-  // let getSource = () => {
-  //   if (source.hasOwnProperty('length')) {
-  //     return new Map(source.map((item) => [item, item]))
-  //   } else {
-  //     return new Map(Object.keys(source).map((key) => [key, source[key]]))
-  //   }
-  // }
-
   // let values = () => {
   //   const valueMap = new Map()
   //   console.log(value)
@@ -163,24 +167,28 @@ view Autocomplete {
   //   }
   // }
   //
-  // let renderSuggestions = () => {
-  //   const suggestions = [...suggestions()].map(([key, value]) => {
-  //     const className = ClassNames(style.suggestion, {[style.active]: active === key})
-  //     return (
-  //       <li
-  //         key={key}
-  //         className={className}
-  //         onMouseDown={select.bind( key)}
-  //         onMouseOver={handleSuggestionHover.bind( key)}
-  //       >
-  //         {value}
-  //       </li>
-  //     )
-  //   })
-  //
-  //   const className = ClassNames(style.suggestions, {[style.up]: _direction === 'up'})
-  //   return <ul ref='suggestions' className={className}>{suggestions}</ul>
-  // }
+  let renderSuggestions = () => {
+    console.log('First call has the variable:')
+    console.log(query)
+    console.log(suggestions())
+    // const suggestions = [...suggestions()].map(([key, value]) => {
+    //   const className = ClassNames(style.suggestion, {[style.active]: active === key})
+    //   return (
+    //     <li
+    //       key={key}
+    //       className={className}
+    //       onMouseDown={select.bind( key)}
+    //       onMouseOver={handleSuggestionHover.bind( key)}
+    //     >
+    //       {value}
+    //     </li>
+    //   )
+    // })
+    //
+    // const className = ClassNames(style.suggestions, {[style.up]: _direction === 'up'})
+    // return <ul ref='suggestions' className={className}>{suggestions}</ul>
+    return <h1>Iiiii</h1>
+  }
 
   // <autocomplete class={{ focus }}>
   //   {renderSelected()}
@@ -199,10 +207,8 @@ view Autocomplete {
   // </autocomplete>
 
   <autocomplete class={{ focus }}>
-    <Input
-      ref='input'
-      class="input"
-    />
+    <Input ref='input' class="" />
+    {renderSuggestions()}
   </autocomplete>
 
   // $ = {
