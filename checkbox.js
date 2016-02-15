@@ -114,7 +114,7 @@ view Checkbox {
 view Check {
   prop checked:? bool = false
   prop children:? any
-  prop onMouseDown:? func = Flint.noop
+  prop onMouseDown:? func = Motion.noop
 
   <check
     class={{ checked }}

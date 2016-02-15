@@ -1,5 +1,5 @@
 let route = x => `/${x.toLowerCase()}`
-let isActive = s => Flint.router.isActive(route(s))
+let isActive = s => Motion.router.isActive(route(s))
 
 view Main {
   let examples = [
@@ -21,7 +21,7 @@ view Main {
     <nav>
       <a repeat={examples}
          class={{active: isActive(_) }}
-         onClick={Flint.router.link(_.toLowerCase())}>{_}</a>
+         onClick={Motion.router.link(_.toLowerCase())}>{_}</a>
     </nav>
     <body>
       <examples if={!isActive('all')} repeat={examples}>

@@ -41,8 +41,8 @@ const styles = {
 view Clock {
   prop display:? string = 'hours'//oneOf(['hours', 'minutes'])
   prop format:? string = '24hr'//oneOf(['24hr', 'ampm'])
-  prop onChange:? func = Flint.noop
-  prop onHandMoved:? func = Flint.noop
+  prop onChange:? func = Motion.noop
+  prop onHandMoved:? func = Motion.noop
   prop time: object = new Date()
 
   let center = {x: null, y: null}
@@ -138,8 +138,8 @@ view Clock {
 view Face {
   prop active:? number = false
   prop numbers:? array = []
-  prop onTouchStart:? func = Flint.noop
-  prop onMouseDown:? func = Flint.noop
+  prop onTouchStart:? func = Motion.noop
+  prop onMouseDown:? func = Motion.noop
   prop radius:? number = 0
   prop spacing:? number
   prop twoDigits: bool = false
@@ -369,7 +369,7 @@ const step = 360 / 60
 
 view Minutes {
   prop center:? object
-  prop onChange:? func = Flint.noop
+  prop onChange:? func = Motion.noop
   prop radius:? number
   prop selected:? number = 0
   prop spacing: number

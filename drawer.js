@@ -14,7 +14,7 @@ const styles = {
 view Drawer {
   prop active:? bool = false
   prop children:? Node
-  prop onOverlayClick:? func = Flint.noop
+  prop onOverlayClick:? func = Motion.noop
   prop type:? string = 'left'//oneOf(['left' 'right'])
 
   <Overlay active={active} onClick={onOverlayClick}>

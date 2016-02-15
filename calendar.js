@@ -51,7 +51,7 @@ view Calendar {
   prop selectedDate:? object = new Date()
   prop maxDate:? object
   prop minDate:? object
-  prop onChange:? func = Flint.noop
+  prop onChange:? func = Motion.noop
   prop viewDate: object
 
   let _viewDate = selectedDate
@@ -154,7 +154,7 @@ view Calendar {
 view Day {
   prop day:? number
   prop disabled:? bool
-  prop onClick:? func = Flint.noop
+  prop onClick:? func = Motion.noop
   prop selectedDate:? object
   prop viewDate: object
 
@@ -217,7 +217,7 @@ view Day {
 view Month {
   prop maxDate:? object
   prop minDate:? object
-  prop onDayClick:? func = Flint.noop
+  prop onDayClick:? func = Motion.noop
   prop selectedDate:? object
   prop viewDate: object
 
@@ -287,7 +287,7 @@ view DatePicker {
   prop label:? string
   prop maxDate:? object
   prop minDate:? object
-  prop onChange:? func = Flint.noop
+  prop onChange:? func = Motion.noop
   prop value: object
 
   let date
@@ -335,8 +335,8 @@ view CalendarDialog {
   prop active:? bool = false
   prop maxDate:? object
   prop minDate:? object
-  prop onDismiss:? func = Flint.noop
-  prop onSelect:? func = Flint.noop
+  prop onDismiss:? func = Motion.noop
+  prop onSelect:? func = Motion.noop
   prop value: object = new Date()
 
   let date = value

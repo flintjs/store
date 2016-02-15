@@ -15,10 +15,10 @@ view Form {
   prop attributes:? array = []
   prop children:? node
   prop model:? object
-  prop onChange:? func = Flint.noop
-  prop onError:? func = Flint.noop
-  prop onSubmit:? func = Flint.noop
-  prop onValid:? func = Flint.noop
+  prop onChange:? func = Motion.noop
+  prop onError:? func = Motion.noop
+  prop onSubmit:? func = Motion.noop
+  prop onValid:? func = Motion.noop
   prop storage: string
 
   let _onSubmit = (event) => {

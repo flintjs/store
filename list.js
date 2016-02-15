@@ -35,7 +35,7 @@ view List {
 
   <list-ul>
     {React.Children.map(children, el => {
-      return el.props.__flint.tagName == 'List.Item'
+      return el.props.__motion.tagName == 'List.Item'
         ? React.cloneElement(el, { ripple, selectable })
         : el
     })}
@@ -101,9 +101,9 @@ view List.Checkbox {
   prop disabled:? bool = false
   prop legend:? string
   prop name:? string
-  prop onBlur:? func = Flint.noop
-  prop onChange:? func = Flint.noop
-  prop onFocus:? func = Flint.noop
+  prop onBlur:? func = Motion.noop
+  prop onChange:? func = Motion.noop
+  prop onFocus:? func = Motion.noop
 
   <listcheckbox-li class={{ legend, disabled }}>
     <Checkbox
@@ -150,8 +150,8 @@ view List.Item {
   prop disabled:? bool = false
   prop leftIcon:? string
   prop legend:? string
-  prop onClick:? func = Flint.noop
-  prop onMouseDown:? func = Flint.noop
+  prop onClick:? func = Motion.noop
+  prop onMouseDown:? func = Motion.noop
   prop rightIcon:? string
   prop ripple:? bool = false
   prop selectable:? bool = false

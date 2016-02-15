@@ -41,9 +41,9 @@ view Input {
   prop label:? string
   prop maxLength:? number
   prop multiline:? bool = false
-  prop onBlur:? func = Flint.noop
-  prop onChange:? func = Flint.noop
-  prop onFocus:? func = Flint.noop
+  prop onBlur:? func = Motion.noop
+  prop onChange:? func = Motion.noop
+  prop onFocus:? func = Motion.noop
   prop onKeyPress:? func
   prop required:? bool = false
   prop type:? string = 'text'

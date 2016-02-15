@@ -15,8 +15,8 @@ const styles = {
 view Table {
   prop heading:? bool = true
   prop model:? object
-  prop onChange:? func = Flint.noop
-  prop onSelect:? func = Flint.noop
+  prop onChange:? func = Motion.noop
+  prop onSelect:? func = Motion.noop
   prop selectable:? bool = true
   prop selected:? array = []
   prop source: array = []

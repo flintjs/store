@@ -28,7 +28,7 @@ view Autocomplete {
   prop error:? string
   prop label:? string
   prop multiple:? bool = true
-  prop onChange:? func = Flint.noop
+  prop onChange:? func = Motion.noop
   prop source:? any = {}
   prop value: any
 

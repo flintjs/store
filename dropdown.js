@@ -24,10 +24,10 @@ view Dropdown {
   prop disabled:? bool = false
   prop error:? string
   prop label:? string
-  prop onBlur:? func = Flint.noop
-  prop onChange:? func = Flint.noop
-  prop onFocus:? func = Flint.noop
-  prop template:? func = Flint.noop
+  prop onBlur:? func = Motion.noop
+  prop onChange:? func = Motion.noop
+  prop onFocus:? func = Motion.noop
+  prop template:? func = Motion.noop
   prop value: string
 
   let active = false

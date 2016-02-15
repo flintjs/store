@@ -73,8 +73,8 @@ view Button {
   prop inverse:? bool
   prop label:? string
   prop mini:? bool = false
-  prop onMouseLeave:? func = Flint.noop
-  prop onMouseUp:? func = Flint.noop
+  prop onMouseLeave:? func = Motion.noop
+  prop onMouseUp:? func = Motion.noop
   prop primary:? bool = false
   prop raised:? bool = false
   prop toggle:? bool = false
