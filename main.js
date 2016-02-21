@@ -98,12 +98,13 @@ view AutocompleteExample {
   }
 
   const handleChange = (v) => {
+    console.log('Value changed', v)
     value = v
   }
 
   <Autocomplete
-    label='Favorite artist'
-    multiple
+    label='Favorite country'
+    multiple={false}
     onChange={handleChange}
     source={source}
     value={value}

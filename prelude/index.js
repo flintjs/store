@@ -4,8 +4,7 @@ import effects from './effects'
 import type from './type'
 import _fns from './fns'
 
-export const getMousePosition = ({ pageX, pageY }) => ({ x: pageX, y: pageY })
-export const getTouchPosition = ({ touches: { pageX, pageY } }) => ({ x: pageX, y: pageY })
+export events from './events'
 
 export function palette() {
   return {
