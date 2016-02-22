@@ -88,27 +88,59 @@ view InputExample {
 }
 
 view AutocompleteExample {
-  let value
+  let value = []
 
-  const source = {
-    'ES-es': 'Spain',
-    'TH-th': 'Thailand',
-    'EN-gb': 'England',
-    'EN-en': 'USA'
+  const data = {
+    dan: { name: 'Dan Auberbach', photo: 'http://mediamass.net/jdd/public/documents/celebrities/1345.jpg' },
+    josh: { name: 'Josh Homme', photo: 'http://images.gibson.com/Lifestyle/Spanish/josh_homme_250.jpg' },
+    kendrick: { name: 'Kendrick Lamar', photo: 'http://images.sk-static.com/images/media/profile_images/artists/3277856/huge_avatar' },
+    mfdoom: { name: 'MF Doom', photo: 'http://photon.hypb.st/hypetrak.com/images/2015/01/mf-doom-to-be-featured-on-deluxe-version-of-prhyme-0.jpg' }
   }
 
-  const handleChange = (v) => {
-    console.log('Value changed', v)
-    value = v
+  const source = Object.keys(data).reduce((result, key) => {
+    result[key] = data[key].name
+    return result
+  }, {})
+
+  const handleChange = (v) => { value = v }
+
+  const handleRemove = (item) => {
+    value = [
+      ...value.slice(0, value.indexOf(item)),
+      ...value.slice(value.indexOf(item) + 1)
+    ]
   }
 
-  <Autocomplete
-    label='Favorite country'
-    multiple={false}
-    onChange={handleChange}
-    source={source}
-    value={value}
-  />
+  <div>
+    <Autocomplete
+      label='Favorite Artists (multiple)'
+      multiple={true}
+      onChange={handleChange}
+      source={source}
+      value={value}
+    />
+    <selected if={value.length > 0}>
+      { value.map(item => (
+        <Chip
+          key={item}
+          photo={data[item].photo}
+          onRemove={handleRemove.bind(this, item)}
+        >
+          { data[item].name }
+        </Chip>
+      )) }
+    </selected>
+  </div>
+
+  $selected = {
+    display: 'flex',
+    alignItems: 'flex-start',
+    padding: [5, 0]
+  }
+
+  $Chip = {
+    marginRight: '1rem'
+  }
 }
 
 view LayoutExample {

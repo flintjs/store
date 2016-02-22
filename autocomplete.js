@@ -57,7 +57,7 @@ view Autocomplete {
     let normalizedQuery = query.toLowerCase().trim() || ''
 
     for (const [key, value] of getSource()) {
-      if (!getValues().has(key) && value.toLowerCase().trim().startsWith(normalizedQuery)) {
+      if (!getValues().has(key) && value.toLowerCase().trim().indexOf(normalizedQuery) !== -1) {
         suggestions.set(key, value)
       }
     }
